@@ -6,6 +6,9 @@ const { url } = defineProps(['url'])
 const getData = async () => {
   const response = await axios.get(url)
   console.log(response.data)
+
+  window.open(response.data.redirectUrl, '_blank', 'noopener,noreferrer,width=800,height=600');
+
 }
 </script>
 

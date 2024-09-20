@@ -61,10 +61,10 @@ async function loify() {
 
 <template>
   <main>
-    <p>HELLO WORLD</p>
+    <h1>welcome to loify 🍃</h1>
     <div class="button-wrapper">
-      <APIGetButton url="http://localhost:8080/api/spotify/auth/code">get auth code</APIGetButton>
-      <APIPostButton url="http://localhost:8080/api/spotify/auth/token">get auth token</APIPostButton>
+      <APIGetButton url="http://localhost:8080/spotify/login">LOGIN</APIGetButton>
+
 
       <APIGetButton url="http://localhost:8080/api/spotify/users/daokhang/playlists">get playlists by userID</APIGetButton>
       <APIGetButton url="http://localhost:8080/api/spotify/playlists/3rfEyXgEK3zaUp1Cjj5qhL">get tracks by playlistID</APIGetButton>
@@ -73,7 +73,7 @@ async function loify() {
       <APIGetButton url="http://localhost:8080/api/spotify/tracks/hotline%20bling">get trackID by trackName</APIGetButton>
       
       <button @click="loify">loify tracks 🍃</button>
-      <APIPostButton url="http://localhost:8080/api/spotify/playlists/0w2Swb09lqjdEKly3xN5LT/tracks" :requestBody="newTracksForPlaylistRequestBody">add tracks to playlist</APIPostButton>
+      <APIPostButton url="http://localhost:8080/api/spotify/playlists/6oHFtbQt6Tyyta6JnjM3kw/tracks" :requestBody="newTracksForPlaylistRequestBody">add tracks to playlist</APIPostButton>
     </div>
   </main>
 </template>
