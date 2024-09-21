@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const { playlistName, imgSrc, imgAlt="Cannot load image" } = defineProps<{
   playlistName: string
-  artistName: string
   imgSrc: string
   imgAlt?: string
 }>()
