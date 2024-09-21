@@ -91,6 +91,7 @@ async function loify() {
         >add tracks to playlist</APIPostButton
       >
     </div>
+    <a href="/main">click to see your playlists</a>
   </div>
 </template>
 
@@ -98,5 +99,6 @@ async function loify() {
 .container {
     display: flex;
     flex-direction: column;
+    gap: 3rem;
 }
 </style>
