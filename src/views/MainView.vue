@@ -98,8 +98,8 @@ main {
   display: flex;
   flex-direction: column;
   flex: 1;
-  align-items: center;
-  gap: 1rem
+  gap: 1rem;
+  padding: 1rem
 }
 
 .button-wrapper {

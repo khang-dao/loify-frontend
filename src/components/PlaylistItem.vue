@@ -19,4 +19,8 @@ const { playlistName, imgSrc, imgAlt="Cannot load image" } = defineProps<{
   gap: 1.5rem;
   align-items: center;
 }
+
+h3 {
+  flex-grow: 1;
+}
 </style>
