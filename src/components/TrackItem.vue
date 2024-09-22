@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { trackName, artistName, imgSrc, imgAlt="Cannot load image" } = defineProps<{
+const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
   trackName: string
   artistName: string
   imgSrc: string
@@ -28,5 +28,9 @@ const { trackName, artistName, imgSrc, imgAlt="Cannot load image" } = defineProp
 .text-container {
   display: flex;
   flex-direction: column;
+
+  p {
+    color: rgb(172, 172, 172);
+  }
 }
 </style>
