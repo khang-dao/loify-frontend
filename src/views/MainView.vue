@@ -3,15 +3,22 @@ import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 
 import axios from 'axios'
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, watchEffect, onMounted } from 'vue';
 
-const showLoifyedTracks = ref(false)
+// const showLoifyedTracks = ref(false)
 
-function toggleShowLoifyedTracks () {
-    showLoifyedTracks.value = !showLoifyedTracks.value
+// const generateLoifyedTracks = () => showLoifyedTracks.value = !showLoifyedTracks.value
+
+const selectedPlaylist = ref(null)
+
+const selectPlaylist = (e) => { 
+  console.log(e.target.id)
+  selectedPlaylist.value = e.target.id
 }
 
+
 const playlists = reactive({
+    id: [],
     names: [],
     images: []
 })
@@ -34,24 +41,35 @@ async function fetchPlaylists() {
     const response = await axios.get(url)
     const playlistsData = response.data.items
 
+    playlists.id = playlistsData.map((p) => p.id)
     playlists.names = playlistsData.map((p) => p.name)
     playlists.images = playlistsData.map((p) => p.images?.[0].url)
 }
 
-async function fetchTracks() { 
-    const playlistId = "3rfEyXgEK3zaUp1Cjj5qhL"
-    const url = `http://localhost:8080/api/spotify/playlists/${playlistId}/tracks`
-    const response = await axios.get(url)
-    const tracksData = response.data.items
+// async function fetchTracks() { 
+//     const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks`
+//     const response = await axios.get(url)
+//     const tracksData = response.data.items
 
-    tracks.names = tracksData.map((t) => t.track.name)
-    tracks.images = tracksData.map((t) => t.track.album.images?.[0].url)
-    tracks.artists = tracksData.map((t) => t.track.artists?.[0].name)
-}
+//     tracks.names = tracksData.map((t) => t.track.name)
+//     tracks.images = tracksData.map((t) => t.track.album.images?.[0].url)
+//     tracks.artists = tracksData.map((t) => t.track.artists?.[0].name)
+// }
+
+watchEffect(async () => {
+  const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks`
+  const response = await axios.get(url)
+  const tracksData = response.data.items
+  
+  tracks.names = tracksData.map((t) => t.track.name)
+  tracks.images = tracksData.map((t) => t.track.album.images?.[0].url)
+  tracks.artists = tracksData.map((t) => t.track.artists?.[0].name)
+
+  console.log("currenlty selected playlist: " + selectedPlaylist.value)
+})
 
 async function fetchLoifyedTracks() {
-    const playlistId = "3rfEyXgEK3zaUp1Cjj5qhL"
-    const url = `http://localhost:8080/api/spotify/playlists/${playlistId}/tracks/loify`
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`
     const response = await axios.get(url)
     const loifyedTracksData = response.data
 
@@ -60,18 +78,14 @@ async function fetchLoifyedTracks() {
     loifyedTracks.artists = loifyedTracksData.map((t) => t.tracks.items?.[0]?.artists?.[0]?.name)
 }
 
-onMounted(() => {
-    fetchPlaylists()
-    fetchTracks()
-    fetchLoifyedTracks()
-})
+onMounted(() => fetchPlaylists())
 </script>
 
 <template>
   <main>
     <div class="column column-1">
       <h2>P L A Y L I S T S</h2>
-      <PlaylistItem v-for="(name, index) in playlists.names" :key="index" :playlistName="name" :imgSrc="playlists.images[index]"/>
+      <PlaylistItem v-for="(name, index) in playlists.names" @click="selectPlaylist" :selected="selectedPlaylist === playlists.id[index]" :playlistId="playlists.id[index]" :key="index" :playlistName="name" :imgSrc="playlists.images[index]"/>
     </div>
 
     <div class="column column-2">
@@ -81,10 +95,8 @@ onMounted(() => {
 
     <div class="column column-3">
       <h2>S O N G S 🍃</h2>
-      <button @click="toggleShowLoifyedTracks">Show / Hide Loifyed Songs</button>
-      <div class="column wrapper" v-if="showLoifyedTracks">
-          <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
-      </div>
+      <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
+      <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
     </div>
   </main>
 </template>
