@@ -28,5 +28,9 @@ const { trackName, artistName, imgSrc, imgAlt="Cannot load image" } = defineProp
 .text-container {
   display: flex;
   flex-direction: column;
+
+  p {
+    color: rgb(172, 172, 172);
+  }
 }
 </style>
