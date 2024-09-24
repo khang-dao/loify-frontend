@@ -78,6 +78,16 @@ async function fetchLoifyedTracks() {
     loifyedTracks.artists = loifyedTracksData.map((t) => t.tracks.items?.[0]?.artists?.[0]?.name)
 }
 
+async function createLoifyedPlaylist() {
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`  // TODO: update url
+    const response = await axios.post(url)
+    const loifyedPlaylistData = response.data  // TODO: get the response status (status or status code?) 
+    
+    const spotifyUrl = loifyedPlaylistData.external_urls.spotify
+    console.log(spotifyUrl)
+}
+
+
 onMounted(() => fetchPlaylists())
 </script>
 
@@ -96,6 +106,7 @@ onMounted(() => fetchPlaylists())
     <div class="column column-3">
       <h2>S O N G S 🍃</h2>
       <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
+      <button @click="createLoifyedPlaylist">Add Loifyed Songs to Playlist 💚</button>
       <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
     </div>
   </main>
