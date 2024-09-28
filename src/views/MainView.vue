@@ -106,7 +106,7 @@ onMounted(() => fetchPlaylists())
     <div class="column column-3">
       <h2>S O N G S 🍃</h2>
       <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
-      <button @click="createLoifyedPlaylist">Add Loifyed Songs to Playlist 💚</button>
+      <button @click="createLoifyedPlaylist">Create new playlist with loifyed songs 💚</button>
       <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
     </div>
   </main>
