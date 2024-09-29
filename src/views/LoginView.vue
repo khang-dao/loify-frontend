@@ -1,5 +1,16 @@
 <script setup lang="ts">
-import LoginButton from '@/components/LoginButton.vue'
+import axios from 'axios';
+
+
+const useSpotifyLogin = async () => {
+    try {
+    const response = await axios.get("http://localhost:8080/spotify/login");
+    // Redirect to the Spotify login URL
+    window.location.href = response.data.redirectUrl;
+  } catch (error) {
+    console.error("Error during Spotify login:", error);
+  }
+}
 </script>
 
 <template>
@@ -9,7 +20,8 @@ import LoginButton from '@/components/LoginButton.vue'
         Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
         your data and ensure your privacy is protected.
       </h1>
-      <LoginButton>click to login</LoginButton>
+      <a class="login-button" @click="useSpotifyLogin" >click to login</a>
+      <!-- <a class="subheading" href="/login">click to login</a> -->
     </div>
   </main>
 </template>
@@ -42,5 +54,11 @@ import LoginButton from '@/components/LoginButton.vue'
   text-decoration: none;
   color: #6A6A6A;
   font-size: 1rem;
+}
+
+.login-button {
+  font-size: 1rem;
+  color: #6A6A6A;
+  cursor: pointer
 }
 </style>

@@ -93,11 +93,13 @@ onMounted(() => fetchPlaylists())
     </div>
 
     <div class="column column-3">
-      <h2 class="col-heading">S O N G S 🍃</h2>
-      <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
-      <button @click="createLoifyedPlaylist">Create new playlist with loifyed songs 💚</button>
+      <div class="heading-container">
+        <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
+        <h2 class="col-heading">🍃</h2>
+        <button @click="createLoifyedPlaylist">Create new playlist with loifyed songs 💚</button>
+      </div>
       <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
-    </div>
+    </div>d
   </main>
 </template>
 
@@ -114,6 +116,7 @@ onMounted(() => fetchPlaylists())
   font-family: 'League Spartan', sans-serif;
   color: #FFFFFF;
   text-align: center;
+  font-size: 2rem;
 }
 
 .column {
@@ -123,6 +126,12 @@ onMounted(() => fetchPlaylists())
   gap: 3rem;
   padding: 1rem;
   overflow: auto;
+  padding-top: 3rem;
+}
+
+.heading-container {
+  display: flex;
+  gap: 1rem;
 }
 
 ::-webkit-scrollbar {
