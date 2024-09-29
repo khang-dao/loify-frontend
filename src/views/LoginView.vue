@@ -10,10 +10,6 @@ import LoginButton from '@/components/LoginButton.vue'
         your data and ensure your privacy is protected.
       </h1>
       <LoginButton>click to login</LoginButton>
-
-
-      <!-- <a class="subheading" href="/login">click to login</a>
-      <APIGetButton url="http://localhost:8080/spotify/login">LOGIN</APIGetButton> -->
     </div>
   </main>
 </template>
