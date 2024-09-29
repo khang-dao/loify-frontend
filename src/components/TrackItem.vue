@@ -28,9 +28,17 @@ const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } 
 .text-container {
   display: flex;
   flex-direction: column;
+  font-family: 'League Spartan', sans-serif;
+  color: #FFFFFF;
+  gap: 0.4rem;
 
   p {
-    color: rgb(172, 172, 172);
+    color: #6A6A6A;
   }
 }
+
+img {
+  border-radius: 0.5rem;
+}
+
 </style>

@@ -10,7 +10,7 @@ const { playlistId, playlistName, imgSrc, imgAlt="Cannot load image", selected} 
 
 <template>
   <div :class="['container', { selected: selected }]" :id="playlistId">    <!-- TODO: Set the `playlistId` in some other way -->
-    <img :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>    <!-- TODO: Set the `playlistId` in some other way -->
+    <img :class="[ { selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>    <!-- TODO: Set the `playlistId` in some other way -->
     <h3 :id="playlistId">{{ playlistName }}</h3>    <!-- TODO: Set the `playlistId` in some other way -->
   </div>
 </template>
@@ -20,13 +20,25 @@ const { playlistId, playlistName, imgSrc, imgAlt="Cannot load image", selected} 
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  min-height: min-content;
+  opacity: 0.5;
 }
 
 h3 {
   flex-grow: 1;
+  font-family: 'League Spartan', sans-serif;
+  color: #FFFFFF
 }
 
-.selected {
-  border: 1px solid rgb(169, 112, 208);
+.selected.container {
+  opacity: 1;
+}
+
+img.selected {
+  border: 4px solid rgb(169, 112, 208);
+}
+
+img {
+  border-radius: 0.5rem;
 }
 </style>
