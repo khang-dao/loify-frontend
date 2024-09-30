@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PlaylistPreview from '@/components/PlaylistPreview.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 
@@ -6,19 +7,24 @@ import axios from 'axios'
 import { ref, reactive, watchEffect, onMounted } from 'vue';
 
 
+interface playlistData {
+  id: string;
+  name: string;
+  imageUrl: string
+}
+
 const selectedPlaylist = ref(null)
 
 const selectPlaylist = (e) => { 
   console.log(e.target.id)
-  selectedPlaylist.value = e.target.id
+  const selectedId = e.target.id;
+  selectedPlaylist.value = playlists.find(p => p.id === selectedId) || null
+
+  console.log(selectedPlaylist.value)
 }
 
 
-const playlists = reactive({
-    id: [],
-    names: [],
-    images: []
-})
+const playlists: playlistData[] = reactive([])
 
 const tracks = reactive({
     names: [],
@@ -32,19 +38,25 @@ const loifyedTracks = reactive({
     images: []
 })
 
+const loifyedPlaylist = ref(null)
 
 async function fetchPlaylists() {
     const url = "http://localhost:8080/api/spotify/me/playlists"
     const response = await axios.get(url)
     const playlistsData = response.data.items
 
-    playlists.id = playlistsData.map((p) => p.id)
-    playlists.names = playlistsData.map((p) => p.name)
-    playlists.images = playlistsData.map((p) => p.images?.[0].url)
+    playlistsData.forEach(item => {
+      playlists.push({
+        id: item.id,
+        name: item.name,
+        imageUrl: item.images?.[0].url,
+      })
+      console.log(item.images?.[0].url)
+    })
 }
 
 async function fetchTracks() { 
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks`
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
     const response = await axios.get(url)
     const tracksData = response.data.items
 
@@ -58,7 +70,7 @@ watchEffect(async () => {
 })
 
 async function fetchLoifyedTracks() {
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
     const response = await axios.get(url)
     const loifyedTracksData = response.data
 
@@ -68,12 +80,30 @@ async function fetchLoifyedTracks() {
 }
 
 async function createLoifyedPlaylist() {
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`  // TODO: update url
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`  // TODO: update url
     const response = await axios.post(url)
-    const loifyedPlaylistData = response.data  // TODO: get the response status (status or status code?) 
-    
-    const spotifyUrl = loifyedPlaylistData.external_urls.spotify
-    console.log(spotifyUrl)
+    loifyedPlaylist.value = response.data  // TODO: get the response status (status or status code?) 
+
+    await updateLoifyedPlaylistImage()
+    console.log("HI: ", loifyedPlaylist.value)
+}
+
+function openLoifyedPlaylistInSpotify() {
+  window.open(loifyedPlaylist.value.external_urls.spotify, '_blank');  // Opens the URL in a new tab
+  console.log(loifyedPlaylist.value)
+}
+
+async function updateLoifyedPlaylistImage() {
+  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
+  const playlistData = await axios.get(url)
+  loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
+  // console.log("YA: ", playlistData.data.images?.[0].url)
+  // return playlistData.data.images?.[0].url
+}
+
+function reset() {
+  // TODO: this function resets the values of (TBD) reactive/refs above 
+  // NOTE: this is for AFTER new playlist creation
 }
 
 
@@ -82,10 +112,35 @@ onMounted(() => fetchPlaylists())
 
 <template>
   <main class="main">
-    <div class="column column-1">
+    <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">   <!-- TODO: can refactor to a var?  -->  
       <h2 class="col-heading">P L A Y L I S T S</h2>
-      <PlaylistItem v-for="(name, index) in playlists.names" @click="selectPlaylist" :selected="selectedPlaylist === playlists.id[index]" :playlistId="playlists.id[index]" :key="index" :playlistName="name" :imgSrc="playlists.images[index]"/>
+      <PlaylistItem v-for="item in playlists" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.imageUrl"/>
     </div>
+
+    <div class="column column-1" v-else>
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl">
+        O R I G I N A L<br>P L A Y L I S T
+      </PlaylistPreview> 
+
+      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">
+        N E W<br>P L A Y L I S T
+      </PlaylistPreview> 
+
+
+      <!-- <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
+      <img :src="selectedPlaylist.imageUrl" alt="No Image Available" width="175" height="175"/> 
+      <h2>{{selectedPlaylist.name}}</h2>
+      
+      
+      <h2 class="col-heading">N E W<br>P L A Y L I S T</h2>
+      <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
+      <h2>{{loifyedPlaylist.name}}</h2> -->
+
+
+      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
+      <button @click="console.log('hello world')">click here to restart</button>
+    </div>
+
 
     <div class="column column-2">
       <h2 class="col-heading">S O N G S</h2>
@@ -94,12 +149,13 @@ onMounted(() => fetchPlaylists())
 
     <div class="column column-3">
       <div class="heading-container">
-        <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
+        <button @click="fetchLoifyedTracks()">Generate Loifyed Songs 🍃</button>   // 
+
         <h2 class="col-heading">🍃</h2>
-        <button @click="createLoifyedPlaylist">Create new playlist with loifyed songs 💚</button>
+        <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>    <!-- TODO: Refactor the multi-fn @click, probably create a new fn that calls both these fns -->
       </div>
       <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
-    </div>d
+    </div>
   </main>
 </template>
 

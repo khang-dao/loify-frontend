@@ -29,7 +29,7 @@ const useSpotifyLogin = async () => {
 <style scoped>
 .main {
   background: #232323;
-  height: 98vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
