@@ -32,6 +32,7 @@ const loifyedTracks = reactive({
     images: []
 })
 
+const loifyedPlaylist = ref(null)
 
 async function fetchPlaylists() {
     const url = "http://localhost:8080/api/spotify/me/playlists"
@@ -70,10 +71,24 @@ async function fetchLoifyedTracks() {
 async function createLoifyedPlaylist() {
     const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`  // TODO: update url
     const response = await axios.post(url)
-    const loifyedPlaylistData = response.data  // TODO: get the response status (status or status code?) 
+    loifyedPlaylist.value = response.data  // TODO: get the response status (status or status code?) 
     
-    const spotifyUrl = loifyedPlaylistData.external_urls.spotify
-    console.log(spotifyUrl)
+    console.log(loifyedPlaylist.value)
+}
+
+function openLoifyedPlaylistInSpotify() {
+  window.open(loifyedPlaylist.value.external_urls.spotify, '_blank');  // Opens the URL in a new tab
+}
+
+async function getPlaylistData(playlistId: string) {
+  const url = `http://localhost:8080/api/spotify/playlists/${playlistId}`
+  const playlistData = await axios.get(url)
+  return playlistData.data
+}
+
+function reset() {
+  // TODO: this function resets the values of (TBD) reactive/refs above 
+  // NOTE: this is for AFTER new playlist creation
 }
 
 
@@ -82,10 +97,25 @@ onMounted(() => fetchPlaylists())
 
 <template>
   <main class="main">
-    <div class="column column-1">
+    <div class="column column-1" v-if="!loifyedPlaylist">
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <PlaylistItem v-for="(name, index) in playlists.names" @click="selectPlaylist" :selected="selectedPlaylist === playlists.id[index]" :playlistId="playlists.id[index]" :key="index" :playlistName="name" :imgSrc="playlists.images[index]"/>
     </div>
+
+    <div class="column column-1" v-else>
+      <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
+      <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
+      
+      
+      <h2 class="col-heading">N E W<br>P L A Y L I S T</h2>
+      <!-- <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/>  -->
+      <h2>{{loifyedPlaylist.name}}</h2>
+
+
+      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
+      <button @click="console.log('hello world')">click here to restart</button>
+    </div>
+
 
     <div class="column column-2">
       <h2 class="col-heading">S O N G S</h2>
@@ -94,9 +124,10 @@ onMounted(() => fetchPlaylists())
 
     <div class="column column-3">
       <div class="heading-container">
-        <button @click="fetchLoifyedTracks">Generate Loifyed Songs 🍃</button>
+        <button @click="fetchLoifyedTracks()">Generate Loifyed Songs 🍃</button>   // 
+
         <h2 class="col-heading">🍃</h2>
-        <button @click="createLoifyedPlaylist">Create new playlist with loifyed songs 💚</button>
+        <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>    <!-- TODO: Refactor the multi-fn @click, probably create a new fn that calls both these fns -->
       </div>
       <TrackItem v-for="(name, index) in loifyedTracks.names" :key="index" :trackName="name" :artistName="loifyedTracks.artists[index]" :imgSrc="loifyedTracks.images[index]"/>
     </div>
