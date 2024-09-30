@@ -18,6 +18,8 @@ const selectPlaylist = (e) => {
   console.log(e.target.id)
   const selectedId = e.target.id;
   selectedPlaylist.value = playlists.find(p => p.id === selectedId) || null
+
+  console.log(selectedPlaylist.value)
 }
 
 
@@ -48,7 +50,7 @@ async function fetchPlaylists() {
         name: item.name,
         imageUrl: item.images?.[0].url,
       })
-      console.log(item.id)
+      console.log(item.images?.[0].url)
     })
 }
 
@@ -80,18 +82,22 @@ async function createLoifyedPlaylist() {
     const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`  // TODO: update url
     const response = await axios.post(url)
     loifyedPlaylist.value = response.data  // TODO: get the response status (status or status code?) 
-    
-    console.log(loifyedPlaylist.value)
+
+    await updateLoifyedPlaylistImage()
+    console.log("HI: ", loifyedPlaylist.value)
 }
 
 function openLoifyedPlaylistInSpotify() {
   window.open(loifyedPlaylist.value.external_urls.spotify, '_blank');  // Opens the URL in a new tab
+  console.log(loifyedPlaylist.value)
 }
 
-async function getPlaylistData(playlistId: string) {
-  const url = `http://localhost:8080/api/spotify/playlists/${playlistId}`
+async function updateLoifyedPlaylistImage() {
+  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
   const playlistData = await axios.get(url)
-  return playlistData.data
+  loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
+  // console.log("YA: ", playlistData.data.images?.[0].url)
+  // return playlistData.data.images?.[0].url
 }
 
 function reset() {
@@ -105,17 +111,19 @@ onMounted(() => fetchPlaylists())
 
 <template>
   <main class="main">
-    <div class="column column-1" v-if="!loifyedPlaylist">
+    <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">   <!-- TODO: can refactor to a var?  -->  
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <PlaylistItem v-for="item in playlists" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.imageUrl"/>
     </div>
 
     <div class="column column-1" v-else>
       <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
-      <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
+      <img :src="selectedPlaylist.imageUrl" alt="No Image Available" width="175" height="175"/> 
+      <h2>{{selectedPlaylist.name}}</h2>
       
       
       <h2 class="col-heading">N E W<br>P L A Y L I S T</h2>
+      <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
       <!-- <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/>  -->
       <h2>{{loifyedPlaylist.name}}</h2>
 
