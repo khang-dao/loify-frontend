@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import PlaylistPreview from '@/components/PlaylistPreview.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 
@@ -117,15 +118,23 @@ onMounted(() => fetchPlaylists())
     </div>
 
     <div class="column column-1" v-else>
-      <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl">
+        O R I G I N A L<br>P L A Y L I S T
+      </PlaylistPreview> 
+
+      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">
+        N E W<br>P L A Y L I S T
+      </PlaylistPreview> 
+
+
+      <!-- <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
       <img :src="selectedPlaylist.imageUrl" alt="No Image Available" width="175" height="175"/> 
       <h2>{{selectedPlaylist.name}}</h2>
       
       
       <h2 class="col-heading">N E W<br>P L A Y L I S T</h2>
       <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
-      <!-- <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/>  -->
-      <h2>{{loifyedPlaylist.name}}</h2>
+      <h2>{{loifyedPlaylist.name}}</h2> -->
 
 
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
