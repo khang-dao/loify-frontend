@@ -6,19 +6,22 @@ import axios from 'axios'
 import { ref, reactive, watchEffect, onMounted } from 'vue';
 
 
+interface playlistData {
+  id: string;
+  name: string;
+  imageUrl: string
+}
+
 const selectedPlaylist = ref(null)
 
 const selectPlaylist = (e) => { 
   console.log(e.target.id)
-  selectedPlaylist.value = e.target.id
+  const selectedId = e.target.id;
+  selectedPlaylist.value = playlists.find(p => p.id === selectedId) || null
 }
 
 
-const playlists = reactive({
-    id: [],
-    names: [],
-    images: []
-})
+const playlists: playlistData[] = reactive([])
 
 const tracks = reactive({
     names: [],
@@ -39,13 +42,18 @@ async function fetchPlaylists() {
     const response = await axios.get(url)
     const playlistsData = response.data.items
 
-    playlists.id = playlistsData.map((p) => p.id)
-    playlists.names = playlistsData.map((p) => p.name)
-    playlists.images = playlistsData.map((p) => p.images?.[0].url)
+    playlistsData.forEach(item => {
+      playlists.push({
+        id: item.id,
+        name: item.name,
+        imageUrl: item.images?.[0].url,
+      })
+      console.log(item.id)
+    })
 }
 
 async function fetchTracks() { 
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks`
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
     const response = await axios.get(url)
     const tracksData = response.data.items
 
@@ -59,7 +67,7 @@ watchEffect(async () => {
 })
 
 async function fetchLoifyedTracks() {
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
     const response = await axios.get(url)
     const loifyedTracksData = response.data
 
@@ -69,7 +77,7 @@ async function fetchLoifyedTracks() {
 }
 
 async function createLoifyedPlaylist() {
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value}/tracks/loify`  // TODO: update url
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`  // TODO: update url
     const response = await axios.post(url)
     loifyedPlaylist.value = response.data  // TODO: get the response status (status or status code?) 
     
@@ -99,7 +107,7 @@ onMounted(() => fetchPlaylists())
   <main class="main">
     <div class="column column-1" v-if="!loifyedPlaylist">
       <h2 class="col-heading">P L A Y L I S T S</h2>
-      <PlaylistItem v-for="(name, index) in playlists.names" @click="selectPlaylist" :selected="selectedPlaylist === playlists.id[index]" :playlistId="playlists.id[index]" :key="index" :playlistName="name" :imgSrc="playlists.images[index]"/>
+      <PlaylistItem v-for="item in playlists" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.imageUrl"/>
     </div>
 
     <div class="column column-1" v-else>
