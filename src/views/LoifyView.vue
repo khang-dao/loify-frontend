@@ -10,38 +10,28 @@ import { ref, reactive, watchEffect, onMounted } from 'vue'
 
 const userStore = useUserStore()
 
-interface playlistData {
+interface Playlist {
   id: string
   name: string
   imageUrl: string
 }
 
-const selectedPlaylist = ref(null)
+interface Track {
+  id: string
+  name: string
+  artist: string
+  image: string
+}
 
+const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
   console.log(e.target.id)
   const selectedId = e.target.id
   selectedPlaylist.value = playlists.find((p) => p.id === selectedId) || null
-
   console.log(selectedPlaylist.value)
 }
 
-const playlists: playlistData[] = reactive([])
-
-const tracks = reactive({
-  names: [],
-  artists: [],
-  images: []
-})
-
-const loifyedTracks = reactive({
-  names: [],
-  artists: [],
-  images: []
-})
-
-const loifyedPlaylist = ref(null)
-
+const playlists: Playlist[] = reactive([])
 async function fetchPlaylists() {
   const url = 'http://localhost:8080/api/spotify/me/playlists'
   const response = await axios.get(url, { withCredentials: true })
@@ -53,39 +43,49 @@ async function fetchPlaylists() {
       name: item.name,
       imageUrl: item.images?.[0].url
     })
-    console.log(item.images?.[0].url)
   })
 }
 
+const tracks: Track[] = reactive([])
 async function fetchTracks() {
-  tracks.names = []
+  tracks.length = 0
 
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
   const response = await axios.get(url, { withCredentials: true })
   const tracksData = response.data.items
 
-  tracks.names = tracksData.map((t) => t.track.name)
-  tracks.images = tracksData.map((t) => t.track.album.images?.[0].url)
-  tracks.artists = tracksData.map((t) => t.track.artists?.[0].name)
+  tracksData.forEach((item) => {
+    tracks.push({
+      id: item.track?.id,
+      name: item.track?.name,
+      artist: item.track?.artists?.[0].name,
+      image: item.track?.album.images?.[0].url,
+    })
+  })
 }
-
 watchEffect(async () => {
   fetchTracks()
 })
 
+const loifyedTracks: Track[] = reactive([])
 async function fetchLoifyedTracks() {
-  loifyedTracks.names = []
-
+  loifyedTracks.length = 0
 
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
   const response = await axios.get(url, { withCredentials: true })
   const loifyedTracksData = response.data
 
-  loifyedTracks.names = loifyedTracksData.map((t) => t.tracks.items?.[0]?.name)
-  loifyedTracks.images = loifyedTracksData.map((t) => t.tracks.items?.[0]?.album.images?.[0]?.url)
-  loifyedTracks.artists = loifyedTracksData.map((t) => t.tracks.items?.[0]?.artists?.[0]?.name)
+  loifyedTracksData.forEach((item) => {
+    loifyedTracks.push({
+      id: item?.tracks?.items?.[0]?.id,
+      name: item?.tracks?.items?.[0]?.name,
+      artist: item?.tracks?.items?.[0]?.artists?.[0]?.name,
+      image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url,
+    })
+  })
 }
 
+const loifyedPlaylist = ref(null)
 async function createLoifyedPlaylist() {
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify` // TODO: update url
   const response = await axios.post(url, { withCredentials: true })
@@ -94,18 +94,14 @@ async function createLoifyedPlaylist() {
   await updateLoifyedPlaylistImage()
   console.log('HI: ', loifyedPlaylist.value)
 }
-
 function openLoifyedPlaylistInSpotify() {
   window.open(loifyedPlaylist.value.external_urls.spotify, '_blank') // Opens the URL in a new tab
   console.log(loifyedPlaylist.value)
 }
-
 async function updateLoifyedPlaylistImage() {
   const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
   const playlistData = await axios.get(url, { withCredentials: true })
   loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
-  // console.log("YA: ", playlistData.data.images?.[0].url)
-  // return playlistData.data.images?.[0].url
 }
 
 function reset() {
@@ -159,13 +155,13 @@ onMounted(() => fetchPlaylists())
 
     <div class="column column-2">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="tracks.names.length >= 10">
+      <template v-if="tracks.length >= 10">
         <TrackItem
-        v-for="(name, index) in tracks.names"
-        :key="index"
-        :trackName="name"
-        :artistName="tracks.artists[index]"
-        :imgSrc="tracks.images[index]"
+        v-for="item in tracks"
+        :key="`${item.name}, ${item.artist}`"
+        :trackName="item.name"
+        :artistName="item.artist"
+        :imgSrc="item.image"
         />
       </template>
 
@@ -182,14 +178,14 @@ onMounted(() => fetchPlaylists())
         <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
         <!-- TODO: Refactor the multi-fn @click, probably create a new fn that calls both these fns -->
       </div>
-      <template v-if="loifyedTracks.names.length >= 10">
+      <template v-if="loifyedTracks.length >= 10">
         <TrackItem
-        v-for="(name, index) in loifyedTracks.names"
-        :key="index"
-        :trackName="name"
-        :artistName="loifyedTracks.artists[index]"
-        :imgSrc="loifyedTracks.images[index]"
-      />
+        v-for="item in loifyedTracks"
+        :key="`${item.name}, ${item.artist}`"
+        :trackName="item.name"
+        :artistName="item.artist"
+        :imgSrc="item.image"
+        />
       </template>
 
       <template v-else>
