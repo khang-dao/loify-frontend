@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import axios from 'axios';
 
 
 const useSpotifyLogin = async () => {
     try {
-    const response = await axios.get("http://localhost:8080/spotify/login");
-    // Redirect to the Spotify login URL
-    window.location.href = response.data.redirectUrl;
+    window.location.href = "http://localhost:8080/api/spotify/login";
   } catch (error) {
     console.error("Error during Spotify login:", error);
   }
@@ -21,7 +18,6 @@ const useSpotifyLogin = async () => {
         your data and ensure your privacy is protected.
       </h1>
       <a class="login-button" @click="useSpotifyLogin" >click to login</a>
-      <!-- <a class="subheading" href="/login">click to login</a> -->
     </div>
   </main>
 </template>
