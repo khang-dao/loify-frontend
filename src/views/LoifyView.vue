@@ -2,6 +2,7 @@
 import PlaylistPreview from '@/components/PlaylistPreview.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
+import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import { useUserStore } from '@/stores/user'
 
 import axios from 'axios'
@@ -114,11 +115,12 @@ onMounted(() => fetchPlaylists())
   <main class="main">
     <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">
       <!-- TODO: can refactor to a var?  -->
-
+      
       <button @click="userStore.logout">LOGOUT</button>
-
+      
       <h2 class="col-heading">P L A Y L I S T S</h2>
-      <PlaylistItem
+      <template v-if="playlists.length >= 46">
+        <PlaylistItem 
         v-for="item in playlists"
         @click="selectPlaylist"
         :selected="selectedPlaylist?.id === item.id"
@@ -126,7 +128,12 @@ onMounted(() => fetchPlaylists())
         :key="item.id"
         :playlistName="item.name"
         :imgSrc="item.imageUrl"
-      />
+        />
+      </template>
+
+      <template v-else>
+        <ItemSkeleton v-for="index in 7" :key="index"/>
+      </template>
     </div>
 
     <div class="column column-1" v-else>
