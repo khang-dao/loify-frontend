@@ -1,0 +1,33 @@
+import { ref } from 'vue'
+import { defineStore } from 'pinia'
+import { useLocalStorage } from '@vueuse/core'
+import axios from 'axios'
+
+export const useUserStore = defineStore('user', () => {
+  const user = ref(useLocalStorage('currentUser', { isLoggedIn: false }))
+
+  async function updateAuthStatus() {
+    const response = await axios.get('http://localhost:8080/api/auth-check')
+    if (response.status === 200) {
+      user.value.isLoggedIn = true
+    }
+    return user.value.isLoggedIn
+  }
+
+  async function logout() {
+    try {
+      await axios.get('http://localhost:8080/api/spotify/logout', { withCredentials: true })
+      user.value = { isLoggedIn: false }
+      window.location.href = "https://accounts.spotify.com/logout";
+    }
+    catch (error){
+      console.log(`Error logging out: ${error}`)
+    }
+  }
+
+  return {
+    user,
+    updateAuthStatus,
+    logout,
+  }
+})
