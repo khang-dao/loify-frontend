@@ -2,10 +2,13 @@
 import PlaylistPreview from '@/components/PlaylistPreview.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
+import { useUserStore } from '@/stores/user'
+
 
 import axios from 'axios'
 import { ref, reactive, watchEffect, onMounted } from 'vue';
 
+const userStore = useUserStore()
 
 interface playlistData {
   id: string;
@@ -113,6 +116,9 @@ onMounted(() => fetchPlaylists())
 <template>
   <main class="main">
     <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">   <!-- TODO: can refactor to a var?  -->  
+
+      <button @click="userStore.logout">LOGOUT</button>
+
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <PlaylistItem v-for="item in playlists" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.imageUrl"/>
     </div>
@@ -125,17 +131,6 @@ onMounted(() => fetchPlaylists())
       <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">
         N E W<br>P L A Y L I S T
       </PlaylistPreview> 
-
-
-      <!-- <h2 class="col-heading">O R I G I N A L<br>P L A Y L I S T</h2>
-      <img :src="selectedPlaylist.imageUrl" alt="No Image Available" width="175" height="175"/> 
-      <h2>{{selectedPlaylist.name}}</h2>
-      
-      
-      <h2 class="col-heading">N E W<br>P L A Y L I S T</h2>
-      <img :src="loifyedPlaylist.images?.[0]?.url" alt="No Image Available" width="175" height="175"/> 
-      <h2>{{loifyedPlaylist.name}}</h2> -->
-
 
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
       <button @click="console.log('hello world')">click here to restart</button>
