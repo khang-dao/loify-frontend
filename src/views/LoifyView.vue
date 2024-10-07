@@ -58,6 +58,8 @@ async function fetchPlaylists() {
 }
 
 async function fetchTracks() {
+  tracks.names = []
+
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
   const response = await axios.get(url, { withCredentials: true })
   const tracksData = response.data.items
@@ -72,6 +74,9 @@ watchEffect(async () => {
 })
 
 async function fetchLoifyedTracks() {
+  loifyedTracks.names = []
+
+
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
   const response = await axios.get(url, { withCredentials: true })
   const loifyedTracksData = response.data
@@ -154,13 +159,19 @@ onMounted(() => fetchPlaylists())
 
     <div class="column column-2">
       <h2 class="col-heading">S O N G S</h2>
-      <TrackItem
+      <template v-if="tracks.names.length >= 10">
+        <TrackItem
         v-for="(name, index) in tracks.names"
         :key="index"
         :trackName="name"
         :artistName="tracks.artists[index]"
         :imgSrc="tracks.images[index]"
-      />
+        />
+      </template>
+
+      <template v-else>
+        <ItemSkeleton v-for="index in 7" :key="index"/>
+      </template>
     </div>
 
     <div class="column column-3">
@@ -171,13 +182,19 @@ onMounted(() => fetchPlaylists())
         <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
         <!-- TODO: Refactor the multi-fn @click, probably create a new fn that calls both these fns -->
       </div>
-      <TrackItem
+      <template v-if="loifyedTracks.names.length >= 10">
+        <TrackItem
         v-for="(name, index) in loifyedTracks.names"
         :key="index"
         :trackName="name"
         :artistName="loifyedTracks.artists[index]"
         :imgSrc="loifyedTracks.images[index]"
       />
+      </template>
+
+      <template v-else>
+        <ItemSkeleton v-for="index in 7" :key="index"/>
+      </template>
     </div>
   </main>
 </template>
