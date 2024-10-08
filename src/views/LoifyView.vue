@@ -120,7 +120,7 @@ onMounted(() => fetchPlaylists())
       <button @click="userStore.logout">LOGOUT</button>
       
       <h2 class="col-heading">P L A Y L I S T S</h2>
-      <template v-if="playlists.length >= 46">
+      <template v-if="playlists.length">
         <PlaylistItem 
         v-for="item in playlists"
         @click="selectPlaylist"
@@ -155,7 +155,7 @@ onMounted(() => fetchPlaylists())
 
     <div class="column column-2">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="tracks.length >= 10">
+      <template v-if="tracks.length">
         <TrackItem
         v-for="item in tracks"
         :key="`${item.name}, ${item.artist}`"
@@ -176,9 +176,8 @@ onMounted(() => fetchPlaylists())
 
         <h2 class="col-heading">🍃</h2>
         <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
-        <!-- TODO: Refactor the multi-fn @click, probably create a new fn that calls both these fns -->
       </div>
-      <template v-if="loifyedTracks.length >= 10">
+      <template v-if="loifyedTracks.length">
         <TrackItem
         v-for="item in loifyedTracks"
         :key="`${item.name}, ${item.artist}`"
