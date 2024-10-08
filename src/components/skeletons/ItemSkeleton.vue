@@ -20,9 +20,10 @@
 
 .picture {
   border-radius: 0.5rem;
-  background-color: grey;
+  /* background-color: grey; */
   height: 100px;
   width: 100px;
+  animation: pulse-bg 1s infinite;
 }
 
 .text-container {
@@ -31,9 +32,25 @@
   font-family: 'League Spartan', sans-serif;
   color: #6a6a6a;
   gap: 0.4rem;
+  animation: pulse-bg 1s infinite;
 }
 
 img {
   border-radius: 0.5rem;
+}
+
+@keyframes pulse-bg {
+    0% {
+background-color: #eee;
+    }
+    50%{
+        background-color: rgb(188, 188, 188);
+
+    }
+    100%{
+        background-color: #eee;
+
+    }
+    
 }
 </style>
