@@ -5,8 +5,8 @@
     <div class="picture"></div>
 
     <div class="text-container">
-      <h3>...</h3>
-      <p>...</p>
+        <div class="heading"></div>
+        <div class="sub-heading"></div>
     </div>
   </div>
 </template>
@@ -20,8 +20,21 @@
 
 .picture {
   border-radius: 0.5rem;
-  /* background-color: grey; */
   height: 100px;
+  width: 100px;
+  animation: pulse-bg 1s infinite;
+}
+
+.heading {
+  border-radius: 0.5rem;
+  height: 20px;
+  width: 150px;
+  animation: pulse-bg 1s infinite;
+}
+
+.sub-heading {
+  border-radius: 0.5rem;
+  height: 20px;
   width: 100px;
   animation: pulse-bg 1s infinite;
 }
@@ -29,10 +42,7 @@
 .text-container {
   display: flex;
   flex-direction: column;
-  font-family: 'League Spartan', sans-serif;
-  color: #6a6a6a;
-  gap: 0.4rem;
-  animation: pulse-bg 1s infinite;
+  gap: 0.6rem;
 }
 
 img {
@@ -40,17 +50,14 @@ img {
 }
 
 @keyframes pulse-bg {
-    0% {
-background-color: #eee;
-    }
-    50%{
-        background-color: rgb(188, 188, 188);
-
-    }
-    100%{
-        background-color: #eee;
-
-    }
-    
+  0% {
+    background-color: rgb(216, 216, 216);
+  }
+  50% {
+    background-color: rgb(188, 188, 188);
+  }
+  100% {
+    background-color: rgb(216, 216, 216);
+  }
 }
 </style>
