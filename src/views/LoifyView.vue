@@ -137,7 +137,7 @@ onMounted(() => fetchPlaylists())
       </template>
     </div>
 
-    <div class="column column-1" v-else>
+    <div :class="`column column-2 ${!playlists.length ? 'skeleton' : ''}`" v-else>
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl">
         O R I G I N A L<br />P L A Y L I S T
       </PlaylistPreview>
@@ -153,7 +153,7 @@ onMounted(() => fetchPlaylists())
       <button @click="console.log('hello world')">click here to restart</button>
     </div>
 
-    <div class="column column-2">
+    <div :class="`column column-2 ${!tracks.length ? 'skeleton' : ''}`">
       <h2 class="col-heading">S O N G S</h2>
       <template v-if="tracks.length">
         <TrackItem
@@ -166,11 +166,11 @@ onMounted(() => fetchPlaylists())
       </template>
 
       <template v-else>
-        <ItemSkeleton v-for="index in 7" :key="index"/>
+        <ItemSkeleton v-for="index in 20" :key="index"/>
       </template>
     </div>
 
-    <div class="column column-3">
+    <div :class="`column column-3 ${!loifyedTracks.length ? 'skeleton' : ''}`">
       <div class="heading-container">
         <button @click="fetchLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
 
@@ -188,7 +188,7 @@ onMounted(() => fetchPlaylists())
       </template>
 
       <template v-else>
-        <ItemSkeleton v-for="index in 7" :key="index"/>
+        <ItemSkeleton v-for="index in 20" :key="index"/>
       </template>
     </div>
   </main>
@@ -220,22 +220,32 @@ onMounted(() => fetchPlaylists())
   padding-top: 3rem;
 }
 
+.column.skeleton {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 3rem;
+  padding: 1rem;
+  overflow: hidden;
+  padding-top: 3rem;
+}
+
 .heading-container {
   display: flex;
   gap: 1rem;
 }
 
-::-webkit-scrollbar {
+.column::-webkit-scrollbar {
   width: 0.7rem;
 }
 
-::-webkit-scrollbar-track {
+.column::-webkit-scrollbar-track {
   background: #232323;
   margin-top: 5rem;
   margin-bottom: 1rem;
 }
 
-::-webkit-scrollbar-thumb {
+.column::-webkit-scrollbar-thumb {
   background-color: #3b3b3b;
   border-radius: 1rem;
 }
