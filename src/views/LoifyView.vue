@@ -5,8 +5,11 @@ import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import { useUserStore } from '@/stores/user'
 
-import axios from 'axios'
 import { ref, reactive, watchEffect, onMounted } from 'vue'
+
+import axios from 'axios'
+import { useQuery } from '@tanstack/vue-query'
+
 
 const userStore = useUserStore()
 
@@ -59,12 +62,14 @@ async function fetchTracks() {
       id: item.track?.id,
       name: item.track?.name,
       artist: item.track?.artists?.[0].name,
-      image: item.track?.album.images?.[0].url,
+      image: item.track?.album.images?.[0].url
     })
   })
 }
 watchEffect(async () => {
   fetchTracks()
+  console.log('YAAAA: ', tracksDataQuery.data.value.map((item) => item.track?.name))
+  console.log('HEY: ', tracksDataQuery.isLoading.value, tracksDataQuery.isError.value, tracksDataQuery.isSuccess.value)
 })
 
 const loifyedTracks: Track[] = reactive([])
@@ -80,7 +85,7 @@ async function fetchLoifyedTracks() {
       id: item?.tracks?.items?.[0]?.id,
       name: item?.tracks?.items?.[0]?.name,
       artist: item?.tracks?.items?.[0]?.artists?.[0]?.name,
-      image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url,
+      image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url
     })
   })
 }
@@ -109,31 +114,61 @@ function reset() {
   // NOTE: this is for AFTER new playlist creation
 }
 
+
+
+
+const tracksDataQuery = useQuery({
+  queryKey: ['tracksData', selectedPlaylist],
+  queryFn: async () => {
+    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
+    const response = await axios.get(url, { withCredentials: true })
+    const tracksData = response.data.items
+    return tracksData
+  }
+})
+
+
+
+
+
 onMounted(() => fetchPlaylists())
 </script>
 
 <template>
+  <div v-if="tracksDataQuery.isLoading.value">Loading...</div>
+  <div v-else-if="tracksDataQuery.isError.value">Error loading tracks</div>
+  <div v-else-if="tracksDataQuery.data.value">
+      <p v-for="item in tracksDataQuery.data.value" :key="item?.track?.id">
+        {{ item?.track?.name }}
+      </p>
+  </div>
+<!-- 
+  <p>
+    {{ tracksDataQuery.data.value[0] }}
+  </p> -->
+
+
   <main class="main">
     <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">
       <!-- TODO: can refactor to a var?  -->
-      
+
       <button @click="userStore.logout">LOGOUT</button>
-      
+
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <template v-if="playlists.length">
-        <PlaylistItem 
-        v-for="item in playlists"
-        @click="selectPlaylist"
-        :selected="selectedPlaylist?.id === item.id"
-        :playlistId="item.id"
-        :key="item.id"
-        :playlistName="item.name"
-        :imgSrc="item.imageUrl"
+        <PlaylistItem
+          v-for="item in playlists"
+          @click="selectPlaylist"
+          :selected="selectedPlaylist?.id === item.id"
+          :playlistId="item.id"
+          :key="item.id"
+          :playlistName="item.name"
+          :imgSrc="item.imageUrl"
         />
       </template>
 
       <template v-else>
-        <ItemSkeleton v-for="index in 7" :key="index"/>
+        <ItemSkeleton v-for="index in 7" :key="index" />
       </template>
     </div>
 
@@ -157,16 +192,16 @@ onMounted(() => fetchPlaylists())
       <h2 class="col-heading">S O N G S</h2>
       <template v-if="tracks.length">
         <TrackItem
-        v-for="item in tracks"
-        :key="`${item.name}, ${item.artist}`"
-        :trackName="item.name"
-        :artistName="item.artist"
-        :imgSrc="item.image"
+          v-for="item in tracks"
+          :key="`${item.name}, ${item.artist}`"
+          :trackName="item.name"
+          :artistName="item.artist"
+          :imgSrc="item.image"
         />
       </template>
 
       <template v-else>
-        <ItemSkeleton v-for="index in 20" :key="index"/>
+        <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
     </div>
 
@@ -179,16 +214,16 @@ onMounted(() => fetchPlaylists())
       </div>
       <template v-if="loifyedTracks.length">
         <TrackItem
-        v-for="item in loifyedTracks"
-        :key="`${item.name}, ${item.artist}`"
-        :trackName="item.name"
-        :artistName="item.artist"
-        :imgSrc="item.image"
+          v-for="item in loifyedTracks"
+          :key="`${item.name}, ${item.artist}`"
+          :trackName="item.name"
+          :artistName="item.artist"
+          :imgSrc="item.image"
         />
       </template>
 
       <template v-else>
-        <ItemSkeleton v-for="index in 20" :key="index"/>
+        <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
     </div>
   </main>
