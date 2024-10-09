@@ -119,7 +119,7 @@ const tracksDataQuery = useQuery({
 
 <template>
   <main class="main">
-    <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">
+    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-if="!loifyedPlaylist?.images?.[0]">
       <!-- TODO: can refactor to a var?  -->
 
       <button @click="userStore.logout">LOGOUT</button>
@@ -142,7 +142,7 @@ const tracksDataQuery = useQuery({
       </template>
     </div>
 
-    <div :class="`column column-1 ${!playlists.length ? 'skeleton' : ''}`" v-else>
+    <div class="column column-1" v-else>
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
       <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">N E W<br />P L A Y L I S T</PlaylistPreview>
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
