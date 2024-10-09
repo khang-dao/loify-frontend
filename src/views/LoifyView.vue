@@ -49,29 +49,6 @@ async function fetchPlaylists() {
   })
 }
 
-const tracks: Track[] = reactive([])
-async function fetchTracks() {
-  tracks.length = 0
-
-  const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
-  const response = await axios.get(url, { withCredentials: true })
-  const tracksData = response.data.items
-
-  tracksData.forEach((item) => {
-    tracks.push({
-      id: item.track?.id,
-      name: item.track?.name,
-      artist: item.track?.artists?.[0].name,
-      image: item.track?.album.images?.[0].url
-    })
-  })
-}
-watchEffect(async () => {
-  fetchTracks()
-  console.log('YAAAA: ', tracksDataQuery.data.value.map((item) => item.track?.name))
-  console.log('HEY: ', tracksDataQuery.isLoading.value, tracksDataQuery.isError.value, tracksDataQuery.isSuccess.value)
-})
-
 const loifyedTracks: Track[] = reactive([])
 async function fetchLoifyedTracks() {
   loifyedTracks.length = 0
@@ -115,19 +92,20 @@ function reset() {
 }
 
 
-
-
 const tracksDataQuery = useQuery({
   queryKey: ['tracksData', selectedPlaylist],
   queryFn: async () => {
     const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
     const response = await axios.get(url, { withCredentials: true })
-    const tracksData = response.data.items
+    const tracksData = response.data.items.map((item) => ({
+      id: item.track?.id,
+      name: item.track?.name,
+      artist: item.track?.artists?.[0].name,
+      image: item.track?.album.images?.[0].url
+    }))
     return tracksData
   }
 })
-
-
 
 
 
@@ -135,19 +113,6 @@ onMounted(() => fetchPlaylists())
 </script>
 
 <template>
-  <div v-if="tracksDataQuery.isLoading.value">Loading...</div>
-  <div v-else-if="tracksDataQuery.isError.value">Error loading tracks</div>
-  <div v-else-if="tracksDataQuery.data.value">
-      <p v-for="item in tracksDataQuery.data.value" :key="item?.track?.id">
-        {{ item?.track?.name }}
-      </p>
-  </div>
-<!-- 
-  <p>
-    {{ tracksDataQuery.data.value[0] }}
-  </p> -->
-
-
   <main class="main">
     <div class="column column-1" v-if="!loifyedPlaylist?.images?.[0]">
       <!-- TODO: can refactor to a var?  -->
@@ -188,20 +153,22 @@ onMounted(() => fetchPlaylists())
       <button @click="console.log('hello world')">click here to restart</button>
     </div>
 
-    <div :class="`column column-2 ${!tracks.length ? 'skeleton' : ''}`">
+    <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="tracks.length">
+      <template v-if="tracksDataQuery.isFetching.value">
+        <ItemSkeleton v-for="index in 20" :key="index" />
+      </template>
+
+      <!-- artist: item.track?.artists?.[0].name,
+      image: item.track?.album.images?.[0].url -->
+      <template v-else>
         <TrackItem
-          v-for="item in tracks"
-          :key="`${item.name}, ${item.artist}`"
+          v-for="item in tracksDataQuery.data.value"
+          :key="item.id"
           :trackName="item.name"
           :artistName="item.artist"
           :imgSrc="item.image"
         />
-      </template>
-
-      <template v-else>
-        <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
     </div>
 
@@ -215,7 +182,7 @@ onMounted(() => fetchPlaylists())
       <template v-if="loifyedTracks.length">
         <TrackItem
           v-for="item in loifyedTracks"
-          :key="`${item.name}, ${item.artist}`"
+          :key="item.id"
           :trackName="item.name"
           :artistName="item.artist"
           :imgSrc="item.image"
