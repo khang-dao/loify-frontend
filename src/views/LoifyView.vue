@@ -26,37 +26,17 @@ interface Track {
   image: string
 }
 
-const selectedPlaylist = ref(null)
-const selectPlaylist = (e) => {
-  console.log(e.target.id)
-  const selectedId = e.target.id
-  selectedPlaylist.value = playlists.find((p) => p.id === selectedId) || null
-  console.log(selectedPlaylist.value)
-}
 
-const playlists: Playlist[] = reactive([])
-async function fetchPlaylists() {
-  const url = 'http://localhost:8080/api/spotify/me/playlists'
-  const response = await axios.get(url, { withCredentials: true })
-  const playlistsData = response.data.items
 
-  playlistsData.forEach((item) => {
-    playlists.push({
-      id: item.id,
-      name: item.name,
-      imageUrl: item.images?.[0].url
-    })
-  })
-}
 
 const loifyedTracks: Track[] = reactive([])
 async function fetchLoifyedTracks() {
   loifyedTracks.length = 0
-
+  
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
   const response = await axios.get(url, { withCredentials: true })
   const loifyedTracksData = response.data
-
+  
   loifyedTracksData.forEach((item) => {
     loifyedTracks.push({
       id: item?.tracks?.items?.[0]?.id,
@@ -72,7 +52,7 @@ async function createLoifyedPlaylist() {
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify` // TODO: update url
   const response = await axios.post(url, { withCredentials: true })
   loifyedPlaylist.value = response.data // TODO: get the response status (status or status code?)
-
+  
   await updateLoifyedPlaylistImage()
   console.log('HI: ', loifyedPlaylist.value)
 }
@@ -92,6 +72,30 @@ function reset() {
 }
 
 
+const selectedPlaylist = ref(null)
+const selectPlaylist = (e) => {
+  console.log(e.target.id)
+  const selectedId = e.target.id
+  selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
+  console.log(selectedPlaylist.value)
+}
+
+const playlistsDataQuery = useQuery({
+  queryKey: ['playlistData'],
+  queryFn: async () => {
+    const url = 'http://localhost:8080/api/spotify/me/playlists'
+    const response = await axios.get(url, { withCredentials: true })
+    const playlistsData = response.data.items.map((item) => ({
+      id: item.id,
+      name: item.name,
+      image: item.images?.[0].url
+    }))
+    console.log(playlistsData)
+
+    return playlistsData
+  }
+})
+
 const tracksDataQuery = useQuery({
   queryKey: ['tracksData', selectedPlaylist],
   queryFn: async () => {
@@ -103,13 +107,14 @@ const tracksDataQuery = useQuery({
       artist: item.track?.artists?.[0].name,
       image: item.track?.album.images?.[0].url
     }))
+
     return tracksData
   }
 })
 
 
 
-onMounted(() => fetchPlaylists())
+// onMounted(() => fetchPlaylists())
 </script>
 
 <template>
@@ -120,35 +125,26 @@ onMounted(() => fetchPlaylists())
       <button @click="userStore.logout">LOGOUT</button>
 
       <h2 class="col-heading">P L A Y L I S T S</h2>
-      <template v-if="playlists.length">
+      <template v-if="playlistsDataQuery.isFetching.value">
+        <ItemSkeleton v-for="index in 7" :key="index" />
+      </template>
+
+      <template v-else>
         <PlaylistItem
-          v-for="item in playlists"
+          v-for="item in playlistsDataQuery.data.value"
           @click="selectPlaylist"
           :selected="selectedPlaylist?.id === item.id"
           :playlistId="item.id"
           :key="item.id"
           :playlistName="item.name"
-          :imgSrc="item.imageUrl"
+          :imgSrc="item.image"
         />
-      </template>
-
-      <template v-else>
-        <ItemSkeleton v-for="index in 7" :key="index" />
       </template>
     </div>
 
-    <div :class="`column column-2 ${!playlists.length ? 'skeleton' : ''}`" v-else>
-      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl">
-        O R I G I N A L<br />P L A Y L I S T
-      </PlaylistPreview>
-
-      <PlaylistPreview
-        :playlistName="loifyedPlaylist.name"
-        :imgSrc="loifyedPlaylist.images?.[0]?.url"
-      >
-        N E W<br />P L A Y L I S T
-      </PlaylistPreview>
-
+    <div :class="`column column-1 ${!playlists.length ? 'skeleton' : ''}`" v-else>
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
+      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">N E W<br />P L A Y L I S T</PlaylistPreview>
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
       <button @click="console.log('hello world')">click here to restart</button>
     </div>
@@ -158,17 +154,8 @@ onMounted(() => fetchPlaylists())
       <template v-if="tracksDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
-
-      <!-- artist: item.track?.artists?.[0].name,
-      image: item.track?.album.images?.[0].url -->
       <template v-else>
-        <TrackItem
-          v-for="item in tracksDataQuery.data.value"
-          :key="item.id"
-          :trackName="item.name"
-          :artistName="item.artist"
-          :imgSrc="item.image"
-        />
+        <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
     </div>
 
