@@ -8,7 +8,7 @@ import { useUserStore } from '@/stores/user'
 import { ref, reactive } from 'vue'
 
 import axios from 'axios'
-import { useQuery } from '@tanstack/vue-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 
 const userStore = useUserStore()
@@ -16,35 +16,6 @@ const userStore = useUserStore()
 function reset() {
   // TODO: this function resets the values of (TBD) reactive/refs above
   // NOTE: this is for AFTER new playlist creation
-}
-
-
-const loifyedPlaylist = reactive({ 
-  id: '', 
-  name: '', 
-  image: '',
-  url:'',
-})
-async function createLoifyedPlaylist() {
-  const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify` // TODO: update url
-  const response = await axios.post(url, { withCredentials: true })
-  // TODO: get the response status (status or status code?)
-  loifyedPlaylist.id = response.data.id
-  loifyedPlaylist.name = response.data.name
-  loifyedPlaylist.image = response.data.images?.[0]?.url
-  loifyedPlaylist.url = response.data.external_urls.spotify
-  
-  await getLoifyedPlaylistImage()
-  console.log('HI: ', loifyedPlaylist)
-}
-async function getLoifyedPlaylistImage() {
-  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.id}`
-  const playlistData = await axios.get(url, { withCredentials: true })
-  loifyedPlaylist.image = playlistData.data.images[0].url
-}
-function openLoifyedPlaylistInSpotify() {
-  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
-  console.log(loifyedPlaylist)
 }
 
 
@@ -121,7 +92,71 @@ function toggleOnShowLoifyedTracks() {
 function toggleOffShowLoifyedTracks() {
   showLoifyedTracks.value = false
 }
-  
+
+
+
+
+
+
+
+const loifyedPlaylist = reactive({ id: '', name: '', image: '', url:'' })
+function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pass in `selectedPlaylist` arg, instead of fetching it from global scope
+  const queryClient = useQueryClient(); // Get the query client instance
+
+  // Mutation to create the loifyed playlist
+  const createPlaylistMutation = useMutation({
+    mutationFn: async () => {
+      // Use the selected playlist ID
+      const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`;
+      const response = await axios.post(url, { withCredentials: true });
+      return response.data;
+    },
+    onSuccess: async (data) => {
+      // On success, update the reactive loifyedPlaylist object
+      loifyedPlaylist.id = data.id;
+      loifyedPlaylist.name = data.name;
+      loifyedPlaylist.image = data.images?.[0]?.url || '';
+      loifyedPlaylist.url = data.external_urls.spotify;
+
+      // Delay query invalidation to allow the image to be ready
+      // setTimeout(async () => {
+      //   // Invalidate the query to refetch the updated playlist image after delay
+      //   console.log("ID: ", loifyedPlaylist.id);
+      //   useGetLoifyedPlaylistImage(loifyedPlaylist.id);
+      // }, 5000);
+
+      console.log(getLoifyedPlaylistImage.isSuccess)
+    },
+});
+
+  return { createPlaylistMutation, loifyedPlaylist };
+}
+
+
+// Fetch playlist image using Vue Query
+const getLoifyedPlaylistImage = useQuery({
+    queryKey: ['playlistImage', loifyedPlaylist],
+    queryFn: async () => {
+      return new Promise((resolve) => {
+        setTimeout(async () => {
+          const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.id}`;
+          const response = await axios.get(url, { withCredentials: true });
+          loifyedPlaylist.image = response.data.images[0].url;
+          console.log(response.data.images[0].url);
+          console.log(loifyedPlaylist.image);
+          resolve(response)
+        }, 4000);
+      });
+    },
+});
+
+function openLoifyedPlaylistInSpotify() {
+  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
+  console.log(loifyedPlaylist)
+}
+
+// NOTE: This is only temporary, refactor this to import hooks
+const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 </script>
 
 <template>
@@ -172,7 +207,7 @@ function toggleOffShowLoifyedTracks() {
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         
         <h2 class="col-heading">🍃</h2>
-        <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
+        <button @click="createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
       </div>
 
       <!-- TODO: `v-if="!selectedPlaylist && generateButton has not been clicked yet"`-->
