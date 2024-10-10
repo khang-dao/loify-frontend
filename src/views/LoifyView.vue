@@ -18,34 +18,6 @@ function reset() {
   // NOTE: this is for AFTER new playlist creation
 }
 
-interface Track {
-  id: string
-  name: string
-  artist: string
-  image: string
-}
-
-
-const loifyedTracks: Track[] = reactive([])
-async function fetchLoifyedTracks() {
-  loifyedTracks.length = 0
-  
-  const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
-  const response = await axios.get(url, { withCredentials: true })
-  const loifyedTracksData = response.data
-  
-  loifyedTracksData.forEach((item) => {
-    loifyedTracks.push({
-      id: item?.tracks?.items?.[0]?.id,
-      name: item?.tracks?.items?.[0]?.name,
-      artist: item?.tracks?.items?.[0]?.artists?.[0]?.name,
-      image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url
-    })
-  })
-
-  console.log("HELLO WORLD", loifyedTracks)
-}
-
 
 const loifyedPlaylist = ref(null)
 async function createLoifyedPlaylist() {
@@ -70,6 +42,8 @@ function openLoifyedPlaylistInSpotify() {
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
+  toggleOffShowLoifyedTracks()
+
   console.log(e.target.id)
   const selectedId = e.target.id
   selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
@@ -127,6 +101,17 @@ const loifyedTracksDataQuery = useQuery({
     })
   }
 })
+
+const showLoifyedTracks = ref(false)
+function toggleOnShowLoifyedTracks() {
+  if (selectedPlaylist.value ) {
+    showLoifyedTracks.value = true
+  }
+}
+
+function toggleOffShowLoifyedTracks() {
+  showLoifyedTracks.value = false
+}
   
 </script>
 
@@ -164,7 +149,8 @@ const loifyedTracksDataQuery = useQuery({
 
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="tracksDataQuery.isFetching.value">
+      <template v-if="!selectedPlaylist" />
+      <template v-else-if="tracksDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
       <template v-else>
@@ -174,30 +160,26 @@ const loifyedTracksDataQuery = useQuery({
 
     <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
-        <button @click="fetchLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
+        <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         
         <h2 class="col-heading">🍃</h2>
         <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
       </div>
 
-      <template v-if="loifyedTracksDataQuery.isFetching.value">
+      <!-- TODO: `v-if="!selectedPlaylist && generateButton has not been clicked yet"`-->
+      <!-- <template v-if="!selectedPlaylist" />  -->
+
+      <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
 
-      <template v-else>
+      <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
 
     </div>
 
     <!-- <div :class="`column column-3 ${loifyedTracks.length > 1 ? 'skeleton': ''}`"> -->
-      <!-- <div class="heading-container">
-        <button @click="fetchLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
-        
-        <h2 class="col-heading">🍃</h2>
-        <button @click="createLoifyedPlaylist()">Create new playlist with loifyed songs 💚</button>
-      </div> -->
-
       <!-- <template v-if="loifyedTracks.length === 0">
         <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
