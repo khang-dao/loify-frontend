@@ -9,7 +9,7 @@ import { useUserStore } from '@/stores/user'
 import { ref, reactive } from 'vue'
 
 import axios from 'axios'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
+import { useMutation, useQuery } from '@tanstack/vue-query'
 
 
 function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
@@ -94,8 +94,6 @@ function toggleOffShowLoifyedTracks() {
 
 const loifyedPlaylist = reactive({ id: '', name: '', image: '', url:'' })
 function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pass in `selectedPlaylist` arg, instead of fetching it from global scope
-  const queryClient = useQueryClient(); // Get the query client instance
-
   // Mutation to create the loifyed playlist
   const createPlaylistMutation = useMutation({
     mutationFn: async () => {
