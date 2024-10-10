@@ -5,13 +5,18 @@ import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import { useUserStore } from '@/stores/user'
 
-import { ref, reactive, watchEffect } from 'vue'
+import { ref, reactive } from 'vue'
 
 import axios from 'axios'
 import { useQuery } from '@tanstack/vue-query'
 
 
 const userStore = useUserStore()
+
+function reset() {
+  // TODO: this function resets the values of (TBD) reactive/refs above
+  // NOTE: this is for AFTER new playlist creation
+}
 
 interface Track {
   id: string
@@ -48,23 +53,19 @@ async function createLoifyedPlaylist() {
   const response = await axios.post(url, { withCredentials: true })
   loifyedPlaylist.value = response.data // TODO: get the response status (status or status code?)
   
-  await updateLoifyedPlaylistImage()
+  await getLoifyedPlaylistImage()
   console.log('HI: ', loifyedPlaylist.value)
+}
+async function getLoifyedPlaylistImage() {
+  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
+  const playlistData = await axios.get(url, { withCredentials: true })
+  loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
 }
 function openLoifyedPlaylistInSpotify() {
   window.open(loifyedPlaylist.value.external_urls.spotify, '_blank') // Opens the URL in a new tab
   console.log(loifyedPlaylist.value)
 }
-async function updateLoifyedPlaylistImage() {
-  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
-  const playlistData = await axios.get(url, { withCredentials: true })
-  loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
-}
 
-function reset() {
-  // TODO: this function resets the values of (TBD) reactive/refs above
-  // NOTE: this is for AFTER new playlist creation
-}
 
 
 const selectedPlaylist = ref(null)
@@ -122,17 +123,11 @@ const loifyedTracksDataQuery = useQuery({
         }))
         
         resolve(loifyedTracksData)  // Resolve after delay
-      }, 4000) // Delay by 4 seconds
+      }, 3000) // Delay by 3 seconds
     })
   }
 })
-
   
-// watchEffect(() => {
-//   if (selectedPlaylist.value) {
-//     setTimeout(() => fetchLoifyedTracks(), 4000)
-//   }
-// })
 </script>
 
 <template>
@@ -161,7 +156,7 @@ const loifyedTracksDataQuery = useQuery({
     </div>
 
     <div class="column column-1" v-else>
-      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.imageUrl"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
       <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">N E W<br />P L A Y L I S T</PlaylistPreview>
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
       <button @click="console.log('hello world')">click here to restart</button>
