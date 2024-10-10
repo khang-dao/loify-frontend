@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import PlaylistPreview from '@/components/PlaylistPreview.vue'
+import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
@@ -11,14 +12,9 @@ import axios from 'axios'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 
-const userStore = useUserStore()
-
-function reset() {
-  // TODO: this function resets the values of (TBD) reactive/refs above
-  // NOTE: this is for AFTER new playlist creation
+function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
 }
-
-
+const userStore = useUserStore()
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -96,9 +92,6 @@ function toggleOffShowLoifyedTracks() {
 
 
 
-
-
-
 const loifyedPlaylist = reactive({ id: '', name: '', image: '', url:'' })
 function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pass in `selectedPlaylist` arg, instead of fetching it from global scope
   const queryClient = useQueryClient(); // Get the query client instance
@@ -118,13 +111,6 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
 
-      // Delay query invalidation to allow the image to be ready
-      // setTimeout(async () => {
-      //   // Invalidate the query to refetch the updated playlist image after delay
-      //   console.log("ID: ", loifyedPlaylist.id);
-      //   useGetLoifyedPlaylistImage(loifyedPlaylist.id);
-      // }, 5000);
-
       console.log(getLoifyedPlaylistImage.isSuccess)
     },
 });
@@ -132,6 +118,12 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
   return { createPlaylistMutation, loifyedPlaylist };
 }
 
+const showLoifyedPlaylist = ref(false)
+function toggleOnShowLoifyedPlaylist() {
+  if (selectedPlaylist.value) {
+    showLoifyedPlaylist.value = true
+  }
+}
 
 // Fetch playlist image using Vue Query
 const getLoifyedPlaylistImage = useQuery({
@@ -142,9 +134,7 @@ const getLoifyedPlaylistImage = useQuery({
           const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.id}`;
           const response = await axios.get(url, { withCredentials: true });
           loifyedPlaylist.image = response.data.images[0].url;
-          console.log(response.data.images[0].url);
-          console.log(loifyedPlaylist.image);
-          resolve(response)
+          resolve(response.data.images[0].url)
         }, 4000);
       });
     },
@@ -161,7 +151,16 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 
 <template>
   <main class="main">
-    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-if="!loifyedPlaylist.id">
+    <div class="column column-1" v-if="showLoifyedPlaylist">
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
+      
+      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
+      <PlaylistPreviewSkeleton v-else/>
+
+      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
+      <button @click="console.log('hello world')">click here to restart</button>
+    </div>
+    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
       <!-- TODO: can refactor to a var?  -->
       
       <button @click="userStore.logout">LOGOUT</button>
@@ -184,12 +183,6 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
       </template>
     </div>
 
-    <div class="column column-1" v-else>
-      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.image">N E W<br />P L A Y L I S T</PlaylistPreview>
-      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
-      <button @click="console.log('hello world')">click here to restart</button>
-    </div>
 
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <h2 class="col-heading">S O N G S</h2>
@@ -207,7 +200,7 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         
         <h2 class="col-heading">🍃</h2>
-        <button @click="createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
+        <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
       </div>
 
       <!-- TODO: `v-if="!selectedPlaylist && generateButton has not been clicked yet"`-->
