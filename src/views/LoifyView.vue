@@ -19,23 +19,32 @@ function reset() {
 }
 
 
-const loifyedPlaylist = ref(null)
+const loifyedPlaylist = reactive({ 
+  id: '', 
+  name: '', 
+  image: '',
+  url:'',
+})
 async function createLoifyedPlaylist() {
   const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify` // TODO: update url
   const response = await axios.post(url, { withCredentials: true })
-  loifyedPlaylist.value = response.data // TODO: get the response status (status or status code?)
+  // TODO: get the response status (status or status code?)
+  loifyedPlaylist.id = response.data.id
+  loifyedPlaylist.name = response.data.name
+  loifyedPlaylist.image = response.data.images?.[0]?.url
+  loifyedPlaylist.url = response.data.external_urls.spotify
   
   await getLoifyedPlaylistImage()
-  console.log('HI: ', loifyedPlaylist.value)
+  console.log('HI: ', loifyedPlaylist)
 }
 async function getLoifyedPlaylistImage() {
-  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.value.id}`
+  const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.id}`
   const playlistData = await axios.get(url, { withCredentials: true })
-  loifyedPlaylist.value.images.push({ url: playlistData.data.images[0].url })
+  loifyedPlaylist.image = playlistData.data.images[0].url
 }
 function openLoifyedPlaylistInSpotify() {
-  window.open(loifyedPlaylist.value.external_urls.spotify, '_blank') // Opens the URL in a new tab
-  console.log(loifyedPlaylist.value)
+  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
+  console.log(loifyedPlaylist)
 }
 
 
@@ -117,7 +126,7 @@ function toggleOffShowLoifyedTracks() {
 
 <template>
   <main class="main">
-    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-if="!loifyedPlaylist?.images?.[0]">
+    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-if="!loifyedPlaylist.id">
       <!-- TODO: can refactor to a var?  -->
       
       <button @click="userStore.logout">LOGOUT</button>
@@ -142,7 +151,7 @@ function toggleOffShowLoifyedTracks() {
 
     <div class="column column-1" v-else>
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.images?.[0]?.url">N E W<br />P L A Y L I S T</PlaylistPreview>
+      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="loifyedPlaylist.image">N E W<br />P L A Y L I S T</PlaylistPreview>
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
       <button @click="console.log('hello world')">click here to restart</button>
     </div>
