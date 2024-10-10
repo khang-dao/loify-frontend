@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 
 function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
 }
+
 const userStore = useUserStore()
 
 const selectedPlaylist = ref(null)
@@ -91,7 +92,6 @@ function toggleOffShowLoifyedTracks() {
 
 
 
-
 const loifyedPlaylist = reactive({ id: '', name: '', image: '', url:'' })
 function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pass in `selectedPlaylist` arg, instead of fetching it from global scope
   const queryClient = useQueryClient(); // Get the query client instance
@@ -153,23 +153,19 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
   <main class="main">
     <div class="column column-1" v-if="showLoifyedPlaylist">
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-      
       <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
       <PlaylistPreviewSkeleton v-else/>
-
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
       <button @click="console.log('hello world')">click here to restart</button>
     </div>
+
+
     <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <!-- TODO: can refactor to a var?  -->
-      
       <button @click="userStore.logout">LOGOUT</button>
-      
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <template v-if="playlistsDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 7" :key="index" />
       </template>
-      
       <template v-else>
         <PlaylistItem
           v-for="item in playlistsDataQuery.data.value"
@@ -195,37 +191,21 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
       </template>
     </div>
 
+
     <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
-        
         <h2 class="col-heading">🍃</h2>
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
       </div>
-
-      <!-- TODO: `v-if="!selectedPlaylist && generateButton has not been clicked yet"`-->
-      <!-- <template v-if="!selectedPlaylist" />  -->
-
       <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 20" :key="index" />
       </template>
-
       <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
-
     </div>
 
-    <!-- <div :class="`column column-3 ${loifyedTracks.length > 1 ? 'skeleton': ''}`"> -->
-      <!-- <template v-if="loifyedTracks.length === 0">
-        <ItemSkeleton v-for="index in 20" :key="index" />
-      </template>
-
-      <template v-else>
-        <TrackItem v-for="item in loifyedTracks" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-      </template>
-
-    </div> -->
   </main>
 </template>
 
