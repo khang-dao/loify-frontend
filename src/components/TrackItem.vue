@@ -2,7 +2,7 @@
 const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
   trackName: string
   artistName: string
-  imgSrc: string
+  imgSrc?: string
   imgAlt?: string
 }>()
 </script>
