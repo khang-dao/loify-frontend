@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
+
 
 
 const useSpotifyLogin = async () => {
@@ -17,7 +19,9 @@ const useSpotifyLogin = async () => {
         Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
         your data and ensure your privacy is protected.
       </h1>
-      <a class="login-button" @click="useSpotifyLogin" >click to login</a>
+      <a class="login-button" href="http://localhost:8080/api/spotify/login" rel="noopener noreferrer">
+        click to login
+      </a>
     </div>
   </main>
 </template>
