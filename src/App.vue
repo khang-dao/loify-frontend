@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import FadeTransition from '@/components/transitions/FadeTransition.vue'
 </script>
 
 <template>
@@ -11,7 +12,9 @@ import { RouterLink, RouterView } from 'vue-router'
     </div>
   </header> -->
 
-  <RouterView />
+  <FadeTransition>
+    <RouterView />
+  </FadeTransition>
 </template>
 
 <style scoped> 

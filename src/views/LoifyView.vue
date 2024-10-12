@@ -4,18 +4,13 @@ import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkele
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
-import { useUserStore } from '@/stores/user'
+import FadeTransition from '@/components/transitions/FadeTransition.vue'
 
 import { ref, reactive } from 'vue'
 
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
-
-function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
-}
-
-const userStore = useUserStore()
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -37,7 +32,6 @@ const playlistsDataQuery = useQuery({
       name: item.name,
       image: item.images?.[0].url
     }))
-    console.log(playlistsData)
     
     return playlistsData
   }
@@ -109,7 +103,7 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
 
-      console.log(getLoifyedPlaylistImage.isSuccess)
+      // getLoifyedPlaylistImage.refetch();
     },
 });
 
@@ -136,6 +130,7 @@ const getLoifyedPlaylistImage = useQuery({
         }, 4000);
       });
     },
+    // enabled: false,
 });
 
 function openLoifyedPlaylistInSpotify() {
@@ -145,48 +140,58 @@ function openLoifyedPlaylistInSpotify() {
 
 // NOTE: This is only temporary, refactor this to import hooks
 const { createPlaylistMutation } = useCreateLoifyedPlaylist()
+
+
+function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
+  selectedPlaylist.value = null
+  showLoifyedTracks.value = false
+  showLoifyedPlaylist.value = false
+}
 </script>
 
 <template>
   <main class="main">
-    <div class="column column-1" v-if="showLoifyedPlaylist">
-      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreviewSkeleton v-else/>
-      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
-      <button @click="console.log('hello world')">click here to restart</button>
-    </div>
+    <FadeTransition>
+      <div class="column column-1" v-if="showLoifyedPlaylist">
+        <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
+        <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
+        <PlaylistPreviewSkeleton v-else/>
+        <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
+        <button @click="reset()">click here to restart</button>
+      </div>
 
 
-    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <button @click="userStore.logout">LOGOUT</button>
-      <h2 class="col-heading">P L A Y L I S T S</h2>
-      <template v-if="playlistsDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 7" :key="index" />
-      </template>
-      <template v-else>
-        <PlaylistItem
-          v-for="item in playlistsDataQuery.data.value"
-          @click="selectPlaylist"
-          :selected="selectedPlaylist?.id === item.id"
-          :playlistId="item.id"
-          :key="item.id"
-          :playlistName="item.name"
-          :imgSrc="item.image"
-        />
-      </template>
-    </div>
+      <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
+          <h2 class="col-heading">P L A Y L I S T S</h2>
+          <template v-if="playlistsDataQuery.isFetching.value">
+            <ItemSkeleton v-for="index in 7" :key="index" />
+          </template>
+          <template v-else>
+            <PlaylistItem
+              v-for="item in playlistsDataQuery.data.value"
+              @click="selectPlaylist"
+              :selected="selectedPlaylist?.id === item.id"
+              :playlistId="item.id"
+              :key="item.id"
+              :playlistName="item.name"
+              :imgSrc="item.image"
+            />
+          </template>
+      </div>
+    </FadeTransition>
 
 
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="!selectedPlaylist" />
-      <template v-else-if="tracksDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 20" :key="index" />
-      </template>
-      <template v-else>
-        <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-      </template>
+      <FadeTransition class="item-container">
+                <div v-if="!selectedPlaylist"></div>
+                <div v-else-if="tracksDataQuery.isFetching.value">
+                  <ItemSkeleton v-for="index in 20" :key="index" />
+                </div>
+                <div v-else>
+                  <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+                </div>
+      </FadeTransition>
     </div>
 
 
@@ -195,22 +200,32 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         <h2 class="col-heading">🍃</h2>
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
+        <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       </div>
-      <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 20" :key="index" />
-      </template>
-      <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
-        <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-      </template>
+      <FadeTransition class="item-container">
+        <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
+          <ItemSkeleton v-for="index in 20" :key="index" />
+        </div>
+        <div v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
+          <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+        </div>
+      </FadeTransition>
     </div>
 
   </main>
 </template>
 
 <style scoped>
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+}
+
 .main {
   display: flex;
-  background: #232323;
   height: 100vh;
   overflow: auto;
   flex: 1;
@@ -253,7 +268,6 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 }
 
 .column::-webkit-scrollbar-track {
-  background: #232323;
   margin-top: 5rem;
   margin-bottom: 1rem;
 }
@@ -261,5 +275,15 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 .column::-webkit-scrollbar-thumb {
   background-color: #3b3b3b;
   border-radius: 1rem;
+}
+
+.logout-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #E5E5E5;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
 }
 </style>

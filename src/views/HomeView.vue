@@ -1,19 +1,18 @@
 <script setup lang="ts">
-
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
   <main class="main">
     <div class="container">
       <h1 class="heading">welcome to loify 🍃</h1>
-      <a class="subheading" href="/login">click to begin</a>
+      <RouterLink class="subheading" to="/login">click to begin</RouterLink>
     </div>
   </main>
 </template>
 
 <style scoped>
 .main {
-  background: #232323;
   height: 100vh;
   display: flex;
   align-items: center;
