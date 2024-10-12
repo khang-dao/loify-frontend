@@ -4,18 +4,13 @@ import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkele
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
-import { useUserStore } from '@/stores/user'
+import FadeTransition from '@/components/transitions/FadeTransition.vue'
 
 import { ref, reactive } from 'vue'
 
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
-
-function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
-}
-
-const { logout } = useUserStore()
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -37,7 +32,6 @@ const playlistsDataQuery = useQuery({
       name: item.name,
       image: item.images?.[0].url
     }))
-    console.log(playlistsData)
     
     return playlistsData
   }
@@ -109,7 +103,7 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
 
-      console.log(getLoifyedPlaylistImage.isSuccess)
+      // getLoifyedPlaylistImage.refetch();
     },
 });
 
@@ -136,6 +130,7 @@ const getLoifyedPlaylistImage = useQuery({
         }, 4000);
       });
     },
+    // enabled: false,
 });
 
 function openLoifyedPlaylistInSpotify() {
@@ -145,6 +140,13 @@ function openLoifyedPlaylistInSpotify() {
 
 // NOTE: This is only temporary, refactor this to import hooks
 const { createPlaylistMutation } = useCreateLoifyedPlaylist()
+
+
+function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
+  selectedPlaylist.value = null
+  showLoifyedTracks.value = false
+  showLoifyedPlaylist.value = false
+}
 </script>
 
 <template>
@@ -154,13 +156,11 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
       <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
       <PlaylistPreviewSkeleton v-else/>
       <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
-      <button @click="console.log('hello world')">click here to restart</button>
+      <button @click="reset()">click here to restart</button>
     </div>
 
 
     <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <!-- <button @click="logout()">LOGOUT</button> -->
-      <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <template v-if="playlistsDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 7" :key="index" />
@@ -196,6 +196,7 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         <h2 class="col-heading">🍃</h2>
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
+        <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       </div>
       <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 20" :key="index" />
@@ -211,7 +212,6 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 <style scoped>
 .main {
   display: flex;
-   #232323;
   height: 100vh;
   overflow: auto;
   flex: 1;

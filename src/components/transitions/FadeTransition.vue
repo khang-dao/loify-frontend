@@ -6,7 +6,7 @@
 
 <style scoped>
 .fade-enter-active, .fade-leave-active {
-  transition: opacity 2s ease;
+  transition: opacity 1s ease;
 }
 .fade-enter-from, .fade-leave-to {
   opacity: 0;
