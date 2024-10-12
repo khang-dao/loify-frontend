@@ -3,6 +3,7 @@ import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import LoifyView from '@/views/LoifyView.vue'
 import { useUserStore } from '@/stores/user'
+import LogoutView from '@/views/LogoutView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,7 +38,13 @@ const router = createRouter({
         next()
       },
       meta: { requiresAuth: true }
-    }
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: LogoutView,
+      // NOTE: Implement this --> beforeEnter: (to, from, next) => {}
+    },
   ]
 })
 

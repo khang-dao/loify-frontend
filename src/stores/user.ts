@@ -17,8 +17,8 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     try {
       await axios.get('http://localhost:8080/api/spotify/logout', { withCredentials: true })
-      user.value = { isLoggedIn: false }
-      window.location.href = "https://accounts.spotify.com/logout";
+      window.open("https://accounts.spotify.com/logout", "_blank", "noopener,noreferrer");
+      user.value.isLoggedIn = false
     }
     catch (error){
       console.log(`Error logging out: ${error}`)

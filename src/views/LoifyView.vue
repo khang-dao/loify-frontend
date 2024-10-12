@@ -15,7 +15,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
 }
 
-const userStore = useUserStore()
+const { logout } = useUserStore()
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -159,7 +159,8 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 
 
     <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <button @click="userStore.logout">LOGOUT</button>
+      <!-- <button @click="logout()">LOGOUT</button> -->
+      <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       <h2 class="col-heading">P L A Y L I S T S</h2>
       <template v-if="playlistsDataQuery.isFetching.value">
         <ItemSkeleton v-for="index in 7" :key="index" />
@@ -261,5 +262,15 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 .column::-webkit-scrollbar-thumb {
   background-color: #3b3b3b;
   border-radius: 1rem;
+}
+
+.logout-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #E5E5E5;
+  color: black;
+  text-decoration: none;
+  border-radius: 5px;
+  text-align: center;
 }
 </style>
