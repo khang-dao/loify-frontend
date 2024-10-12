@@ -177,19 +177,21 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
               :imgSrc="item.image"
             />
           </template>
-        </div>
-      </FadeTransition>
+      </div>
+    </FadeTransition>
 
 
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <h2 class="col-heading">S O N G S</h2>
-      <template v-if="!selectedPlaylist" />
-      <template v-else-if="tracksDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 20" :key="index" />
-      </template>
-      <template v-else>
-        <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-      </template>
+      <FadeTransition class="item-container">
+                <div v-if="!selectedPlaylist"></div>
+                <div v-else-if="tracksDataQuery.isFetching.value">
+                  <ItemSkeleton v-for="index in 20" :key="index" />
+                </div>
+                <div v-else>
+                  <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+                </div>
+      </FadeTransition>
     </div>
 
 
@@ -200,18 +202,28 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
         <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       </div>
-      <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 20" :key="index" />
-      </template>
-      <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
-        <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-      </template>
+      <FadeTransition class="item-container">
+        <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
+          <ItemSkeleton v-for="index in 20" :key="index" />
+        </div>
+        <div v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
+          <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+        </div>
+      </FadeTransition>
     </div>
 
   </main>
 </template>
 
 <style scoped>
+
+.item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+}
+
 .main {
   display: flex;
   height: 100vh;
