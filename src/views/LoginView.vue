@@ -18,7 +18,6 @@ import { RouterLink } from 'vue-router'
 
 <style scoped>
 .main {
-  background: #232323;
   height: 100vh;
   display: flex;
   align-items: center;

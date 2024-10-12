@@ -211,7 +211,7 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 <style scoped>
 .main {
   display: flex;
-  background: #232323;
+   #232323;
   height: 100vh;
   overflow: auto;
   flex: 1;
@@ -254,7 +254,6 @@ const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 }
 
 .column::-webkit-scrollbar-track {
-  background: #232323;
   margin-top: 5rem;
   margin-bottom: 1rem;
 }

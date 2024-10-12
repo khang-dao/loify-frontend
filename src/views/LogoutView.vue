@@ -24,7 +24,6 @@ user.isLoggedIn && logout().then(() => updateAuthStatus())
 
 <style scoped>
 .main {
-  background: #232323;
   height: 100vh;
   display: flex;
   align-items: center;
