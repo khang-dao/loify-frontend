@@ -151,32 +151,34 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 <template>
   <main class="main">
-    <div class="column column-1" v-if="showLoifyedPlaylist">
-      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
-      <PlaylistPreviewSkeleton v-else/>
-      <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
-      <button @click="reset()">click here to restart</button>
-    </div>
+    <FadeTransition>
+      <div class="column column-1" v-if="showLoifyedPlaylist">
+        <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
+        <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
+        <PlaylistPreviewSkeleton v-else/>
+        <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
+        <button @click="reset()">click here to restart</button>
+      </div>
 
 
-    <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <h2 class="col-heading">P L A Y L I S T S</h2>
-      <template v-if="playlistsDataQuery.isFetching.value">
-        <ItemSkeleton v-for="index in 7" :key="index" />
-      </template>
-      <template v-else>
-        <PlaylistItem
-          v-for="item in playlistsDataQuery.data.value"
-          @click="selectPlaylist"
-          :selected="selectedPlaylist?.id === item.id"
-          :playlistId="item.id"
-          :key="item.id"
-          :playlistName="item.name"
-          :imgSrc="item.image"
-        />
-      </template>
-    </div>
+      <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
+          <h2 class="col-heading">P L A Y L I S T S</h2>
+          <template v-if="playlistsDataQuery.isFetching.value">
+            <ItemSkeleton v-for="index in 7" :key="index" />
+          </template>
+          <template v-else>
+            <PlaylistItem
+              v-for="item in playlistsDataQuery.data.value"
+              @click="selectPlaylist"
+              :selected="selectedPlaylist?.id === item.id"
+              :playlistId="item.id"
+              :key="item.id"
+              :playlistName="item.name"
+              :imgSrc="item.image"
+            />
+          </template>
+        </div>
+      </FadeTransition>
 
 
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
