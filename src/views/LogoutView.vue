@@ -4,21 +4,6 @@ import { useUserStore } from '@/stores/user'
 
 const { user, updateAuthStatus, logout } = useUserStore()
 user.isLoggedIn && logout().then(() => updateAuthStatus())
-
-
-
-/* TODO: Add logic here to visit:
-    ** Think about whether this should be done on the `@click, <Button>` OR <LogoutView>
-
-    1. `window.href = 'https://accounts.spotify/logout'                ... "_blank" `
-    2. also to send a GET/POST Request to 'http://localhost:8080/api/logout'
-    3. await until [Step #1] done...
-        4. have a skeleton loading until it confirms
-    5. then show /logout route (`LogoutView`)
-*/
-
-
-
 </script>
 
 
