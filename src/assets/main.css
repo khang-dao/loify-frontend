@@ -28,3 +28,10 @@ img {
 body {
   background-color: #232323;
 }
+
+@font-face {
+  font-family: 'night-pumpkind';
+  src: url('/fonts/night-pumpkind.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
