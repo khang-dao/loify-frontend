@@ -144,7 +144,6 @@ const getLoifyedPlaylistImage = useQuery({
         }, 4000);
       });
     },
-    // enabled: false,
 });
 
 function openLoifyedPlaylistInSpotify() {
@@ -175,6 +174,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <div class="icon-container">
           <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify"/>
           <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
+          <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
         </div>
       </div>
 
@@ -231,17 +231,18 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         
         <div class="heading-container" v-else-if="selectedPlaylist && !showLoifyedTracks">
           <h2 class="col-heading">L o i f y</h2>
-          
           <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button">
             g e n e r a t e
           </ThemeButton>
         </div>
       
         <div class="outer" v-else>
-          <template class="heading-container">
+          <div class="heading-container">
             <h2 class="col-heading">L o i f y</h2>
-            <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
-          </template>
+            <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
+              add playlist to spotify
+            </ThemeButton>
+          </div>
           <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
             <ItemSkeleton v-for="index in 20" :key="index" />
           </template>
@@ -351,11 +352,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 .icon-container {
   display: flex;
-  gap: 3rem;
+  gap: 2.5rem;
   justify-content: center;
   align-items: center;
 
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .loify-button {
@@ -363,7 +364,14 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   top: 50%;
   left: 50%;
   transform: translate(-50%, 750%);
+}
 
+.add-button {
+  font-size: 1.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -140%);
 }
 
 </style>
