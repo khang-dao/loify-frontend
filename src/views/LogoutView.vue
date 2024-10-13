@@ -38,13 +38,14 @@ user.isLoggedIn && logout().then(() => updateAuthStatus())
   font-family: 'League Spartan', sans-serif;
   margin: 10rem;
   text-align: center;
+  color: #000000
 }
 
 .heading-container {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  color: #ffffff;
+  color: #000000;
 }
 
 .heading {
@@ -59,13 +60,13 @@ user.isLoggedIn && logout().then(() => updateAuthStatus())
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  color: #ffffff;
+  color: #000000;
 }
 
 .button {
   text-decoration: none;
   font-size: 1rem;
-  color: #6a6a6a;
+  color: #000000;
   cursor: pointer;
 }
 </style>

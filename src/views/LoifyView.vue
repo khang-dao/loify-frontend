@@ -5,6 +5,7 @@ import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import FadeTransition from '@/components/transitions/FadeTransition.vue'
+import LoifyButton from '@/components/buttons/LoifyButton.vue'
 
 import { ref, reactive } from 'vue'
 
@@ -17,12 +18,23 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
-  toggleOffShowLoifyedTracks()
+  if (selectedPlaylist.value) {
+    deselectPlaylist()
+  }
 
-  console.log(e.target.id)
-  const selectedId = e.target.id
-  selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
-  console.log(selectedPlaylist.value)
+  else {
+    toggleOffShowLoifyedTracks()
+    
+    console.log(e.target.id)
+    const selectedId = e.target.id
+    selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
+    console.log(selectedPlaylist.value)
+  }
+}
+
+const deselectPlaylist = () => {
+  // toggleOffShowLoifyedTracks()
+  selectedPlaylist.value = null
 }
 
 const playlistsDataQuery = useQuery({
@@ -175,7 +187,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
         <div class="heading-container">
           <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
-          <h2 class="col-heading">P L A Y L I S T S</h2>
+          <h2 class="col-heading">P l a y l i s t s</h2>
           
         </div>
         
@@ -199,8 +211,8 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
-        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow"/>
-        <h2 class="col-heading">S O N G S</h2>
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist" v-if="selectedPlaylist"/>
+        <h2 class="col-heading">S o n g s</h2>
       </div>
       <FadeTransition class="item-container">
         <div v-if="!selectedPlaylist"></div>
@@ -214,14 +226,21 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     </div>
     
     
+    
     <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <div class="heading-container">
-        <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
-        <h2 class="col-heading">L O I F Y</h2>
-        <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
-        
+      <div class="heading-container" v-if="!showLoifyedTracks">
+        <!-- <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> -->
+        <!-- <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button> -->
       </div>
-      <FadeTransition class="item-container">
+      
+      <LoifyButton @click="toggleOnShowLoifyedTracks()" class="test" v-else-if="selectedPlaylist"/>
+      
+      <FadeTransition class="item-container" v-else>
+        <div class="heading-container">
+          <!-- <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> -->
+          <!-- <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button> -->
+          <h2 class="col-heading">L o i f y</h2>
+        </div>
         <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
           <ItemSkeleton v-for="index in 20" :key="index" />
         </div>
@@ -240,7 +259,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   display: flex;
   flex-direction: column;
   gap: 3rem;
-
 }
 
 .main {
@@ -328,6 +346,13 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 .icon.spotify {
   font-size: 5rem;
+}
+
+.test {
+  color:red;
+  display:flex;
+  justify-content: center;
+  align-items: center;
 }
 
 </style>
