@@ -185,20 +185,22 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
           <h2 class="col-heading">P l a y l i s t s</h2>
         </div>
         
-        <template v-if="playlistsDataQuery.isFetching.value">
-          <ItemSkeleton v-for="index in 7" :key="index" />
-        </template>
-        <template v-else>
-          <PlaylistItem
-          v-for="item in playlistsDataQuery.data.value"
-          @click="selectPlaylist"
-          :selected="selectedPlaylist?.id === item.id"
-          :playlistId="item.id"
-          :key="item.id"
-          :playlistName="item.name"
-          :imgSrc="item.image"
-          />
-        </template>
+        <div class="outer">
+          <template v-if="playlistsDataQuery.isFetching.value">
+            <ItemSkeleton v-for="index in 7" :key="index" />
+          </template>
+          <template v-else>
+            <PlaylistItem
+            v-for="item in playlistsDataQuery.data.value"
+            @click="selectPlaylist"
+            :selected="selectedPlaylist?.id === item.id"
+            :playlistId="item.id"
+            :key="item.id"
+            :playlistName="item.name"
+            :imgSrc="item.image"
+            />
+          </template>
+        </div>
       </div>
     </FadeTransition>
     
@@ -209,14 +211,14 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <h2 class="col-heading">S o n g s</h2>
       </div>
       <FadeTransition>
-        <div>
-          <div v-if="!selectedPlaylist"></div>
-          <div v-else-if="tracksDataQuery.isFetching.value">
+        <div class="outer">
+          <template v-if="!selectedPlaylist"></template>
+          <template v-else-if="tracksDataQuery.isFetching.value">
             <ItemSkeleton v-for="index in 20" :key="index" />
-          </div>
-          <div v-else>
+          </template>
+          <template v-else>
             <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-          </div>
+          </template>
         </div>
       </FadeTransition>
     </div>
@@ -236,16 +238,16 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         </div>
       
         <div class="outer" v-else>
-          <div class="heading-container">
+          <template class="heading-container">
             <h2 class="col-heading">L o i f y</h2>
             <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
-          </div>
-          <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
+          </template>
+          <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
             <ItemSkeleton v-for="index in 20" :key="index" />
-          </div>
-          <div v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
+          </template>
+          <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
             <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-          </div>
+          </template>
         </div>
       </FadeTransition>
     </div>
@@ -254,6 +256,12 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 </template>
 
 <style scoped>
+
+.outer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
 .item-container {
   display: flex;
@@ -267,8 +275,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   height: 100vh;
   overflow: auto;
   flex: 1;
-
-  /* new stuff */
   padding: 2rem;
   gap: 2rem;
 }
@@ -336,11 +342,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 }
 
 .icon.logout {
-  font-size: 2rem;
+  font-size: 1.75rem;
 }
 
 .icon.back-arrow {
-  font-size: 3rem;
+  font-size: 2.5rem;
 }
 
 .icon-container {
