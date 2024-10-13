@@ -27,7 +27,7 @@ const { playlistId, playlistName, imgSrc, imgAlt="Cannot load image", selected} 
 h3 {
   flex-grow: 1;
   font-family: 'League Spartan', sans-serif;
-  color: #FFFFFF
+  color: #000000
 }
 
 .selected.container {
