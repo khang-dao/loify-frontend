@@ -162,6 +162,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <PlaylistPreviewSkeleton v-else/>
         <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
         <button @click="reset()">click here to restart</button>
+
+        <div class="icon-container">
+          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']"  class="icon restart"/>
+          <FontAwesomeIcon :icon="['fab', 'spotify']"  class="icon spotify"/>
+        </div>
       </div>
 
 
@@ -169,52 +174,52 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 
         <div class="heading-container">
-          <FontAwesomeIcon :icon="['fas', 'power-off']" />
-          <FontAwesomeIcon :icon="['fas', 'caret-left']" />
-          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" />
-          <font-awesome-icon :icon="['fab', 'spotify']" />
-          
+          <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
           <h2 class="col-heading">P L A Y L I S T S</h2>
+          
         </div>
-
+        
         <template v-if="playlistsDataQuery.isFetching.value">
           <ItemSkeleton v-for="index in 7" :key="index" />
         </template>
         <template v-else>
           <PlaylistItem
-            v-for="item in playlistsDataQuery.data.value"
-            @click="selectPlaylist"
-            :selected="selectedPlaylist?.id === item.id"
-            :playlistId="item.id"
-            :key="item.id"
-            :playlistName="item.name"
-            :imgSrc="item.image"
+          v-for="item in playlistsDataQuery.data.value"
+          @click="selectPlaylist"
+          :selected="selectedPlaylist?.id === item.id"
+          :playlistId="item.id"
+          :key="item.id"
+          :playlistName="item.name"
+          :imgSrc="item.image"
           />
         </template>
       </div>
     </FadeTransition>
-
-
+    
+    
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <h2 class="col-heading">S O N G S</h2>
+      <div class="heading-container">
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow"/>
+        <h2 class="col-heading">S O N G S</h2>
+      </div>
       <FadeTransition class="item-container">
-                <div v-if="!selectedPlaylist"></div>
-                <div v-else-if="tracksDataQuery.isFetching.value">
-                  <ItemSkeleton v-for="index in 20" :key="index" />
-                </div>
-                <div v-else>
-                  <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-                </div>
+        <div v-if="!selectedPlaylist"></div>
+        <div v-else-if="tracksDataQuery.isFetching.value">
+          <ItemSkeleton v-for="index in 20" :key="index" />
+        </div>
+        <div v-else>
+          <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+        </div>
       </FadeTransition>
     </div>
-
-
+    
+    
     <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
         <h2 class="col-heading">L O I F Y</h2>
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
-        <router-link to="/logout" class="logout-button">LOGOUT</router-link>
+        
       </div>
       <FadeTransition class="item-container">
         <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
@@ -256,12 +261,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding: 1rem;
   overflow: auto;
   padding-top: 3rem;
-  
-  /* new stuff */
   background-color: #AEAED0;
-
-  /* temporary - remove later */
-  /* border: 3px solid red; */
   border-radius: 0.5rem;
 }
 
@@ -270,6 +270,10 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   color: #000000;
   text-align: center;
   font-size: 2rem;
+
+  position: absolute;
+  left:50%;
+  transform: translateX(-50%);
 }
 
 .column.skeleton {
@@ -280,11 +284,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding: 1rem;
   overflow: hidden;
   padding-top: 3rem;
-}
-
-.heading-container {
-  display: flex;
-  gap: 1rem;
 }
 
 .column::-webkit-scrollbar {
@@ -304,13 +303,31 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   border: solid 0.5rem #AEAED0;
 }
 
-.logout-button {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #E5E5E5;
-  color: black;
-  text-decoration: none;
-  border-radius: 5px;
-  text-align: center;
+.heading-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
 }
+
+.icon {
+  color: #847F95;
+}
+
+.icon.logout {
+  font-size: 2rem;
+}
+
+.icon.back-arrow {
+  font-size: 3rem;
+}
+
+.icon.restart {
+  font-size: 5rem;
+}
+
+.icon.spotify {
+  font-size: 5rem;
+}
+
 </style>
