@@ -18,16 +18,17 @@ import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
-  if (selectedPlaylist.value) {
+  if (e.target.id === selectedPlaylist.value?.id) {
     deselectPlaylist()
   }
-
-  toggleOffShowLoifyedTracks()
-  
-  console.log(e.target.id)
-  const selectedId = e.target.id
-  selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
-  console.log(selectedPlaylist.value)
+  else {
+    toggleOffShowLoifyedTracks()
+    
+    console.log(e.target.id)
+    const selectedId = e.target.id
+    selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
+    console.log(selectedPlaylist.value)
+  }
 }
 
 const deselectPlaylist = () => {
@@ -179,8 +180,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 
       <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-
-
         <div class="heading-container">
           <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
           <h2 class="col-heading">P l a y l i s t s</h2>
@@ -206,10 +205,10 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
-        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist" v-if="selectedPlaylist"/>
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
         <h2 class="col-heading">S o n g s</h2>
       </div>
-      <FadeTransition class="item-container">
+      <FadeTransition>
         <div>
           <div v-if="!selectedPlaylist"></div>
           <div v-else-if="tracksDataQuery.isFetching.value">
@@ -318,9 +317,9 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 }
 
 .column::-webkit-scrollbar-thumb {
-  background-color: #3b3b3b;
+  background-color: #847F95;
   border-radius: 1rem;
-  box-shadow: inset 0 0 10px 10px #3b3b3b;
+  box-shadow: inset 0 0 10px 10px #847F95;
   border: solid 0.5rem #AEAED0;
 }
 
