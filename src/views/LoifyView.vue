@@ -151,6 +151,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 <template>
   <main class="main">
+
     <FadeTransition>
       <div class="column column-1" v-if="showLoifyedPlaylist">
         <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
@@ -229,15 +230,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   height: 100vh;
   overflow: auto;
   flex: 1;
-}
 
-.col-heading {
-  font-family: 'League Spartan', sans-serif;
-  color: #ffffff;
-  text-align: center;
-  font-size: 2rem;
+  /* new stuff */
+  padding: 2rem;
+  gap: 2rem;
 }
-
 .column {
   display: flex;
   flex-direction: column;
@@ -246,6 +243,20 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding: 1rem;
   overflow: auto;
   padding-top: 3rem;
+  
+  /* new stuff */
+  background-color: #AEAED0;
+
+  /* temporary - remove later */
+  /* border: 3px solid red; */
+  border-radius: 0.5rem;
+}
+
+.col-heading {
+  font-family: 'night-pumpkind', sans-serif;
+  color: #000000;
+  text-align: center;
+  font-size: 2rem;
 }
 
 .column.skeleton {
@@ -264,17 +275,20 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 }
 
 .column::-webkit-scrollbar {
-  width: 0.7rem;
+  width: 1.7rem;
 }
 
 .column::-webkit-scrollbar-track {
   margin-top: 5rem;
   margin-bottom: 1rem;
+
 }
 
 .column::-webkit-scrollbar-thumb {
   background-color: #3b3b3b;
   border-radius: 1rem;
+  box-shadow: inset 0 0 10px 10px #3b3b3b;
+  border: solid 0.5rem #AEAED0;
 }
 
 .logout-button {
