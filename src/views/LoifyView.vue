@@ -13,7 +13,6 @@ import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 
 
 const selectedPlaylist = ref(null)
