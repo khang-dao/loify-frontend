@@ -20,10 +20,7 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   justify-content: center;
 
-  background-image: url('/images/main-background.png'); /* Path to your image */
-  background-size: cover; /* Ensures the image covers the entire element */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents tiling/repeating of the image */
+
   /* width: 100vw; Full viewport width */
   /* height: 100vh; Full viewport height */
 }
