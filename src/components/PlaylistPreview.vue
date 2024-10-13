@@ -9,7 +9,7 @@ const { playlistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
 <template>
   <div class="container">
     <h2 class="playlist-heading"><slot></slot></h2>
-    <img :src="imgSrc" alt="imgAlt" width="175" height="175"/> 
+    <img :src="imgSrc" alt="imgAlt" width="150" height="150"/> 
     <h2 class="playlist-name">{{playlistName}}</h2>
   </div>
 </template>
@@ -23,15 +23,15 @@ const { playlistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
 }
 
 .playlist-heading {
-  font-family: 'League Spartan', sans-serif;
-  color: #FFFFFF;
+  font-family: 'night-pumpkind', sans-serif;
+  color: #000000;
   text-align: center;
   font-size: 2rem;
 }
 
 .playlist-name {
-  font-family: 'League Spartan', sans-serif;
-  color: #FFFFFF;
+  font-family: 'night-pumpkind', sans-serif;
+  color: #000000;
   text-align: center;
   font-size: 1rem;
 }

@@ -5,7 +5,7 @@ import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import FadeTransition from '@/components/transitions/FadeTransition.vue'
-import LoifyButton from '@/components/buttons/LoifyButton.vue'
+import ThemeButton from '@/components/buttons/ThemeButton.vue'
 
 import { ref, reactive } from 'vue'
 
@@ -22,18 +22,16 @@ const selectPlaylist = (e) => {
     deselectPlaylist()
   }
 
-  else {
-    toggleOffShowLoifyedTracks()
-    
-    console.log(e.target.id)
-    const selectedId = e.target.id
-    selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
-    console.log(selectedPlaylist.value)
-  }
+  toggleOffShowLoifyedTracks()
+  
+  console.log(e.target.id)
+  const selectedId = e.target.id
+  selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
+  console.log(selectedPlaylist.value)
 }
 
 const deselectPlaylist = () => {
-  // toggleOffShowLoifyedTracks()
+  toggleOffShowLoifyedTracks()
   selectedPlaylist.value = null
 }
 
@@ -169,15 +167,13 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
     <FadeTransition>
       <div class="column column-1" v-if="showLoifyedPlaylist">
-        <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image"> O R I G I N A L<br />P L A Y L I S T</PlaylistPreview>
-        <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>N E W<br />P L A Y L I S T</PlaylistPreview>
+        <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
+        <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
         <PlaylistPreviewSkeleton v-else/>
-        <button @click="openLoifyedPlaylistInSpotify()">click here to see playlist in spotify</button>
-        <button @click="reset()">click here to restart</button>
 
         <div class="icon-container">
-          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']"  class="icon restart"/>
-          <FontAwesomeIcon :icon="['fab', 'spotify']"  class="icon spotify"/>
+          <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify"/>
+          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
         </div>
       </div>
 
@@ -188,7 +184,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <div class="heading-container">
           <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
           <h2 class="col-heading">P l a y l i s t s</h2>
-          
         </div>
         
         <template v-if="playlistsDataQuery.isFetching.value">
@@ -215,37 +210,43 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <h2 class="col-heading">S o n g s</h2>
       </div>
       <FadeTransition class="item-container">
-        <div v-if="!selectedPlaylist"></div>
-        <div v-else-if="tracksDataQuery.isFetching.value">
-          <ItemSkeleton v-for="index in 20" :key="index" />
-        </div>
-        <div v-else>
-          <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+        <div>
+          <div v-if="!selectedPlaylist"></div>
+          <div v-else-if="tracksDataQuery.isFetching.value">
+            <ItemSkeleton v-for="index in 20" :key="index" />
+          </div>
+          <div v-else>
+            <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+          </div>
         </div>
       </FadeTransition>
     </div>
     
     
     
-    <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <div class="heading-container" v-if="!showLoifyedTracks">
-        <!-- <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> -->
-        <!-- <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button> -->
-      </div>
-      
-      <LoifyButton @click="toggleOnShowLoifyedTracks()" class="test" v-else-if="selectedPlaylist"/>
-      
-      <FadeTransition class="item-container" v-else>
-        <div class="heading-container">
-          <!-- <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> -->
-          <!-- <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button> -->
+    <div :class="`column column-3 item-container ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
+      <FadeTransition>
+        <div v-if="!showLoifyedTracks && !selectedPlaylist" />
+        
+        <div class="heading-container" v-else-if="selectedPlaylist && !showLoifyedTracks">
           <h2 class="col-heading">L o i f y</h2>
+          
+          <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button">
+            g e n e r a t e
+          </ThemeButton>
         </div>
-        <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
-          <ItemSkeleton v-for="index in 20" :key="index" />
-        </div>
-        <div v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
-          <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+      
+        <div class="outer" v-else>
+          <div class="heading-container">
+            <h2 class="col-heading">L o i f y</h2>
+            <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
+          </div>
+          <div v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
+            <ItemSkeleton v-for="index in 20" :key="index" />
+          </div>
+          <div v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
+            <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+          </div>
         </div>
       </FadeTransition>
     </div>
@@ -259,6 +260,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  align-items: center;
 }
 
 .main {
@@ -286,12 +288,13 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 .col-heading {
   font-family: 'night-pumpkind', sans-serif;
   color: #000000;
-  text-align: center;
   font-size: 2rem;
 
   position: absolute;
   left:50%;
   transform: translateX(-50%);
+
+  white-space: nowrap;
 }
 
 .column.skeleton {
@@ -330,6 +333,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 .icon {
   color: #847F95;
+  cursor: pointer;
 }
 
 .icon.logout {
@@ -340,19 +344,21 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   font-size: 3rem;
 }
 
-.icon.restart {
-  font-size: 5rem;
-}
-
-.icon.spotify {
-  font-size: 5rem;
-}
-
-.test {
-  color:red;
-  display:flex;
+.icon-container {
+  display: flex;
+  gap: 3rem;
   justify-content: center;
   align-items: center;
+
+  font-size: 3rem;
+}
+
+.loify-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 750%);
+
 }
 
 </style>

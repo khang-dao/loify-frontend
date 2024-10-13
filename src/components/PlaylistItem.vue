@@ -35,7 +35,6 @@ h3 {
 }
 
 div.selected {
-  /* border: 4px solid rgb(169, 112, 208); */
   background-color: #837F94;
   padding: 0.7rem;
   border-radius: 0.3rem;
