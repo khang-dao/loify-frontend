@@ -11,6 +11,9 @@ import { ref, reactive } from 'vue'
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -163,21 +166,31 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 
       <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
+
+
+        <div class="heading-container">
+          <FontAwesomeIcon :icon="['fas', 'power-off']" />
+          <FontAwesomeIcon :icon="['fas', 'caret-left']" />
+          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" />
+          <font-awesome-icon :icon="['fab', 'spotify']" />
+          
           <h2 class="col-heading">P L A Y L I S T S</h2>
-          <template v-if="playlistsDataQuery.isFetching.value">
-            <ItemSkeleton v-for="index in 7" :key="index" />
-          </template>
-          <template v-else>
-            <PlaylistItem
-              v-for="item in playlistsDataQuery.data.value"
-              @click="selectPlaylist"
-              :selected="selectedPlaylist?.id === item.id"
-              :playlistId="item.id"
-              :key="item.id"
-              :playlistName="item.name"
-              :imgSrc="item.image"
-            />
-          </template>
+        </div>
+
+        <template v-if="playlistsDataQuery.isFetching.value">
+          <ItemSkeleton v-for="index in 7" :key="index" />
+        </template>
+        <template v-else>
+          <PlaylistItem
+            v-for="item in playlistsDataQuery.data.value"
+            @click="selectPlaylist"
+            :selected="selectedPlaylist?.id === item.id"
+            :playlistId="item.id"
+            :key="item.id"
+            :playlistName="item.name"
+            :imgSrc="item.image"
+          />
+        </template>
       </div>
     </FadeTransition>
 
@@ -199,7 +212,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     <div :class="`column column-3 ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <div class="heading-container">
         <button @click="toggleOnShowLoifyedTracks()">Generate Loifyed Songs 🍃</button> //
-        <h2 class="col-heading">🍃</h2>
+        <h2 class="col-heading">L O I F Y</h2>
         <button @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()">Create new playlist with loifyed songs 💚</button>
         <router-link to="/logout" class="logout-button">LOGOUT</router-link>
       </div>
