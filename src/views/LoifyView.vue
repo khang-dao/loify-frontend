@@ -6,6 +6,7 @@ import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
+import ColumnLayout from '@/components/ColumnLayout.vue'
 import { useToast } from "vue-toastification";
 
 import { ref, reactive } from 'vue'
@@ -165,47 +166,55 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 <template>
   <main class="main">
 
-    <FadeTransition>
-      <div class="column column-1" v-if="showLoifyedPlaylist">
-        <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
-        <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
-        <PlaylistPreviewSkeleton v-else/>
+    <div class="column column-1" v-if="showLoifyedPlaylist">
+      <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
+      <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
+      <PlaylistPreviewSkeleton v-else/>
 
-        <div class="icon-container">
-          <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="getLoifyedPlaylistImage.data.value"/>
-          <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
-          <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
-        </div>
+      <div class="icon-container">
+        <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="getLoifyedPlaylistImage.data.value"/>
+        <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
+        <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
       </div>
+    </div>
 
 
-      <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-        <div class="heading-container">
-          <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
-          <h2 class="col-heading">P l a y l i s t s</h2>
-        </div>
-        
-        <div class="outer">
-          <template v-if="playlistsDataQuery.isFetching.value">
-            <ItemSkeleton v-for="index in 20" :key="index" />
-          </template>
-          <template v-else>
-            <PlaylistItem
-            v-for="item in playlistsDataQuery.data.value"
-            @click="selectPlaylist"
-            :selected="selectedPlaylist?.id === item.id"
-            :playlistId="item.id"
-            :key="item.id"
-            :playlistName="item.name"
-            :imgSrc="item.image"
-            />
-          </template>
-        </div>
+    <!-- <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
+      <div class="heading-container">
+        <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
+        <h2 class="col-heading">P l a y l i s t s</h2>
       </div>
-    </FadeTransition>
+      
+      <div class="outer">
+        <template v-if="playlistsDataQuery.isFetching.value">
+          <ItemSkeleton v-for="index in 20" :key="index" />
+        </template>
+        <template v-else>
+          <PlaylistItem
+          v-for="item in playlistsDataQuery.data.value"
+          @click="selectPlaylist"
+          :selected="selectedPlaylist?.id === item.id"
+          :playlistId="item.id"
+          :key="item.id"
+          :playlistName="item.name"
+          :imgSrc="item.image"
+          />
+        </template>
+      </div>
+    </div> -->
+
+    <ColumnLayout index="1" colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" v-else>
+      <template #header-icon>
+        <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
+      </template>
+
+      <template #main-content>
+        <PlaylistItem v-for="item in playlistsDataQuery.data.value" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.image"/>
+      </template>
+    </ColumnLayout>
     
     
-    <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
+    <!-- <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <FadeTransition>
         <template v-if="!selectedPlaylist" />
 
@@ -225,37 +234,64 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
           </div>
         </div>
       </FadeTransition>
-    </div>
+    </div> -->
+
+    <ColumnLayout index="2" colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value">
+      <template #header-icon>
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
+      </template>
+
+      <template #main-content>
+        <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+      </template>
+    </ColumnLayout>
     
     
     
-    <div :class="`column column-3 item-container ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
+    <!-- <div :class="`column column-3 item-container ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <FadeTransition>
         <template v-if="!showLoifyedTracks && !selectedPlaylist" />
         
-        <div class="heading-container" v-else-if="selectedPlaylist && !showLoifyedTracks">
-          <h2 class="col-heading">L o i f y</h2>
-          <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button">
-            g e n e r a t e
-          </ThemeButton>
-        </div>
-      
-        <div class="outer" v-else>
+        <div v-else>
           <div class="heading-container">
             <h2 class="col-heading">L o i f y</h2>
-            <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
-              add playlist to spotify
-            </ThemeButton>
           </div>
-          <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
-            <ItemSkeleton v-for="index in 20" :key="index" />
-          </template>
-          <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
-            <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-          </template>
+          <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
+            g e n e r a t e
+          </ThemeButton>
+          <div class="outer" v-else>
+            <div class="heading-container">
+              <h2 class="col-heading">L o i f y</h2>
+              <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
+                add playlist to spotify
+              </ThemeButton>
+            </div>
+            <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
+              <ItemSkeleton v-for="index in 20" :key="index" />
+            </template>
+            <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
+              <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+            </template>
+          </div>
         </div>
+
       </FadeTransition>
-    </div>
+    </div> -->
+
+    <ColumnLayout index="3" colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value">
+      <template #header-icon>
+        <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
+            g e n e r a t e
+        </ThemeButton>
+        <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
+          add playlist to spotify
+        </ThemeButton>
+      </template>
+
+      <template #main-content>
+        <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+      </template>
+    </ColumnLayout>
 
   </main>
 </template>
@@ -266,13 +302,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-.item-container {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  align-items: center;
 }
 
 .main {
@@ -307,32 +336,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   white-space: nowrap;
 }
 
-.column.skeleton {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  gap: 3rem;
-  padding: 1rem;
-  overflow: hidden;
-  padding-top: 3rem;
-}
 
-.column::-webkit-scrollbar {
-  width: 1.7rem;
-}
-
-.column::-webkit-scrollbar-track {
-  margin-top: 5rem;
-  margin-bottom: 1rem;
-
-}
-
-.column::-webkit-scrollbar-thumb {
-  background-color: #847F95;
-  border-radius: 1rem;
-  box-shadow: inset 0 0 10px 10px #847F95;
-  border: solid 0.5rem #AEAED0;
-}
 
 .heading-container {
   display: flex;
