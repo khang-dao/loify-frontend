@@ -13,12 +13,18 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-brands-svg-icons": "^6.6.0",
+    "@fortawesome/free-regular-svg-icons": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "@tanstack/vue-query": "^5.59.1",
     "@vueuse/core": "^11.1.0",
     "axios": "^1.7.7",
     "pinia": "^2.2.4",
     "vue": "^3.4.29",
-    "vue-router": "^4.4.3"
+    "vue-router": "^4.4.3",
+    "vue-toastification": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

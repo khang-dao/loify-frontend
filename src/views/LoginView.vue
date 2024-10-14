@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
 </script>
 
 <template>
@@ -35,14 +34,14 @@ import { RouterLink } from 'vue-router'
 }
 
 .heading {
-  color: #FFFFFF;
+  color: #000000;
   font-size: 1.5rem;
 }
 
 .button {
   text-decoration: none;
   font-size: 1rem;
-  color: #6A6A6A;
+  color: #000000;
   cursor: pointer
 }
 </style>

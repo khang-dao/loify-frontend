@@ -4,8 +4,10 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <main class="main">
+    <img src="">
     <div class="container">
-      <h1 class="heading">welcome to loify 🍃</h1>
+      <h1 class="heading">Welcome to</h1>
+      <img src="/images/loify-logo.png">
       <RouterLink class="subheading" to="/login">click to begin</RouterLink>
     </div>
   </main>
@@ -17,6 +19,10 @@ import { RouterLink } from 'vue-router'
   display: flex;
   align-items: center;
   justify-content: center;
+
+
+  /* width: 100vw; Full viewport width */
+  /* height: 100vh; Full viewport height */
 }
 
 .container {
@@ -25,16 +31,23 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   gap: 1rem;
   font-family: 'League Spartan', sans-serif;
+  
+  img {
+    width: 13rem;
+    height: auto
+  }
 }
 
 .heading {
-  color: #FFFFFF;
+  color: #000000;
   font-size: 2rem;
+  font-family: 'night-pumpkind', sans-serif;
+  font-weight: 100;
 }
 
 .subheading {
+  color: #000000;
   text-decoration: none;
-  color: #6A6A6A;
   font-size: 1rem;
 }
 </style>

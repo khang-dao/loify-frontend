@@ -27,15 +27,17 @@ const { playlistId, playlistName, imgSrc, imgAlt="Cannot load image", selected} 
 h3 {
   flex-grow: 1;
   font-family: 'League Spartan', sans-serif;
-  color: #FFFFFF
+  color: #000000
 }
 
 .selected.container {
   opacity: 1;
 }
 
-img.selected {
-  border: 4px solid rgb(169, 112, 208);
+div.selected {
+  background-color: #837F94;
+  padding: 0.7rem;
+  border-radius: 0.3rem;
 }
 
 img {
