@@ -6,6 +6,9 @@ import TrackItem from '@/components/TrackItem.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
+import { useToast } from "vue-toastification";
+
+
 
 import { ref, reactive } from 'vue'
 
@@ -14,6 +17,7 @@ import { useMutation, useQuery } from '@tanstack/vue-query'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+const toast = useToast();
 
 const selectedPlaylist = ref(null)
 const selectPlaylist = (e) => {
@@ -115,8 +119,7 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.name = data.name;
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
-
-      // getLoifyedPlaylistImage.refetch();
+      toast("New playlist created! Just fetching data...")
     },
 });
 
@@ -167,11 +170,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     <FadeTransition>
       <div class="column column-1" v-if="showLoifyedPlaylist">
         <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
-        <PlaylistPreview :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
+        <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
         <PlaylistPreviewSkeleton v-else/>
 
         <div class="icon-container">
-          <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify"/>
+          <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="getLoifyedPlaylistImage.data.value"/>
           <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
           <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
         </div>
