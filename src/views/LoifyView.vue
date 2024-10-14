@@ -8,8 +8,6 @@ import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
 import { useToast } from "vue-toastification";
 
-
-
 import { ref, reactive } from 'vue'
 
 import axios from 'axios'
@@ -189,7 +187,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         
         <div class="outer">
           <template v-if="playlistsDataQuery.isFetching.value">
-            <ItemSkeleton v-for="index in 7" :key="index" />
+            <ItemSkeleton v-for="index in 20" :key="index" />
           </template>
           <template v-else>
             <PlaylistItem
@@ -208,19 +206,23 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     
     
     <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <div class="heading-container">
-        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
-        <h2 class="col-heading">S o n g s</h2>
-      </div>
       <FadeTransition>
-        <div class="outer">
-          <template v-if="!selectedPlaylist"></template>
-          <template v-else-if="tracksDataQuery.isFetching.value">
-            <ItemSkeleton v-for="index in 20" :key="index" />
-          </template>
-          <template v-else>
-            <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-          </template>
+        <template v-if="!selectedPlaylist" />
+
+        <div v-else>
+          <div class="heading-container">
+            <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
+            <h2 class="col-heading">S o n g s</h2>
+          </div>
+          <div class="outer">
+            <template v-if="!selectedPlaylist"></template>
+            <template v-else-if="tracksDataQuery.isFetching.value">
+              <ItemSkeleton v-for="index in 20" :key="index" />
+            </template>
+            <template v-else>
+              <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
+            </template>
+          </div>
         </div>
       </FadeTransition>
     </div>
@@ -229,7 +231,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
     
     <div :class="`column column-3 item-container ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
       <FadeTransition>
-        <div v-if="!showLoifyedTracks && !selectedPlaylist" />
+        <template v-if="!showLoifyedTracks && !selectedPlaylist" />
         
         <div class="heading-container" v-else-if="selectedPlaylist && !showLoifyedTracks">
           <h2 class="col-heading">L o i f y</h2>
