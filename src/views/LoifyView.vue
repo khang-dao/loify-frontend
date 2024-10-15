@@ -238,9 +238,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
     <ColumnLayout colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
-        <div>
-          <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
-        </div>
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
       </template>
 
       <template #main-content>
@@ -285,9 +283,10 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
           g e n e r a t e
         </ThemeButton>
-        <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-if="selectedPlaylist && showLoifyedTracks && !showLoifyedPlaylist">
-          add playlist 
-        </ThemeButton>
+      </template>
+
+      <template #header-icon>
+        <FontAwesomeIcon :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" v-if="selectedPlaylist && showLoifyedTracks && !showLoifyedPlaylist"/>
       </template>
       
       <template #main-content>
@@ -322,6 +321,15 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   border-radius: 0.5rem;
 }
 
+.icon-container {
+  display: flex;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 2.5rem;
+}
+
 .icon {
   color: #847F95;
   cursor: pointer;
@@ -335,12 +343,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   font-size: 1.75rem;
 }
 
-.icon-container {
-  display: flex;
-  gap: 2.5rem;
-  justify-content: center;
-  align-items: center;
-
-  font-size: 2.5rem;
+.icon.plus {
+  font-size: 1.75rem;
 }
 </style>

@@ -21,9 +21,10 @@ const {
 
       <div :class="['column-content', {'skeleton': skeletonCondition}]" v-else>
         <header class="header">
-          <slot name="header-icon">
-            <div></div>
-          </slot>
+            <div>
+                <slot name="header-icon">            
+                </slot>
+            </div>
           <h2 class="title">{{ colName }}</h2>
         </header>
         <slot name="extra" />
