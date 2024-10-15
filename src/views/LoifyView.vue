@@ -298,11 +298,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 <style scoped>
 
-.outer {
+/* .outer {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
+} */
 
 .main {
   display: flex;
@@ -312,7 +312,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding: 2rem;
   gap: 2rem;
 }
-.column {
+/* .column {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -322,9 +322,9 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding-top: 3rem;
   background-color: #AEAED0;
   border-radius: 0.5rem;
-}
+} */
 
-.col-heading {
+/* .col-heading {
   font-family: 'night-pumpkind', sans-serif;
   color: #000000;
   font-size: 2rem;
@@ -334,16 +334,16 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   transform: translateX(-50%);
 
   white-space: nowrap;
-}
+} */
 
 
 
-.heading-container {
+/* .heading-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-}
+} */
 
 .icon {
   color: #847F95;
