@@ -91,7 +91,7 @@ const loifyedTracksDataQuery = useQuery({
 
 const showLoifyedTracks = ref(false)
 function toggleOnShowLoifyedTracks() {
-  if (selectedPlaylist.value ) {
+  if (selectedPlaylist.value) {
     showLoifyedTracks.value = true
   }
 }
@@ -203,7 +203,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
       </div>
     </div> -->
 
-    <ColumnLayout index="1" colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" v-else>
+    <ColumnLayout colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" :displayCondition="playlistsDataQuery.data.value" v-else>
       <template #header-icon>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
       </template>
@@ -236,9 +236,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
       </FadeTransition>
     </div> -->
 
-    <ColumnLayout index="2" colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value">
+    <ColumnLayout colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
-        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
+        <div>
+          <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
+        </div>
       </template>
 
       <template #main-content>
@@ -278,19 +280,20 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
       </FadeTransition>
     </div> -->
 
-    <ColumnLayout index="3" colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value">
-      <template #header-icon>
+    <ColumnLayout colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
+      <template #extra>
         <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
-            g e n e r a t e
+          g e n e r a t e
         </ThemeButton>
-        <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
-          add playlist to spotify
+        <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-if="selectedPlaylist && showLoifyedTracks && !showLoifyedPlaylist">
+          add playlist 
         </ThemeButton>
       </template>
-
+      
       <template #main-content>
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
+
     </ColumnLayout>
 
   </main>
@@ -298,11 +301,6 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
 <style scoped>
 
-/* .outer {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-} */
 
 .main {
   display: flex;
@@ -312,38 +310,17 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding: 2rem;
   gap: 2rem;
 }
-/* .column {
+
+.column {
   display: flex;
   flex-direction: column;
   flex: 1;
   gap: 3rem;
-  padding: 1rem;
-  overflow: auto;
+  padding: 1.5rem;
   padding-top: 3rem;
-  background-color: #AEAED0;
+  background-color: #aeaed0;
   border-radius: 0.5rem;
-} */
-
-/* .col-heading {
-  font-family: 'night-pumpkind', sans-serif;
-  color: #000000;
-  font-size: 2rem;
-
-  position: absolute;
-  left:50%;
-  transform: translateX(-50%);
-
-  white-space: nowrap;
-} */
-
-
-
-/* .heading-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
-} */
+}
 
 .icon {
   color: #847F95;
@@ -351,11 +328,11 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 }
 
 .icon.logout {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
 }
 
 .icon.back-arrow {
-  font-size: 2.5rem;
+  font-size: 1.75rem;
 }
 
 .icon-container {
@@ -366,20 +343,4 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 
   font-size: 2.5rem;
 }
-
-.loify-button {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 750%);
-}
-
-.add-button {
-  font-size: 1.5rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -140%);
-}
-
 </style>

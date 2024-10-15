@@ -3,32 +3,35 @@ import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
 
 const {
-  index,
   colName,
   emptyCondition = false,
-  skeletonCondition
+  skeletonCondition,
+  displayCondition
 } = defineProps<{
-  index: string
   colName: string
   emptyCondition?: boolean
   skeletonCondition: boolean
+  displayCondition: boolean
 }>()
 </script>
 <template>
-  <div class="column">
+  <div :class="['column', {'skeleton': skeletonCondition}]">
     <FadeTransition>
-      <template v-if="emptyCondition"/>
+      <template v-if="emptyCondition" />
 
-      <div class="column-content" v-else>
+      <div :class="['column-content', {'skeleton': skeletonCondition}]" v-else>
         <header class="header">
-          <slot class name="header-icon" />
+          <slot name="header-icon">
+            <div></div>
+          </slot>
           <h2 class="title">{{ colName }}</h2>
         </header>
+        <slot name="extra" />
         <div class="item-container">
           <template v-if="skeletonCondition">
             <ItemSkeleton v-for="i in 20" :key="i" />
           </template>
-          <template v-else>
+          <template v-else-if="displayCondition">
             <slot name="main-content" />
           </template>
         </div>
@@ -44,34 +47,44 @@ const {
   flex: 1;
   gap: 3rem;
   padding: 1.5rem;
-  overflow: auto;
   padding-top: 3rem;
   background-color: #aeaed0;
   border-radius: 0.5rem;
+
+
+}
+
+.skeleton {
+    overflow: hidden;
 }
 
 .column-content {
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
-}
-
-/* .column.skeleton {
   display: flex;
   flex-direction: column;
-  flex: 1;
   gap: 3rem;
-  padding: 1rem;
-  overflow: hidden;
-  padding-top: 3rem;
-} */
+}
 
 .header {
   display: flex;
+  position: sticky; /* Make the header sticky */
+  top: 0; /* Position it at the top */
+  background-color: #aeaed0; /* Ensure it has a background color */
+  z-index: 10; /* Bring it above other content */
+  padding: 0.5rem; /* Optional: Add some padding */
+  align-items: center;
 }
 
-.header > :first-child{
-    flex: 1
+.item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto; /* Allow scrolling inside the item container */
+  max-height: calc(100vh - 14.5rem); /* Set a maximum height for the item container */
+  padding-right: 1.5rem; /* Optional: Add padding for aesthetics */
+}
+
+.header > :first-child {
+  flex: 1;
 }
 
 .header::after {
@@ -83,27 +96,15 @@ const {
   font-family: 'night-pumpkind', sans-serif;
   color: #000000;
   font-size: 2rem;
-  /* transform: translateX(1.7rem);1 */
+  /* transform: translateX(1.7rem); include this to move the `title` left/right */
   white-space: nowrap;
 }
 
-.item-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 ::-webkit-scrollbar {
-  width: 1.7rem;
-}
-
-::-webkit-scrollbar-track {
-  margin-top: 7.5rem;
-  margin-bottom: 1rem;
+  width: 0.7rem;
 }
 
 ::-webkit-scrollbar-thumb {
-  border: solid 0.5rem #aeaed0;
   border-radius: 1rem;
   background-color: #847f95;
 }
