@@ -13,13 +13,12 @@ const { index, colName, emptyCondition=false, skeletonCondition } = defineProps<
     <div :class="['column', `col-${index}`, { 'skeleton': skeletonCondition }]">
         <FadeTransition>
             <template v-if="emptyCondition" />
-            
             <div v-else>
-              <div class="heading-container">
+              <header class="header">
                 <slot name="header-icon" />
-                <h2 class="heading">{{ colName }}</h2>
-              </div>
-              <div class="outer">
+                <h2 class="title">{{ colName }}</h2>
+              </header>
+              <div class="item-container">
                 <template v-if="skeletonCondition">
                   <ItemSkeleton v-for="i in 20" :key="i" />
                 </template>
@@ -34,6 +33,7 @@ const { index, colName, emptyCondition=false, skeletonCondition } = defineProps<
 
 
 <style scoped>
+
 .column {
   display: flex;
   flex-direction: column;
@@ -46,6 +46,11 @@ const { index, colName, emptyCondition=false, skeletonCondition } = defineProps<
   border-radius: 0.5rem;
 }
 
+.column.col-index {
+    /* nothing needed here, can delete */
+}
+
+
 .column.skeleton {
   display: flex;
   flex-direction: column;
@@ -56,7 +61,7 @@ const { index, colName, emptyCondition=false, skeletonCondition } = defineProps<
   padding-top: 3rem;
 }
 
-.heading {
+.title {
   font-family: 'night-pumpkind', sans-serif;
   color: #000000;
   font-size: 2rem;
@@ -68,23 +73,23 @@ const { index, colName, emptyCondition=false, skeletonCondition } = defineProps<
   white-space: nowrap;
 }
 
-.outer {
+.item-container {
     display: flex;
     flex-direction: column;
     gap: 1rem;
 }
 
-.column::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 1.7rem;
 }
 
-.column::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   margin-top: 5rem;
   margin-bottom: 1rem;
 
 }
 
-.column::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: #847F95;
   border-radius: 1rem;
   box-shadow: inset 0 0 10px 10px #847F95;

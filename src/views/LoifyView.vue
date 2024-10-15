@@ -166,7 +166,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 <template>
   <main class="main">
 
-    <div class="column column-1" v-if="showLoifyedPlaylist">
+    <div class="column col-1" v-if="showLoifyedPlaylist">
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
       <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
       <PlaylistPreviewSkeleton v-else/>
