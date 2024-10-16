@@ -15,23 +15,24 @@ const {
 }>()
 </script>
 <template>
-  <div :class="['column', {'skeleton': skeletonCondition}]">
+  <div :class="['column', { skeleton: skeletonCondition }]">
     <FadeTransition>
       <template v-if="emptyCondition" />
 
-      <div :class="['column-content', {'skeleton': skeletonCondition}]" v-else>
+      <div :class="['column-content', { skeleton: skeletonCondition }]" v-else>
         <header class="header">
-            <div>
-                <slot name="header-icon">            
-                </slot>
-            </div>
+          <div>
+            <slot name="header-icon"></slot>
+          </div>
           <h2 class="title">{{ colName }}</h2>
         </header>
         <slot name="extra" />
+
         <div class="item-container">
           <template v-if="skeletonCondition">
             <ItemSkeleton v-for="i in 20" :key="i" />
           </template>
+
           <template v-else-if="displayCondition">
             <slot name="main-content" />
           </template>
@@ -51,12 +52,10 @@ const {
   padding-top: 3rem;
   background-color: #aeaed0;
   border-radius: 0.5rem;
-
-
 }
 
 .skeleton {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 .column-content {

@@ -3,8 +3,6 @@ import PlaylistPreview from '@/components/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
-import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
-import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
 import ColumnLayout from '@/components/ColumnLayout.vue'
 import { useToast } from "vue-toastification";
@@ -91,6 +89,7 @@ const loifyedTracksDataQuery = useQuery({
 
 const showLoifyedTracks = ref(false)
 function toggleOnShowLoifyedTracks() {
+  console.log(showLoifyedTracks.value)
   if (selectedPlaylist.value) {
     showLoifyedTracks.value = true
   }
@@ -178,121 +177,36 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
       </div>
     </div>
 
-
-    <!-- <div :class="`column column-1 ${playlistsDataQuery.isFetching.value ? 'skeleton' : ''}`" v-else>
-      <div class="heading-container">
-        <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
-        <h2 class="col-heading">P l a y l i s t s</h2>
-      </div>
-      
-      <div class="outer">
-        <template v-if="playlistsDataQuery.isFetching.value">
-          <ItemSkeleton v-for="index in 20" :key="index" />
-        </template>
-        <template v-else>
-          <PlaylistItem
-          v-for="item in playlistsDataQuery.data.value"
-          @click="selectPlaylist"
-          :selected="selectedPlaylist?.id === item.id"
-          :playlistId="item.id"
-          :key="item.id"
-          :playlistName="item.name"
-          :imgSrc="item.image"
-          />
-        </template>
-      </div>
-    </div> -->
-
     <ColumnLayout colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" :displayCondition="playlistsDataQuery.data.value" v-else>
       <template #header-icon>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
       </template>
-
       <template #main-content>
         <PlaylistItem v-for="item in playlistsDataQuery.data.value" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.image"/>
       </template>
     </ColumnLayout>
-    
-    
-    <!-- <div :class="`column column-2 ${tracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <FadeTransition>
-        <template v-if="!selectedPlaylist" />
-
-        <div v-else>
-          <div class="heading-container">
-            <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
-            <h2 class="col-heading">S o n g s</h2>
-          </div>
-          <div class="outer">
-            <template v-if="!selectedPlaylist"></template>
-            <template v-else-if="tracksDataQuery.isFetching.value">
-              <ItemSkeleton v-for="index in 20" :key="index" />
-            </template>
-            <template v-else>
-              <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-            </template>
-          </div>
-        </div>
-      </FadeTransition>
-    </div> -->
 
     <ColumnLayout colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
         <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
       </template>
-
       <template #main-content>
         <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
     </ColumnLayout>
     
-    
-    
-    <!-- <div :class="`column column-3 item-container ${loifyedTracksDataQuery.isFetching.value ? 'skeleton': ''}`">
-      <FadeTransition>
-        <template v-if="!showLoifyedTracks && !selectedPlaylist" />
-        
-        <div v-else>
-          <div class="heading-container">
-            <h2 class="col-heading">L o i f y</h2>
-          </div>
-          <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
-            g e n e r a t e
-          </ThemeButton>
-          <div class="outer" v-else>
-            <div class="heading-container">
-              <h2 class="col-heading">L o i f y</h2>
-              <ThemeButton @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" class="add-button" v-show="!showLoifyedPlaylist">
-                add playlist to spotify
-              </ThemeButton>
-            </div>
-            <template v-if="showLoifyedTracks && loifyedTracksDataQuery.isFetching.value">
-              <ItemSkeleton v-for="index in 20" :key="index" />
-            </template>
-            <template v-else-if="showLoifyedTracks && loifyedTracksDataQuery.data.value">
-              <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
-            </template>
-          </div>
-        </div>
-
-      </FadeTransition>
-    </div> -->
-
     <ColumnLayout colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
       <template #extra>
         <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
           g e n e r a t e
         </ThemeButton>
       </template>
-
       <template #header-icon>
         <FontAwesomeIcon :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" v-if="selectedPlaylist && showLoifyedTracks && !showLoifyedPlaylist"/>
       </template>
-      
       <template #main-content>
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
-
     </ColumnLayout>
 
   </main>
