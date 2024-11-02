@@ -39,7 +39,7 @@ const deselectPlaylist = () => {
 const playlistsDataQuery = useQuery({
   queryKey: ['playlistData'],
   queryFn: async () => {
-    const url = 'http://localhost:8080/api/spotify/me/playlists'
+    const url = 'http://localhost:8080/api/v1/me/playlists'
     const response = await axios.get(url, { withCredentials: true })
     const playlistsData = response.data.items.map((item) => ({
       id: item.id,
@@ -54,7 +54,7 @@ const playlistsDataQuery = useQuery({
 const tracksDataQuery = useQuery({
   queryKey: ['tracksData', selectedPlaylist],
   queryFn: async () => {
-    const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks`
+    const url = `http://localhost:8080/api/v1/playlists/${selectedPlaylist.value.id}/tracks`
     const response = await axios.get(url, { withCredentials: true })
     const tracksData = response.data.items.map((item) => ({
       id: item.track?.id,
@@ -72,7 +72,7 @@ const loifyedTracksDataQuery = useQuery({
   queryFn: async () => {
     return new Promise((resolve) => {
       setTimeout(async () => {
-        const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`
+        const url = `http://localhost:8080/api/v1/playlists/${selectedPlaylist.value.id}/loify?genre=lofi`
         const response = await axios.get(url, { withCredentials: true })
         const loifyedTracksData = response.data.map((item) => ({
           id: item?.tracks?.items?.[0]?.id,
@@ -107,7 +107,7 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
   const createPlaylistMutation = useMutation({
     mutationFn: async () => {
       // Use the selected playlist ID
-      const url = `http://localhost:8080/api/spotify/playlists/${selectedPlaylist.value.id}/tracks/loify`;
+      const url = `http://localhost:8080/api/v1/playlists/${selectedPlaylist.value.id}/loify?genre=lofi`;
       const response = await axios.post(url, { withCredentials: true });
       return response.data;
     },
@@ -137,7 +137,7 @@ const getLoifyedPlaylistImage = useQuery({
     queryFn: async () => {
       return new Promise((resolve) => {
         setTimeout(async () => {
-          const url = `http://localhost:8080/api/spotify/playlists/${loifyedPlaylist.id}`;
+          const url = `http://localhost:8080/api/v1/playlists/${loifyedPlaylist.id}`;
           const response = await axios.get(url, { withCredentials: true });
           loifyedPlaylist.image = response.data.images[0].url;
           resolve(response.data.images[0].url)
@@ -202,7 +202,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         </ThemeButton>
       </template>
       <template #header-icon>
-        <FontAwesomeIcon :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" v-if="selectedPlaylist && showLoifyedTracks && !showLoifyedPlaylist"/>
+        <FontAwesomeIcon :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" v-if="selectedPlaylist && showLoifyedTracks && loifyedTracksDataQuery.data.value && !showLoifyedPlaylist"/>
       </template>
       <template #main-content>
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>

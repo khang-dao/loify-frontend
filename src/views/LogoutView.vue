@@ -2,8 +2,8 @@
 import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
-const { user, updateAuthStatus, logout } = useUserStore()
-user.isLoggedIn && logout().then(() => updateAuthStatus())
+const { user, logout } = useUserStore()
+user.isLoggedIn && logout()
 </script>
 
 
