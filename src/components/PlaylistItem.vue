@@ -1,17 +1,37 @@
 <script setup lang="ts">
-const { playlistId, playlistName, imgSrc, imgAlt="Cannot load image", selected} = defineProps<{
-  playlistId: string
-  playlistName: string
-  imgSrc: string
-  imgAlt?: string
-  selected: boolean
-}>()
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import axios from 'axios';
+import { reactive } from 'vue';
+
+const props = defineProps<{
+  playlistId: string;
+  playlistName: string;
+  imgSrc: string;
+  imgAlt?: string;
+  selected: boolean;
+}>();
+
+const imgAlt = props.imgAlt ?? "Cannot load image";
+const isLoifyPlaylist = props.playlistName.toLowerCase().includes("loify");
+
+const deleteButton = reactive({ isSelected: false, isConfirmed: false })
+const handleDelete = async () => {
+    if (!deleteButton.isSelected) {
+        deleteButton.isSelected = true;
+    } else {
+        deleteButton.isConfirmed = true;
+        const url = `http://localhost:8080/api/v1/me/playlists/${props.playlistId}`
+        await axios.delete(url, { withCredentials: true })
+    }
+}
+
 </script>
 
 <template>
   <div :class="['container', { selected: selected }]" :id="playlistId">    <!-- TODO: Set the `playlistId` in some other way -->
     <img :class="[ { selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>    <!-- TODO: Set the `playlistId` in some other way -->
     <h3 :id="playlistId">{{ playlistName }}</h3>    <!-- TODO: Set the `playlistId` in some other way -->
+    <FontAwesomeIcon :icon="['fas', 'circle-minus']" class="icon delete" :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]" v-if="isLoifyPlaylist && !deleteButton.isConfirmed" :onClick="handleDelete"/>
   </div>
 </template>
 
@@ -42,5 +62,14 @@ div.selected {
 
 img {
   border-radius: 0.5rem;
+}
+
+.icon.delete {
+  color: rgb(149, 149, 149);
+  font-size: 1.2rem;
+}
+
+.icon.delete.selected {
+  color: rgb(255, 48, 48);
 }
 </style>

@@ -6,13 +6,33 @@ import TrackItem from '@/components/TrackItem.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
 import ColumnLayout from '@/components/ColumnLayout.vue'
 import { useToast } from "vue-toastification";
-
+import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal.vue'
 import { ref, reactive } from 'vue'
-
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
-
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
+function resyncPlaylists() {
+
+}
+
+
+
+const showDeleteModal= ref(false)
+function toggleDeleteModal() {
+  showDeleteModal.value = !showDeleteModal.value
+}
+
+async function deleteAllPlaylists() {
+    // Remove this logic out later
+    toggleDeleteModal()
+   
+    const url = "http://localhost:8080/api/v1/me/playlists/loify"
+    await axios.delete(url, { withCredentials: true })
+
+}
+
+
 
 const toast = useToast();
 
@@ -23,11 +43,8 @@ const selectPlaylist = (e) => {
   }
   else {
     toggleOffShowLoifyedTracks()
-    
-    console.log(e.target.id)
     const selectedId = e.target.id
     selectedPlaylist.value = playlistsDataQuery.data.value.find((p) => p.id === selectedId) || null
-    console.log(selectedPlaylist.value)
   }
 }
 
@@ -74,11 +91,13 @@ const loifyedTracksDataQuery = useQuery({
       setTimeout(async () => {
         const url = `http://localhost:8080/api/v1/playlists/${selectedPlaylist.value.id}/loify?genre=lofi`
         const response = await axios.get(url, { withCredentials: true })
-        const loifyedTracksData = response.data.map((item) => ({
-          id: item?.tracks?.items?.[0]?.id,
-          name: item?.tracks?.items?.[0]?.name,
-          artist: item?.tracks?.items?.[0]?.artists?.[0]?.name,
-          image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url
+        const loifyedTracksData = response.data
+          .filter(item => item?.tracks?.items?.[0]?.id)
+          .map((item) => ({
+            id: item?.tracks?.items?.[0]?.id,
+            name: item?.tracks?.items?.[0]?.name,
+            artist: item?.tracks?.items?.[0]?.artists?.[0]?.name,
+            image: item?.tracks?.items?.[0]?.album?.images?.[0]?.url
         }))
         
         resolve(loifyedTracksData)  // Resolve after delay
@@ -89,7 +108,6 @@ const loifyedTracksDataQuery = useQuery({
 
 const showLoifyedTracks = ref(false)
 function toggleOnShowLoifyedTracks() {
-  console.log(showLoifyedTracks.value)
   if (selectedPlaylist.value) {
     showLoifyedTracks.value = true
   }
@@ -148,7 +166,6 @@ const getLoifyedPlaylistImage = useQuery({
 
 function openLoifyedPlaylistInSpotify() {
   window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
-  console.log(loifyedPlaylist)
 }
 
 // NOTE: This is only temporary, refactor this to import hooks
@@ -163,6 +180,8 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
 </script>
 
 <template>
+  <DeleteConfirmationModal message="Are you sure you want to delete all loify playlists?" :visible="showDeleteModal" :onConfirmDelete="deleteAllPlaylists" :onCancelDelete="toggleDeleteModal" />
+
   <main class="main">
 
     <div class="column col-1" v-if="showLoifyedPlaylist">
@@ -184,11 +203,14 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
       <template #main-content>
         <PlaylistItem v-for="item in playlistsDataQuery.data.value" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.image"/>
       </template>
+      <template #header-icon-2> <!-- TODO: v-if -->
+        <FontAwesomeIcon :icon="['fas', 'trash']"  @click="toggleDeleteModal" class="icon logout" />
+      </template>
     </ColumnLayout>
 
     <ColumnLayout colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
-        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist"/>
+        <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist && !showLoifyedPlaylist"/>
       </template>
       <template #main-content>
         <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
