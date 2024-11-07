@@ -25,6 +25,9 @@ const {
             <slot name="header-icon"></slot>
           </div>
           <h2 class="title">{{ colName }}</h2>
+          <div>
+            <slot name="header-icon-2"></slot>
+          </div>
         </header>
         <slot name="extra" />
 
@@ -84,12 +87,18 @@ const {
 }
 
 .header > :first-child {
+  display:flex;
   flex: 1;
 }
 
-.header::after {
-  content: '';
+.header > :last-child {
   flex: 1;
+  justify-content: flex-end;
+  display:flex
+}
+
+.header > :last-child > svg {
+  justify-content: flex-end;
 }
 
 .title {
