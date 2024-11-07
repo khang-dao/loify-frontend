@@ -9,7 +9,7 @@ import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faCircleMinus, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 
 import 'vue-toastification/dist/index.css';
@@ -29,7 +29,7 @@ const queryClient = new QueryClient({
   },
 });
 
-library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify)
+library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash)
 
 const toastOptions = {}
 
