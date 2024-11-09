@@ -4,17 +4,13 @@ import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkele
 import PlaylistItem from '@/components/PlaylistItem.vue'
 import TrackItem from '@/components/TrackItem.vue'
 import ThemeButton from '@/components/buttons/ThemeButton.vue'
-import ColumnLayout from '@/components/ColumnLayout.vue'
+import Column from '@/components/Column.vue'
 import { useToast } from "vue-toastification";
 import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal.vue'
 import { ref, reactive } from 'vue'
 import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-function resyncPlaylists() {
-
-}
 
 
 
@@ -65,7 +61,7 @@ const playlistsDataQuery = useQuery({
     }))
     
     return playlistsData
-  }
+  },
 })
 
 const tracksDataQuery = useQuery({
@@ -81,7 +77,7 @@ const tracksDataQuery = useQuery({
     }))
     
     return tracksData
-  }
+  },  
 })
 
 const loifyedTracksDataQuery = useQuery({
@@ -103,7 +99,8 @@ const loifyedTracksDataQuery = useQuery({
         resolve(loifyedTracksData)  // Resolve after delay
       }, 3000) // Delay by 3 seconds
     })
-  }
+  },
+  enabled: false
 })
 
 const showLoifyedTracks = ref(false)
@@ -136,8 +133,10 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
       toast("New playlist created! Just fetching data...")
+      getLoifyedPlaylistImage.refetch()
     },
-});
+  }
+);
 
   return { createPlaylistMutation, loifyedPlaylist };
 }
@@ -151,52 +150,62 @@ function toggleOnShowLoifyedPlaylist() {
 
 // Fetch playlist image using Vue Query
 const getLoifyedPlaylistImage = useQuery({
-    queryKey: ['playlistImage', loifyedPlaylist],
-    queryFn: async () => {
-      return new Promise((resolve) => {
-        setTimeout(async () => {
-          const url = `http://localhost:8080/api/v1/playlists/${loifyedPlaylist.id}`;
-          const response = await axios.get(url, { withCredentials: true });
-          loifyedPlaylist.image = response.data.images[0].url;
-          resolve(response.data.images[0].url)
-        }, 4000);
-      });
-    },
+  queryKey: ['playlistImage', loifyedPlaylist.id],
+  queryFn: async () => {
+    const url = `http://localhost:8080/api/v1/playlists/${loifyedPlaylist.id}`;
+    const response = await axios.get(url, { withCredentials: true });
+    loifyedPlaylist.image = response.data.images[0].url;
+    return response.data.images[0].url;
+  },
+  enabled: false  // Only fetch on command
 });
 
+
 function openLoifyedPlaylistInSpotify() {
-  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
+  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tabz
 }
 
 // NOTE: This is only temporary, refactor this to import hooks
 const { createPlaylistMutation } = useCreateLoifyedPlaylist()
 
+function resetLoifyPlaylist() {
+  loifyedPlaylist.id = ''
+  loifyedPlaylist.name = ''
+  loifyedPlaylist.image = ''
+  loifyedPlaylist.url = ''
+}
 
 function reset() {// TODO: this function resets the values of (TBD) reactive/refs above // NOTE: this is for AFTER new playlist creation
   selectedPlaylist.value = null
   showLoifyedTracks.value = false
   showLoifyedPlaylist.value = false
+  console.log("RESET (BEFORE): ", loifyedPlaylist)
+  resetLoifyPlaylist()
+  console.log("RESET (AFTER): ", loifyedPlaylist)
+}
+
+function logValues() {
+  console.log("ADD PLAYLIST: ", loifyedPlaylist)
 }
 </script>
 
 <template>
-  <DeleteConfirmationModal message="Are you sure you want to delete all loify playlists?" :visible="showDeleteModal" :onConfirmDelete="deleteAllPlaylists" :onCancelDelete="toggleDeleteModal" />
-
   <main class="main">
+    <DeleteConfirmationModal message="Are you sure you want to delete all loify playlists?" :visible="showDeleteModal" :onConfirmDelete="deleteAllPlaylists" :onCancelDelete="toggleDeleteModal" />
 
     <div class="column col-1" v-if="showLoifyedPlaylist">
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
-      <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
+      <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if="loifyedPlaylist.image">n e w<br />p l a y l i s t</PlaylistPreview>
       <PlaylistPreviewSkeleton v-else/>
 
       <div class="icon-container">
-        <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="getLoifyedPlaylistImage.data.value"/>
+        <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="loifyedPlaylist.image"/>
         <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
       </div>
     </div>
 
-    <ColumnLayout colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" :displayCondition="playlistsDataQuery.data.value" v-else>
+    <Column colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" :displayCondition="playlistsDataQuery.data.value" v-else>
       <template #header-icon>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
       </template>
@@ -204,32 +213,32 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
         <PlaylistItem v-for="item in playlistsDataQuery.data.value" @click="selectPlaylist" :selected="selectedPlaylist?.id === item.id" :playlistId="item.id" :key="item.id" :playlistName="item.name" :imgSrc="item.image"/>
       </template>
       <template #header-icon-2> <!-- TODO: v-if -->
-        <FontAwesomeIcon :icon="['fas', 'trash']"  @click="toggleDeleteModal" class="icon logout" />
+        <FontAwesomeIcon v-tooltip.top-end="'delete loify playlists'" :icon="['fas', 'trash']"  @click="toggleDeleteModal" class="icon logout" v-if="playlistsDataQuery.data.value"/>
       </template>
-    </ColumnLayout>
+    </Column>
 
-    <ColumnLayout colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
+    <Column colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
         <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist && !showLoifyedPlaylist"/>
       </template>
       <template #main-content>
         <TrackItem v-for="item in tracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
-    </ColumnLayout>
+    </Column>
     
-    <ColumnLayout colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
+    <Column colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
       <template #extra>
-        <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
+        <ThemeButton @click="toggleOnShowLoifyedTracks(); console.log('Before:: ',loifyedTracksDataQuery.value); loifyedTracksDataQuery.refetch(); console.log('After:: ',loifyedTracksDataQuery.value)" class="loify-button" v-if="selectedPlaylist && tracksDataQuery.data.value && !showLoifyedTracks">
           g e n e r a t e
         </ThemeButton>
       </template>
       <template #header-icon>
-        <FontAwesomeIcon :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate()" v-if="selectedPlaylist && showLoifyedTracks && loifyedTracksDataQuery.data.value && !showLoifyedPlaylist"/>
+        <FontAwesomeIcon v-tooltip.top-start="'add playlist to spotify!'" :icon="['fas', 'plus']" class="icon plus" @click="toggleOnShowLoifyedPlaylist(); createPlaylistMutation.mutate(); logValues()" v-if="selectedPlaylist && showLoifyedTracks && loifyedTracksDataQuery.data.value && !showLoifyedPlaylist"/>
       </template>
       <template #main-content>
         <TrackItem v-for="item in loifyedTracksDataQuery.data.value" :key="item.id" :trackName="item.name" :artistName="item.artist" :imgSrc="item.image"/>
       </template>
-    </ColumnLayout>
+    </Column>
 
   </main>
 </template>
@@ -255,6 +264,7 @@ function reset() {// TODO: this function resets the values of (TBD) reactive/ref
   padding-top: 3rem;
   background-color: #aeaed0;
   border-radius: 0.5rem;
+  overflow: auto;
 }
 
 .icon-container {

@@ -15,6 +15,9 @@ import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 import 'vue-toastification/dist/index.css';
 import Toast from 'vue-toastification';
 
+import FloatingVue from 'floating-vue';
+import 'floating-vue/dist/style.css';
+
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -38,6 +41,7 @@ app.use(pinia)
 app.use(VueQueryPlugin, { queryClient })
 app.component('font-awesome-icon', FontAwesomeIcon)
 app.use(Toast, toastOptions);
+app.use(FloatingVue)
 
 
 app.mount('#app')
