@@ -14,7 +14,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 
 
-const showDeleteModal= ref(false)
+const showDeleteModal = ref(false)
 function toggleDeleteModal() {
   showDeleteModal.value = !showDeleteModal.value
 }
@@ -193,6 +193,7 @@ function logValues() {
   <main class="main">
     <DeleteConfirmationModal message="Are you sure you want to delete all loify playlists?" :visible="showDeleteModal" :onConfirmDelete="deleteAllPlaylists" :onCancelDelete="toggleDeleteModal" />
 
+    <!-- Original and Loifyed Playlist Previews -->
     <div class="column col-1" v-if="showLoifyedPlaylist">
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
       <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if="loifyedPlaylist.image">n e w<br />p l a y l i s t</PlaylistPreview>
@@ -205,6 +206,7 @@ function logValues() {
       </div>
     </div>
 
+    <!-- Playlists Column -->
     <Column colName="p l a y l i s t s" :skeletonCondition="playlistsDataQuery.isFetching.value" :displayCondition="playlistsDataQuery.data.value" v-else>
       <template #header-icon>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
@@ -217,6 +219,7 @@ function logValues() {
       </template>
     </Column>
 
+    <!-- Songs Column -->
     <Column colName="s o n g s" :emptyCondition="!selectedPlaylist" :skeletonCondition="tracksDataQuery.isFetching.value" :displayCondition="tracksDataQuery.data.value">
       <template #header-icon>
         <FontAwesomeIcon :icon="['fas', 'caret-left']" class="icon back-arrow" @click="deselectPlaylist()" v-if="selectedPlaylist && !showLoifyedPlaylist"/>
@@ -226,6 +229,7 @@ function logValues() {
       </template>
     </Column>
     
+    <!-- Loify Column -->
     <Column colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
       <template #extra>
         <ThemeButton @click="toggleOnShowLoifyedTracks(); console.log('Before:: ',loifyedTracksDataQuery.value); loifyedTracksDataQuery.refetch(); console.log('After:: ',loifyedTracksDataQuery.value)" class="loify-button" v-if="selectedPlaylist && tracksDataQuery.data.value && !showLoifyedTracks">
