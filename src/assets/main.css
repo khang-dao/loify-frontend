@@ -38,3 +38,7 @@ body {
   font-weight: normal;
   font-style: normal;
 }
+
+.v-popper__popper {
+  font-family: 'League Spartan', sans-serif;
+}
