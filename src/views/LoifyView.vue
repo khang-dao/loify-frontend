@@ -12,10 +12,6 @@ import axios from 'axios'
 import { useMutation, useQuery } from '@tanstack/vue-query'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-function resyncPlaylists() {
-
-}
-
 
 
 const showDeleteModal= ref(false)
@@ -65,7 +61,7 @@ const playlistsDataQuery = useQuery({
     }))
     
     return playlistsData
-  }
+  },
 })
 
 const tracksDataQuery = useQuery({
@@ -81,7 +77,7 @@ const tracksDataQuery = useQuery({
     }))
     
     return tracksData
-  }
+  },  
 })
 
 const loifyedTracksDataQuery = useQuery({
@@ -103,7 +99,8 @@ const loifyedTracksDataQuery = useQuery({
         resolve(loifyedTracksData)  // Resolve after delay
       }, 3000) // Delay by 3 seconds
     })
-  }
+  },
+  enabled: false
 })
 
 const showLoifyedTracks = ref(false)
@@ -136,8 +133,10 @@ function useCreateLoifyedPlaylist() { // NOTE: To use this as a hook, please pas
       loifyedPlaylist.image = data.images?.[0]?.url || '';
       loifyedPlaylist.url = data.external_urls.spotify;
       toast("New playlist created! Just fetching data...")
+      getLoifyedPlaylistImage.refetch()
     },
-});
+  }
+);
 
   return { createPlaylistMutation, loifyedPlaylist };
 }
@@ -151,21 +150,19 @@ function toggleOnShowLoifyedPlaylist() {
 
 // Fetch playlist image using Vue Query
 const getLoifyedPlaylistImage = useQuery({
-    queryKey: ['playlistImage', loifyedPlaylist],
-    queryFn: async () => {
-      return new Promise((resolve) => {
-        setTimeout(async () => {
-          const url = `http://localhost:8080/api/v1/playlists/${loifyedPlaylist.id}`;
-          const response = await axios.get(url, { withCredentials: true });
-          loifyedPlaylist.image = response.data.images[0].url;
-          resolve(response.data.images[0].url)
-        }, 4000);
-      });
-    },
+  queryKey: ['playlistImage', loifyedPlaylist.id],
+  queryFn: async () => {
+    const url = `http://localhost:8080/api/v1/playlists/${loifyedPlaylist.id}`;
+    const response = await axios.get(url, { withCredentials: true });
+    loifyedPlaylist.image = response.data.images[0].url;
+    return response.data.images[0].url;
+  },
+  enabled: false  // Only fetch on command
 });
 
+
 function openLoifyedPlaylistInSpotify() {
-  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tab
+  window.open(loifyedPlaylist.url, '_blank') // Opens the URL in a new tabz
 }
 
 // NOTE: This is only temporary, refactor this to import hooks
@@ -198,11 +195,11 @@ function logValues() {
 
     <div class="column col-1" v-if="showLoifyedPlaylist">
       <PlaylistPreview :playlistName="selectedPlaylist.name" :imgSrc="selectedPlaylist.image">o r i g i n a l<br />p l a y l i s t</PlaylistPreview>
-      <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if=getLoifyedPlaylistImage.data.value>n e w<br />p l a y l i s t</PlaylistPreview>
+      <PlaylistPreview @click="openLoifyedPlaylistInSpotify()" :playlistName="loifyedPlaylist.name" :imgSrc="getLoifyedPlaylistImage.data.value" v-if="loifyedPlaylist.image">n e w<br />p l a y l i s t</PlaylistPreview>
       <PlaylistPreviewSkeleton v-else/>
 
       <div class="icon-container">
-        <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="getLoifyedPlaylistImage.data.value"/>
+        <FontAwesomeIcon :icon="['fab', 'spotify']" @click="openLoifyedPlaylistInSpotify()"  class="icon spotify" v-show="loifyedPlaylist.image"/>
         <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="reset()" class="icon restart"/>
         <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
       </div>
@@ -231,7 +228,7 @@ function logValues() {
     
     <Column colName="l o i f y" :emptyCondition="!showLoifyedTracks && !selectedPlaylist" :skeletonCondition="loifyedTracksDataQuery.isFetching.value && showLoifyedTracks" :displayCondition="!!selectedPlaylist && showLoifyedTracks">
       <template #extra>
-        <ThemeButton @click="toggleOnShowLoifyedTracks()" class="loify-button" v-if="selectedPlaylist && !showLoifyedTracks">
+        <ThemeButton @click="toggleOnShowLoifyedTracks(); console.log('Before:: ',loifyedTracksDataQuery.value); loifyedTracksDataQuery.refetch(); console.log('After:: ',loifyedTracksDataQuery.value)" class="loify-button" v-if="selectedPlaylist && tracksDataQuery.data.value && !showLoifyedTracks">
           g e n e r a t e
         </ThemeButton>
       </template>
@@ -294,23 +291,5 @@ function logValues() {
 
 .icon.plus {
   font-size: 1.75rem;
-}
-
-/* .tooltip {
-  font-family: 'League Spartan', sans-serif;
-} */
-
-/* .v-popper--has-tooltip > *{
-  font-family: 'League Spartan', sans-serif;
-} */
-
-/* .v-popper--tooltip-loading .v-popper__inner {
-  color: #77aaff;
-} */
-
-.v-popper__popper  * {
-  font-family: 'League Spartan', sans-serif;
-  color: #77aaff;
-  font-size: 5reml
 }
 </style>
