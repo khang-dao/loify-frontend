@@ -171,14 +171,9 @@ function reset() {
   selectedPlaylist.value = null
   showLoifyTracks.value = false
   showLoifyPlaylist.value = false
-  console.log('RESET (BEFORE): ', loifyPlaylist)
   resetLoifyPlaylist()
-  console.log('RESET (AFTER): ', loifyPlaylist)
 }
 
-function logValues() {
-  console.log('ADD PLAYLIST: ', loifyPlaylist)
-}
 </script>
 
 <template>
@@ -292,12 +287,7 @@ function logValues() {
     >
       <template #extra>
         <ThemeButton
-          @click="
-            toggleOnShowLoifyTracks()
-            console.log('Before:: ', loifyTracksDataQuery.value)
-            loifyTracksDataQuery.refetch()
-            console.log('After:: ', loifyTracksDataQuery.value)
-          "
+          @click="toggleOnShowLoifyTracks(); loifyTracksDataQuery.refetch()"
           class="loify-button"
           v-if="selectedPlaylist && tracksDataQuery.data.value && !showLoifyTracks"
         >
@@ -309,11 +299,7 @@ function logValues() {
           v-tooltip.top-start="'add playlist to spotify!'"
           :icon="['fas', 'plus']"
           class="icon plus"
-          @click="
-            toggleOnShowLoifyPlaylist()
-            createPlaylistMutation.mutate()
-            logValues()
-          "
+          @click="toggleOnShowLoifyPlaylist(); createPlaylistMutation.mutate()"
           v-if="
             selectedPlaylist &&
             showLoifyTracks &&
