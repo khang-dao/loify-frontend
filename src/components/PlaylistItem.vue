@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import axios from 'axios';
+import { containsLoify } from '@/utils/string';
 import { reactive } from 'vue';
 
 const props = defineProps<{
@@ -9,20 +9,21 @@ const props = defineProps<{
   imgSrc: string;
   imgAlt?: string;
   selected: boolean;
+  handleDelete: (id: string) => void; 
 }>();
 
 const imgAlt = props.imgAlt ?? "Cannot load image";
-const isLoifyPlaylist = props.playlistName.toLowerCase().includes("loify");
+const isLoifyPlaylist = containsLoify(props.playlistName)
+
 
 const deleteButton = reactive({ isSelected: false, isConfirmed: false })
 const handleDelete = async () => {
-    if (!deleteButton.isSelected) {
-        deleteButton.isSelected = true;
-    } else {
-        deleteButton.isConfirmed = true;
-        const url = `http://localhost:8080/api/v1/me/playlists/${props.playlistId}`
-        await axios.delete(url, { withCredentials: true })
-    }
+  if (!deleteButton.isSelected) {
+      deleteButton.isSelected = true;
+  } else {
+      deleteButton.isConfirmed = true;
+      props.handleDelete(props.playlistId)
+  }
 }
 
 </script>
