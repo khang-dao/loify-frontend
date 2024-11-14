@@ -1,6 +1,6 @@
 export interface Playlist {
-  id: string | null;
-  name: string | null;
-  image: string | null;
-  url: string | null;
+  id?: string;
+  name?: string;
+  image?: string;
+  url?: string;
 }

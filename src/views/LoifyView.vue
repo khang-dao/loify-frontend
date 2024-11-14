@@ -25,7 +25,7 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
 
     <!-- Original and Loify Playlist Previews -->
     <div class="column col-1" v-if="toggles.loifyPlaylistToggle.state.value">
-      <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist.image"
+      <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image"
         >o r i g i n a l<br />p l a y l i s t</PlaylistPreview
       >
       <PlaylistPreview
