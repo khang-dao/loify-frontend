@@ -20,6 +20,7 @@ export function usePlaylist() {
     if (e.target.id === selectedPlaylist.value?.id) {
       deselectPlaylist();
     } else {
+      loifyTracksToggle.toggleOff()
       selectedPlaylist.value = playlistsQuery.data.value.find((p) => p.id === e.target.id) || null;
     }
   }
@@ -73,8 +74,8 @@ export function usePlaylist() {
 
   const reset = () => {
     deselectPlaylist()
-    loifyTracksToggle.toggle()
-    loifyPlaylistToggle.toggle()
+    loifyTracksToggle.toggleOff()
+    loifyPlaylistToggle.toggleOff()
 
     loifyPlaylist.id = null
     loifyPlaylist.name = null

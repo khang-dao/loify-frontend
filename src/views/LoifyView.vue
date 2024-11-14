@@ -150,7 +150,7 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
         <TrackItem
           v-for="item in queries.loifyTracksQuery.data.value"
           :key="item.id"
-          :trackName="item.name"
+          :trackName="item.name" 
           :artistName="item.artist"
           :imgSrc="item.image"
         />
