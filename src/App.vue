@@ -4,16 +4,10 @@ import FadeTransition from '@/components/transitions/FadeTransition.vue'
 </script>
 
 <template>
-  <!-- <header> -->
-    <!-- <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-
   <FadeTransition>
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <component :is="Component" />
+    </RouterView>
   </FadeTransition>
 </template>
 
