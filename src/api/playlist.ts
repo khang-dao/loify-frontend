@@ -1,12 +1,17 @@
 import client from '@/api/client';
 
 
+// TODO: Create interface for `item` and replace all `item: any` refs
+
 /**
  * Creates a loify playlist based on a specified playlist.
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Object} Created playlist object.
  */
-export async function createLoifyPlaylist(playlistId) { // TODO: make `genre` a param
+export async function createLoifyPlaylist(playlistId?: string) { // TODO: make `genre` a param
+  if (!playlistId) {
+    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+  }
   try {
     const response = await client.post(`/playlists/${playlistId}/loify?genre=lofi`, {
       withCredentials: true
@@ -22,7 +27,10 @@ export async function createLoifyPlaylist(playlistId) { // TODO: make `genre` a 
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Promise} Axios delete request promise.
  */
-export async function deletePlaylist(playlistId) {
+export async function deletePlaylist(playlistId?: string) {
+  if (!playlistId) {
+    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+  }
   try {
     return await client.delete(`/me/playlists/${playlistId}`)
   } catch (error) {
@@ -49,7 +57,7 @@ export async function deleteAllPlaylists() {
 export async function fetchPlaylists() {
   try {
     const response = await client.get('/me/playlists')
-    return response.data.items.map((item) => ({
+    return response.data.items.map((item: any) => ({
       id: item.id,
       name: item.name,
       image: item.images?.[0]?.url
@@ -64,11 +72,12 @@ export async function fetchPlaylists() {
  * @param {string} playlistId - The ID of the playlist.
  * @returns {string} URL of the playlist image.
  */
-export async function fetchPlaylistImage(playlistId) {
+export async function fetchPlaylistImage(playlistId?: string) {
+  if (!playlistId) {
+    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+  }
   try {
-    console.log("FETCHING NEW IAMGE")
     const response = await client.get(`/playlists/${playlistId}`)
-    console.log("url: ", response.data.images[0].url)
     return response.data.images[0].url
   } catch (error) {
     throw new Error('Failed to fetch playlist image.')

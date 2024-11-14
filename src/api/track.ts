@@ -1,15 +1,20 @@
-import client from '@/api/client';
+import client from '@/api/client'
 
+
+// TODO: Create interface for `item` and replace all `item: any` refs
 
 /**
  * Fetches tracks for a specified playlist.
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Array} List of track objects with id, name, artist, and image.
  */
-export async function fetchTracks(playlistId) {
+export async function fetchTracks(playlistId?: string) {
+  if (!playlistId) {
+    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+  }
   try {
     const response = await client.get(`/playlists/${playlistId}/tracks`)
-    return response.data.items.map((item) => ({
+    return response.data.items.map((item: any) => ({
       id: item.track?.id,
       name: item.track?.name,
       artist: item.track?.artists?.[0].name,
@@ -25,12 +30,16 @@ export async function fetchTracks(playlistId) {
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Array} List of loify track objects.
  */
-export async function fetchLoifyTracks(playlistId) {  // TODO: make `genre` a param
+export async function fetchLoifyTracks(playlistId?: string) {
+  // TODO: make `genre` a param
+  if (!playlistId) {
+    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+  }
   try {
     const response = await client.get(`/playlists/${playlistId}/loify?genre=lofi`)
     return response.data
-      .filter((item) => item?.tracks?.items?.[0]?.id)
-      .map((item) => ({
+      .filter((item: any) => item?.tracks?.items?.[0]?.id)
+      .map((item: any) => ({
         id: item.tracks.items[0].id,
         name: item.tracks.items[0].name,
         artist: item.tracks.items[0].artists[0].name,

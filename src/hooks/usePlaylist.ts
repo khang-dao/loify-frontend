@@ -4,23 +4,26 @@ import { useToast } from 'vue-toastification'
 import { useToggle } from '@/hooks/useToggle'
 import { deletePlaylist, deleteAllPlaylists } from '@/api'
 import * as api from '@/api'
+import type { Playlist } from '@/types/playlist'
 
 export function usePlaylist() {
   const toast = useToast()
 
-  const selectedPlaylist = ref(null)
-  const loifyPlaylist = reactive({ id: null, name: null, image: null, url: null })
+  const selectedPlaylist = ref<Playlist | undefined>(undefined)
+  const loifyPlaylist = reactive<Playlist>({ id: undefined, name: undefined, image: undefined, url: undefined })
 
   const deleteModalToggle = useToggle(false)
   const loifyTracksToggle = useToggle(false)
   const loifyPlaylistToggle = useToggle(false)
 
-  const deselectPlaylist = () => (selectedPlaylist.value = null)
-  const selectPlaylist = (e) => {
-    if (e.target.id === selectedPlaylist.value?.id) {
+  const deselectPlaylist = () => (selectedPlaylist.value = undefined)
+  const selectPlaylist = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (target?.id === selectedPlaylist.value?.id) {
       deselectPlaylist();
     } else {
-      selectedPlaylist.value = playlistsQuery.data.value.find((p) => p.id === e.target.id) || null;
+      loifyTracksToggle.toggleOff()
+      selectedPlaylist.value = playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined;
     }
   }
 
@@ -32,19 +35,19 @@ export function usePlaylist() {
 
   const tracksQuery = useQuery({
     queryKey: ['tracksData', selectedPlaylist],
-    queryFn: () => api.fetchTracks(selectedPlaylist.value.id),
+    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id),
   })
   const fetchTracks = () => tracksQuery.refetch()
 
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
-    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value.id),
+    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id),
     enabled: false  // TODO: do i need this when selectedPlaylist is in the queryKey?
   })
   const fetchLoifyTracks = () => loifyTracksToggle.toggle() && loifyTracksQuery.refetch();
 
   const createPlaylistMutation = useMutation({
-    mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value.id),
+    mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id),
     onSuccess: (data) => {
       Object.assign(loifyPlaylist, {
         id: data.id,
@@ -68,18 +71,18 @@ export function usePlaylist() {
     enabled: false
   })
 
-  const deletePlaylistAndRefetch = async (playlistId) => await deletePlaylist(playlistId) && playlistsQuery.refetch()
+  const deletePlaylistAndRefetch = async (playlistId: string) => await deletePlaylist(playlistId) && playlistsQuery.refetch()
   const deleteAllPlaylistsAndRefetch = async () => await deleteAllPlaylists() && playlistsQuery.refetch()
 
   const reset = () => {
     deselectPlaylist()
-    loifyTracksToggle.toggle()
-    loifyPlaylistToggle.toggle()
+    loifyTracksToggle.toggleOff()
+    loifyPlaylistToggle.toggleOff()
 
-    loifyPlaylist.id = null
-    loifyPlaylist.name = null
-    loifyPlaylist.image = null
-    loifyPlaylist.url = null
+    loifyPlaylist.id = undefined
+    loifyPlaylist.name = undefined
+    loifyPlaylist.image = undefined
+    loifyPlaylist.url = undefined
     playlistsQuery.refetch()
   }
 

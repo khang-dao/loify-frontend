@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
 import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
@@ -6,12 +7,12 @@ const {
   colName,
   emptyCondition = false,
   skeletonCondition,
-  displayCondition
+  displayCondition = false
 } = defineProps<{
   colName: string
   emptyCondition?: boolean
   skeletonCondition: boolean
-  displayCondition: boolean
+  displayCondition: any
 }>()
 </script>
 <template>
@@ -32,7 +33,7 @@ const {
         <slot name="extra" />
 
         <!-- <div class="item-container"> -->
-          <div :class="['item-container', { skeleton: skeletonCondition }]">
+        <div :class="['item-container', { skeleton: skeletonCondition }]">
           <template v-if="skeletonCondition">
             <ItemSkeleton v-for="i in 20" :key="i" />
           </template>
@@ -88,14 +89,14 @@ const {
 }
 
 .header > :first-child {
-  display:flex;
+  display: flex;
   flex: 1;
 }
 
 .header > :last-child {
   flex: 1;
   justify-content: flex-end;
-  display:flex
+  display: flex;
 }
 
 .header > :last-child > svg {

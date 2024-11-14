@@ -6,7 +6,7 @@ import { reactive } from 'vue';
 const props = defineProps<{
   playlistId: string;
   playlistName: string;
-  imgSrc: string;
+  imgSrc?: string;
   imgAlt?: string;
   selected: boolean;
   handleDelete: (id: string) => void; 
