@@ -6,7 +6,10 @@ import client from '@/api/client';
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Array} List of track objects with id, name, artist, and image.
  */
-export async function fetchTracks(playlistId) {
+export async function fetchTracks(playlistId: string) {
+  if (!playlistId) {
+    throw new Error("Invalid playlist ID. Playlist ID cannot be null or undefined.");
+  }
   try {
     const response = await client.get(`/playlists/${playlistId}/tracks`)
     return response.data.items.map((item) => ({
@@ -25,7 +28,10 @@ export async function fetchTracks(playlistId) {
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Array} List of loify track objects.
  */
-export async function fetchLoifyTracks(playlistId) {  // TODO: make `genre` a param
+export async function fetchLoifyTracks(playlistId: string) {  // TODO: make `genre` a param
+  if (!playlistId) {
+    throw new Error("Invalid playlist ID. Playlist ID cannot be null or undefined.");
+  }
   try {
     const response = await client.get(`/playlists/${playlistId}/loify?genre=lofi`)
     return response.data

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { playlistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
-  playlistName: string
-  imgSrc: string
+  playlistName?: string
+  imgSrc?: string
   imgAlt?: string
 }>()
 </script>
@@ -9,7 +9,7 @@ const { playlistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
 <template>
   <div class="container">
     <h2 class="playlist-heading"><slot></slot></h2>
-    <img :src="imgSrc" alt="imgAlt" width="150" height="150"/> 
+    <img :src="imgSrc" :alt="imgAlt" width="150" height="150"/> 
     <h2 class="playlist-name">{{playlistName}}</h2>
   </div>
 </template>

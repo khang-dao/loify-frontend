@@ -4,11 +4,11 @@ import FadeTransition from '@/components/transitions/FadeTransition.vue'
 </script>
 
 <template>
-  <FadeTransition>
-    <RouterView v-slot="{ Component }">
+  <RouterView v-slot="{ Component }">
+    <FadeTransition>
       <component :is="Component" />
-    </RouterView>
-  </FadeTransition>
+    </FadeTransition>
+  </RouterView>
 </template>
 
 <style scoped> 

@@ -6,12 +6,12 @@ const {
   colName,
   emptyCondition = false,
   skeletonCondition,
-  displayCondition
+  displayCondition = false
 } = defineProps<{
   colName: string
   emptyCondition?: boolean
   skeletonCondition: boolean
-  displayCondition: boolean
+  displayCondition: any
 }>()
 </script>
 <template>
