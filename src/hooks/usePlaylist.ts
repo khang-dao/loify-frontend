@@ -2,6 +2,7 @@ import { ref, reactive } from 'vue'
 import { useQuery, useMutation } from '@tanstack/vue-query'
 import { useToast } from 'vue-toastification'
 import { useToggle } from '@/hooks/useToggle'
+import { deletePlaylist, deleteAllPlaylists } from '@/api'
 import * as api from '@/api'
 
 export function usePlaylist() {
@@ -14,43 +15,35 @@ export function usePlaylist() {
   const loifyTracksToggle = useToggle(false)
   const loifyPlaylistToggle = useToggle(false)
 
-  console.log(deleteModalToggle.state.value)
-
   const deselectPlaylist = () => (selectedPlaylist.value = null)
   const selectPlaylist = (e) => {
-    e.target.id === selectedPlaylist.value?.id
-      ? deselectPlaylist()
-      : (selectedPlaylist.value = playlists.data.value.find((p) => p.id === e.target.id) || null)
+    if (e.target.id === selectedPlaylist.value?.id) {
+      deselectPlaylist();
+    } else {
+      selectedPlaylist.value = playlistsQuery.data.value.find((p) => p.id === e.target.id) || null;
+    }
   }
 
-  function reset() {
-    deselectPlaylist()
-    loifyTracksToggle.toggle()
-    loifyPlaylistToggle.toggle()
-
-    loifyPlaylist.id = null
-    loifyPlaylist.name = null
-    loifyPlaylist.image = null
-    loifyPlaylist.url = null
-  }
-
-  const playlists = useQuery({
+  const playlistsQuery = useQuery({
     queryKey: ['playlistData'],
     queryFn: () => api.fetchPlaylists()
   })
+  const fetchPlaylists = () => playlistsQuery.refetch()
 
-  const tracks = useQuery({
+  const tracksQuery = useQuery({
     queryKey: ['tracksData', selectedPlaylist],
     queryFn: () => api.fetchTracks(selectedPlaylist.value.id),
   })
+  const fetchTracks = () => tracksQuery.refetch()
 
-  const loifyTracks = useQuery({
+  const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
     queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value.id),
     enabled: false  // TODO: do i need this when selectedPlaylist is in the queryKey?
   })
+  const fetchLoifyTracks = () => loifyTracksToggle.toggle() && loifyTracksQuery.refetch();
 
-  const createPlaylist = useMutation({
+  const createPlaylistMutation = useMutation({
     mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value.id),
     onSuccess: (data) => {
       Object.assign(loifyPlaylist, {
@@ -62,18 +55,33 @@ export function usePlaylist() {
       toast('New playlist created! Just fetching data...')
       loifyPlaylistImage.refetch()
         .then(imageUrl => loifyPlaylist.image = imageUrl.data)
-
     },
     onError: (error) => {
       toast(error.message || 'An error occurred while creating the playlist')
     }
   })
+  const createPlaylist = () => loifyPlaylistToggle.toggle() && createPlaylistMutation.mutate();
 
   const loifyPlaylistImage = useQuery({
     queryKey: ['playlistImage', loifyPlaylist.id],
     queryFn: () => api.fetchPlaylistImage(loifyPlaylist.id),
     enabled: false
   })
+
+  const deletePlaylistAndRefetch = async (playlistId) => await deletePlaylist(playlistId) && playlistsQuery.refetch()
+  const deleteAllPlaylistsAndRefetch = async () => await deleteAllPlaylists() && playlistsQuery.refetch()
+
+  const reset = () => {
+    deselectPlaylist()
+    loifyTracksToggle.toggle()
+    loifyPlaylistToggle.toggle()
+
+    loifyPlaylist.id = null
+    loifyPlaylist.name = null
+    loifyPlaylist.image = null
+    loifyPlaylist.url = null
+    playlistsQuery.refetch()
+  }
 
   return {
     // state:
@@ -83,19 +91,26 @@ export function usePlaylist() {
     actions: {
       selectPlaylist,
       deselectPlaylist,
-      createPlaylist: createPlaylist.mutate,
-      reset
-    },
-    queries: {
-      playlists,
-      tracks,
-      loifyTracks,
-      loifyPlaylistImage
+      fetchPlaylists,
+      fetchTracks,
+      fetchLoifyTracks,
+      createPlaylist,
+      reset,
+      deletePlaylistAndRefetch,
+      deleteAllPlaylistsAndRefetch
     },
     toggles: {
       deleteModalToggle,
       loifyTracksToggle,
       loifyPlaylistToggle
+    },
+    queries: {
+      playlistsQuery,
+      tracksQuery,
+      loifyTracksQuery,
+    },
+    mutations: {
+      createPlaylistMutation
     }
   }
 }

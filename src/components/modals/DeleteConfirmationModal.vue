@@ -1,16 +1,15 @@
 <script setup lang="ts">
+
 const {
-  visible,
   title = 'Confirm Delete',
   message = 'Are you sure you want to delete?',
   onConfirmDelete,
   onCancelDelete
-} = defineProps<{ visible: boolean; title?: string; message?: string; onConfirmDelete: () => void, onCancelDelete:() => void }>()
-
+} = defineProps<{ title?: string; message?: string; onConfirmDelete: () => void, onCancelDelete:() => void }>()
 </script>
 
 <template>
-  <div class="modal-overlay" v-if="visible">
+  <div class="modal-overlay">
     <div class="modal">
       <h3 class="modal-title">{{ title }}</h3>
       <p class="modal-message">{{ message }}</p>

@@ -18,6 +18,19 @@ export async function createLoifyPlaylist(playlistId) { // TODO: make `genre` a 
 }
 
 /**
+ * Deletes playlists by playlistId.
+ * @param {string} playlistId - The ID of the playlist.
+ * @returns {Promise} Axios delete request promise.
+ */
+export async function deletePlaylist(playlistId) {
+  try {
+    return await client.delete(`/me/playlists/${playlistId}`)
+  } catch (error) {
+    throw new Error('Failed to delete playlists.')
+  }
+}
+
+/**
  * Deletes all playlists associated with the user.
  * @returns {Promise} Axios delete request promise.
  */

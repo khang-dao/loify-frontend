@@ -9,23 +9,17 @@ import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { usePlaylist } from '@/hooks/usePlaylist'
-import { deleteAllPlaylists } from '@/api/playlist'
 import { openUrlInNewTab } from '@/utils/browser'
 
 const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlaylist()
-
-const fetchAndShowLoifyTracks = () => toggles.loifyTracksToggle.toggle() && queries.loifyTracks.refetch();
-const createAndShowLoifyPlaylist = () => toggles.loifyPlaylistToggle.toggle() && actions.createPlaylist();
-// const deleteAndRefetchPlaylist = async () => await deleteAllPlaylists() && queries.playlists.refetch()
-const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && queries.playlists.refetch()
 </script>
 
 <template>
   <main class="main">
     <DeleteConfirmationModal
+      v-show=toggles.deleteModalToggle.state.value
       message="Are you sure you want to delete all loify playlists?"
-      :visible="toggles.deleteModalToggle.state.value"
-      :onConfirmDelete="deleteAndRefetchAllPlaylists"
+      :onConfirmDelete="() => { toggles.deleteModalToggle.toggle(); actions.deleteAllPlaylistsAndRefetch() }"
       :onCancelDelete="toggles.deleteModalToggle.toggle"
     />
 
@@ -37,7 +31,7 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
       <PlaylistPreview
         @click="openUrlInNewTab(loifyPlaylist.url)"
         :playlistName="loifyPlaylist.name"
-        :imgSrc="queries.loifyPlaylistImage.data.value"
+        :imgSrc="loifyPlaylist.image"
         v-if="loifyPlaylist.image"
         >n e w<br />p l a y l i s t</PlaylistPreview
       >
@@ -64,8 +58,8 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
     <!-- Playlists Column -->
     <Column
       colName="p l a y l i s t s"
-      :skeletonCondition="queries.playlists.isFetching.value"
-      :displayCondition="queries.playlists.data.value"
+      :skeletonCondition="queries.playlistsQuery.isFetching.value"
+      :displayCondition="queries.playlistsQuery.data.value"
       v-else
     >
       <template #header-icon>
@@ -75,23 +69,23 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
       </template>
       <template #main-content>
         <PlaylistItem
-          v-for="item in queries.playlists.data.value"
+          v-for="item in queries.playlistsQuery.data.value"
           @click="actions.selectPlaylist"
           :selected="selectedPlaylist?.id === item.id"
           :playlistId="item.id"
           :key="item.id"
           :playlistName="item.name"
           :imgSrc="item.image"
+          :handleDelete="actions.deletePlaylistAndRefetch"
         />
       </template>
       <template #header-icon-2>
-        <!-- TODO: v-if -->
         <FontAwesomeIcon
           v-tooltip.top-end="'delete loify playlists'"
           :icon="['fas', 'trash']"
           @click="toggles.deleteModalToggle.toggle"
           class="icon logout"
-          v-if="queries.playlists.data.value"
+          v-if="queries.playlistsQuery.data.value"
         />
       </template>
     </Column>
@@ -100,8 +94,8 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
     <Column
       colName="s o n g s"
       :emptyCondition="!selectedPlaylist"
-      :skeletonCondition="queries.tracks.isFetching.value"
-      :displayCondition="queries.tracks.data.value"
+      :skeletonCondition="queries.tracksQuery.isFetching.value"
+      :displayCondition="queries.tracksQuery.data.value"
     >
       <template #header-icon>
         <FontAwesomeIcon
@@ -113,7 +107,7 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
       </template>
       <template #main-content>
         <TrackItem
-          v-for="item in queries.tracks.data.value"
+          v-for="item in queries.tracksQuery.data.value"
           :key="item.id"
           :trackName="item.name"
           :artistName="item.artist"
@@ -126,14 +120,14 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
     <Column
       colName="l o i f y"
       :emptyCondition="!toggles.loifyTracksToggle.state.value && !selectedPlaylist"
-      :skeletonCondition="queries.loifyTracks.isFetching.value && toggles.loifyTracksToggle.state.value"
+      :skeletonCondition="queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value"
       :displayCondition="!!selectedPlaylist && toggles.loifyTracksToggle.state.value"
     >
       <template #extra>
         <ThemeButton
-          @click="fetchAndShowLoifyTracks"
+          @click="actions.fetchLoifyTracks"
           class="loify-button"
-          v-if="selectedPlaylist && queries.tracks.data.value && !toggles.loifyTracksToggle.state.value"
+          v-if="selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value"
         >
           g e n e r a t e
         </ThemeButton>
@@ -143,18 +137,18 @@ const deleteAndRefetchAllPlaylists = async () => await deleteAllPlaylists() && q
           v-tooltip.top-start="'add playlist to spotify!'"
           :icon="['fas', 'plus']"
           class="icon plus"
-          @click="createAndShowLoifyPlaylist"
+          @click="actions.createPlaylist"
           v-if="
             selectedPlaylist &&
             toggles.loifyTracksToggle.state.value &&
-            queries.loifyTracks.data.value &&
+            queries.loifyTracksQuery.data.value &&
             !toggles.loifyPlaylistToggle.state.value
           "
         />
       </template>
       <template #main-content>
         <TrackItem
-          v-for="item in queries.loifyTracks.data.value"
+          v-for="item in queries.loifyTracksQuery.data.value"
           :key="item.id"
           :trackName="item.name"
           :artistName="item.artist"
