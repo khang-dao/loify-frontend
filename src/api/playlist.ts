@@ -77,9 +77,7 @@ export async function fetchPlaylistImage(playlistId?: string) {
     throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
   }
   try {
-    console.log("FETCHING NEW IAMGE")
     const response = await client.get(`/playlists/${playlistId}`)
-    console.log("url: ", response.data.images[0].url)
     return response.data.images[0].url
   } catch (error) {
     throw new Error('Failed to fetch playlist image.')
