@@ -1,4 +1,5 @@
 import client from '@/api/client';
+import { Genre } from '@/types/genre'
 
 
 // TODO: Create interface for `item` and replace all `item: any` refs
@@ -8,14 +9,12 @@ import client from '@/api/client';
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Object} Created playlist object.
  */
-export async function createLoifyPlaylist(playlistId?: string) { // TODO: make `genre` a param
+export async function createLoifyPlaylist(playlistId?: string, genre?: Genre) {
   if (!playlistId) {
     throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
   }
   try {
-    const response = await client.post(`/playlists/${playlistId}/loify?genre=lofi`, {
-      withCredentials: true
-    })
+    const response = await client.post(`/playlists/${playlistId}/loify?genre=${genre || Genre.Lofi}`)
     return response.data
   } catch (error) {
     throw new Error('Failed to create loify playlist.')
