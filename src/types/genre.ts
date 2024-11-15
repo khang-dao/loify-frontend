@@ -1,6 +1,6 @@
 export enum Genre {
-  Lofi = "lofi",
-  Hardstyle = "hardstyle",
-  Jazz = "jazz",
-  Piano = "piano",
+  LOFI = "lofi",
+  HARSTYLE = "hardstyle",
+  JAZZ = "jazz",
+  PIANO = "piano",
 }
