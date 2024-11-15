@@ -10,16 +10,26 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import { usePlaylist } from '@/hooks/usePlaylist'
 import { openUrlInNewTab } from '@/utils/browser'
+import { addSpacesBetweenChars } from '@/utils/string'
 
-const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlaylist()
+import MultiSelect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+import { Genre } from '@/types/genre'
+
+const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlaylist()
 </script>
 
 <template>
   <main class="main">
     <DeleteConfirmationModal
-      v-show=toggles.deleteModalToggle.state.value
+      v-show="toggles.deleteModalToggle.state.value"
       message="Are you sure you want to delete all loify playlists?"
-      :onConfirmDelete="() => { toggles.deleteModalToggle.toggle(); actions.deleteAllPlaylistsAndRefetch() }"
+      :onConfirmDelete="
+        () => {
+          toggles.deleteModalToggle.toggle()
+          actions.deleteAllPlaylistsAndRefetch()
+        }
+      "
       :onCancelDelete="toggles.deleteModalToggle.toggle"
     />
 
@@ -57,7 +67,7 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
 
     <!-- Playlists Column -->
     <Column
-      colName="p l a y l i s t s"
+      :colName="`${addSpacesBetweenChars('playlists')}`"
       :skeletonCondition="queries.playlistsQuery.isFetching.value"
       :displayCondition="queries.playlistsQuery.data.value"
       v-else
@@ -92,7 +102,7 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
 
     <!-- Songs Column -->
     <Column
-      colName="s o n g s"
+      :colName="`${addSpacesBetweenChars('songs')}`"
       :emptyCondition="!selectedPlaylist"
       :skeletonCondition="queries.tracksQuery.isFetching.value"
       :displayCondition="queries.tracksQuery.data.value"
@@ -118,21 +128,54 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
 
     <!-- Loify Column -->
     <Column
-      colName="l o i f y"
+    :colName="`${selectedGenre ? addSpacesBetweenChars('loify') + ` (${selectedGenre})` : addSpacesBetweenChars('loify')}`"
       :emptyCondition="!toggles.loifyTracksToggle.state.value && !selectedPlaylist"
-      :skeletonCondition="queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value"
+      :skeletonCondition="
+        queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
+      "
       :displayCondition="!!selectedPlaylist && toggles.loifyTracksToggle.state.value"
     >
       <template #extra>
+        <MultiSelect
+          v-model="selectedGenre"
+          :options="Object.values(Genre)"
+          placeholder="Select an genre"
+          v-if="
+            selectedPlaylist &&
+            queries.tracksQuery.data.value &&
+            !toggles.loifyTracksToggle.state.value
+          "
+        />
         <ThemeButton
           @click="actions.fetchLoifyTracks"
           class="loify-button"
-          v-if="selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value"
+          v-if="
+            selectedPlaylist &&
+            queries.tracksQuery.data.value &&
+            !toggles.loifyTracksToggle.state.value
+          "
         >
           g e n e r a t e
         </ThemeButton>
       </template>
       <template #header-icon>
+        <FontAwesomeIcon
+          :icon="['fas', 'caret-left']"
+          class="icon back-arrow"
+          @click="toggles.loifyTracksToggle.toggle"
+          v-if="selectedPlaylist && !toggles.loifyPlaylistToggle.state.value"
+        />
+      </template>
+      <template #main-content>
+        <TrackItem
+          v-for="item in queries.loifyTracksQuery.data.value"
+          :key="item.id"
+          :trackName="item.name"
+          :artistName="item.artist"
+          :imgSrc="item.image"
+        />
+      </template>
+      <template #header-icon-2>
         <FontAwesomeIcon
           v-tooltip.top-start="'add playlist to spotify!'"
           :icon="['fas', 'plus']"
@@ -141,18 +184,9 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
           v-if="
             selectedPlaylist &&
             toggles.loifyTracksToggle.state.value &&
-            queries.loifyTracksQuery.data.value &&
+            !queries.loifyTracksQuery.isFetching.value &&
             !toggles.loifyPlaylistToggle.state.value
           "
-        />
-      </template>
-      <template #main-content>
-        <TrackItem
-          v-for="item in queries.loifyTracksQuery.data.value"
-          :key="item.id"
-          :trackName="item.name" 
-          :artistName="item.artist"
-          :imgSrc="item.image"
         />
       </template>
     </Column>
@@ -205,5 +239,9 @@ const { selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlayli
 
 .icon.plus {
   font-size: 1.75rem;
+}
+
+.multiselect {
+  font-family: "League Spartan", sans-serif;
 }
 </style>

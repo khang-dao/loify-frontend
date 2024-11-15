@@ -5,10 +5,13 @@ import { useToggle } from '@/hooks/useToggle'
 import { deletePlaylist, deleteAllPlaylists } from '@/api'
 import * as api from '@/api'
 import type { Playlist } from '@/types/playlist'
+import { Genre } from '@/types/genre'
+import { customSort } from '@/utils/string'
 
 export function usePlaylist() {
   const toast = useToast()
 
+  const selectedGenre = ref<Genre | undefined>(undefined)
   const selectedPlaylist = ref<Playlist | undefined>(undefined)
   const loifyPlaylist = reactive<Playlist>({ id: undefined, name: undefined, image: undefined, url: undefined })
 
@@ -29,7 +32,7 @@ export function usePlaylist() {
 
   const playlistsQuery = useQuery({
     queryKey: ['playlistData'],
-    queryFn: () => api.fetchPlaylists()
+    queryFn: () => api.fetchPlaylists().then((playlists) => customSort(playlists))
   })
   const fetchPlaylists = () => playlistsQuery.refetch()
 
@@ -41,13 +44,18 @@ export function usePlaylist() {
 
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
-    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id),
+    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value),
     enabled: false  // TODO: do i need this when selectedPlaylist is in the queryKey?
   })
-  const fetchLoifyTracks = () => loifyTracksToggle.toggle() && loifyTracksQuery.refetch();
+  const fetchLoifyTracks = () => {
+    if (selectedGenre.value){
+      loifyTracksToggle.toggle()
+      loifyTracksQuery.refetch();
+    }
+  }
 
   const createPlaylistMutation = useMutation({
-    mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id),
+    mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id, selectedGenre.value),
     onSuccess: (data) => {
       Object.assign(loifyPlaylist, {
         id: data.id,
@@ -88,6 +96,7 @@ export function usePlaylist() {
 
   return {
     // state:
+    selectedGenre,
     selectedPlaylist,
     loifyPlaylist,
 

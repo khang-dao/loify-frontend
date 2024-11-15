@@ -1,4 +1,5 @@
 import client from '@/api/client'
+import { Genre } from '@/types/genre'
 
 
 // TODO: Create interface for `item` and replace all `item: any` refs
@@ -30,13 +31,12 @@ export async function fetchTracks(playlistId?: string) {
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Array} List of loify track objects.
  */
-export async function fetchLoifyTracks(playlistId?: string) {
-  // TODO: make `genre` a param
+export async function fetchLoifyTracks(playlistId?: string, genre?: Genre) {
   if (!playlistId) {
     throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
   }
   try {
-    const response = await client.get(`/playlists/${playlistId}/loify?genre=lofi`)
+    const response = await client.get(`/playlists/${playlistId}/loify?genre=${genre || Genre.Lofi}`)
     return response.data
       .filter((item: any) => item?.tracks?.items?.[0]?.id)
       .map((item: any) => ({
