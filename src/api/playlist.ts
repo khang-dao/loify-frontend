@@ -14,7 +14,7 @@ export async function createLoifyPlaylist(playlistId?: string, genre?: Genre) {
     throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
   }
   try {
-    const response = await client.post(`/playlists/${playlistId}/loify?genre=${genre || Genre.Lofi}`)
+    const response = await client.post(`/playlists/${playlistId}/loify?genre=${genre || Genre.LOFI}`)
     return response.data
   } catch (error) {
     throw new Error('Failed to create loify playlist.')
