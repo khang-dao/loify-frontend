@@ -19,10 +19,6 @@ import { RouterLink } from 'vue-router'
   display: flex;
   align-items: center;
   justify-content: center;
-
-
-  /* width: 100vw; Full viewport width */
-  /* height: 100vh; Full viewport height */
 }
 
 .container {

@@ -25,7 +25,7 @@ const pinia = createPinia()
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnWindowFocus: false, // Avoid refetching when window regains focus
+      refetchOnWindowFocus: false,
       retry: 2,
       retryDelay: 8000,
     },
