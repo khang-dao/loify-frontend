@@ -128,7 +128,7 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
 
     <!-- Loify Column -->
     <Column
-    :colName="`${selectedGenre ? addSpacesBetweenChars('loify') + ` (${selectedGenre})` : addSpacesBetweenChars('loify')}`"
+      :colName="`${selectedGenre ? addSpacesBetweenChars('loify') + ` (${selectedGenre})` : addSpacesBetweenChars('loify')}`"
       :emptyCondition="!toggles.loifyTracksToggle.state.value && !selectedPlaylist"
       :skeletonCondition="
         queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
@@ -162,8 +162,12 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
         <FontAwesomeIcon
           :icon="['fas', 'caret-left']"
           class="icon back-arrow"
-          @click="toggles.loifyTracksToggle.toggle"
-          v-if="selectedPlaylist && !toggles.loifyPlaylistToggle.state.value"
+          @click="toggles.loifyTracksToggle.toggleOff"
+          v-if="
+            selectedPlaylist &&
+            !toggles.loifyPlaylistToggle.state.value &&
+            toggles.loifyTracksToggle.state.value
+          "
         />
       </template>
       <template #main-content>
@@ -242,6 +246,6 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
 }
 
 .multiselect {
-  font-family: "League Spartan", sans-serif;
+  font-family: 'League Spartan', sans-serif;
 }
 </style>
