@@ -1,12 +1,14 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+import config from '@/config'
+import { useUserStore } from '@/stores/user'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
-import LoifyView from '@/views/LoifyView.vue'
-import { useUserStore } from '@/stores/user'
 import LogoutView from '@/views/LogoutView.vue'
+import LoifyView from '@/views/LoifyView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(config.apiBaseUrl),
   routes: [
     {
       path: '/',
@@ -32,7 +34,7 @@ const router = createRouter({
           if (!userStore.user.isLoggedIn) {
             !(await userStore.updateAuthStatus()) && next({ name: 'login' })
           }
-        } catch (error) {
+        } catch {
           next({ name: 'login' })
         }
         next()

@@ -2,13 +2,12 @@
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import { provide } from 'vue'
 
-import { usePlaylist } from '@/hooks/usePlaylist'
-
 import LoifyPlaylistColumn from '@/components/columns/LoifyPlaylistColumn.vue'
+import LoifyTrackColumn from '@/components/columns/LoifyTrackColumn.vue'
 import PlaylistColumn from '@/components/columns/PlaylistColumn.vue'
 import TrackColumn from '@/components/columns/TrackColumn.vue'
-import LoifyTrackColumn from '@/components/columns/LoifyTrackColumn.vue'
 import DeleteConfirmationModal from '@/components/modals/DeleteConfirmationModal.vue'
+import { usePlaylist } from '@/hooks/usePlaylist'
 
 const playlistState = usePlaylist()
 provide('playlistState', playlistState)

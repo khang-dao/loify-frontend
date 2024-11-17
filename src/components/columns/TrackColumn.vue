@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import TrackItem from '@/components/columns/items/TrackItem.vue'
-import Column from '@/components/columns/Column.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-
-import { addSpacesBetweenChars } from '@/utils/string'
-
-import 'vue-multiselect/dist/vue-multiselect.min.css'
 import { computed, inject } from 'vue'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
+import Column from '@/components/columns/Column.vue'
+import TrackItem from '@/components/columns/items/TrackItem.vue'
+import { addSpacesBetweenChars } from '@/utils/string'
 
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')

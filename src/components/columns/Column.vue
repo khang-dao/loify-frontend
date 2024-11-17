@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <script setup lang="ts">
-import FadeTransition from '@/components/transitions/FadeTransition.vue'
 import ItemSkeleton from '@/components/skeletons/ItemSkeleton.vue'
+import FadeTransition from '@/components/transitions/FadeTransition.vue'
 
 const {
   colName,

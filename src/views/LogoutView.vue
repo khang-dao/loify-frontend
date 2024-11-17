@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router'
+
 import { useUserStore } from '@/stores/user'
 
 const { user, logout } = useUserStore()

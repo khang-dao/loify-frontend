@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { containsLoify } from '@/utils/string'
 import { reactive } from 'vue'
+
+import { containsLoify } from '@/utils/string'
 
 const props = defineProps<{
   playlistId: string

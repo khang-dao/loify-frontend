@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { inject } from 'vue'
-import { addSpacesBetweenChars } from '@/utils/string'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import PlaylistItem from '@/components/columns/items/PlaylistItem.vue'
+import { inject } from 'vue'
+
 import Column from '@/components/columns/Column.vue'
+import PlaylistItem from '@/components/columns/items/PlaylistItem.vue'
+import { addSpacesBetweenChars } from '@/utils/string'
 
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
