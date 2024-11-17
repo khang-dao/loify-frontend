@@ -26,10 +26,10 @@ img {
 /* Global Styling */
 
 body {
-  background-image: url('/images/main-background.png'); /* Path to your image */
-  background-size: cover; /* Ensures the image covers the entire element */
-  background-position: center; /* Centers the image */
-  background-repeat: no-repeat; /* Prevents tiling/repeating of the image */
+  background-image: url('/images/main-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 @font-face {

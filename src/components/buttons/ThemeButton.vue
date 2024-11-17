@@ -19,11 +19,10 @@ button {
   border: none;
   border-radius: 1rem;
 
-  /* Flexbox for centering text */
   background-color: #837f94;
   display: flex;
-  align-items: center; /* Vertically centers text */
-  justify-content: center; /* Horizontally centers text */
+  align-items: center;
+  justify-content: center;
 
   white-space: nowrap;
 }

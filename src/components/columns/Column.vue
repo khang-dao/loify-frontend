@@ -32,7 +32,6 @@ const {
         </header>
         <slot name="extra" />
 
-        <!-- <div class="item-container"> -->
         <div :class="['item-container', { skeleton: skeletonCondition }]">
           <template v-if="skeletonCondition">
             <ItemSkeleton v-for="i in 20" :key="i" />

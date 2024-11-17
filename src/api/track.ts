@@ -36,7 +36,7 @@ export async function fetchLoifyTracks(playlistId?: string, genre?: Genre) {
     throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
   }
   try {
-    const response = await client.get(`/playlists/${playlistId}/loify?genre=${genre || Genre.Lofi}`)
+    const response = await client.get(`/playlists/${playlistId}/loify?genre=${genre || Genre.LOFI}`)
     return response.data
       .filter((item: any) => item?.tracks?.items?.[0]?.id)
       .map((item: any) => ({

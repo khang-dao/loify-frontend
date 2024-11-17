@@ -45,7 +45,6 @@ export function usePlaylist() {
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
     queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value),
-    enabled: false  // TODO: do i need this when selectedPlaylist is in the queryKey?
   })
   const fetchLoifyTracks = () => {
     if (selectedGenre.value){
