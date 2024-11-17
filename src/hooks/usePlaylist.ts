@@ -34,6 +34,7 @@ export function usePlaylist() {
       loifyTracksToggle.toggleOff()
       selectedPlaylist.value =
         playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
+      tracksQuery.refetch()
     }
   }
 
@@ -45,13 +46,15 @@ export function usePlaylist() {
 
   const tracksQuery = useQuery({
     queryKey: ['tracksData', selectedPlaylist],
-    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id)
+    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id),
+    enabled: false
   })
   const fetchTracks = () => tracksQuery.refetch()
 
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
-    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value)
+    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value),
+    enabled: false
   })
   const fetchLoifyTracks = () => {
     if (selectedGenre.value) {
