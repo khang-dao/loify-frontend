@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import PlaylistPreview from '@/components/PlaylistPreview.vue'
+import PlaylistPreview from '@/components/column-items/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { openUrlInNewTab } from '@/utils/browser'

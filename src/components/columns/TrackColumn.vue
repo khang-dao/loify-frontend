@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TrackItem from '@/components/TrackItem.vue'
+import TrackItem from '@/components/column-items/TrackItem.vue'
 import Column from '@/components/columns/Column.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
