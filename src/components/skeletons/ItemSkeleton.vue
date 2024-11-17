@@ -5,8 +5,8 @@
     <div class="picture"></div>
 
     <div class="text-container">
-        <div class="heading"></div>
-        <div class="sub-heading"></div>
+      <div class="heading"></div>
+      <div class="sub-heading"></div>
     </div>
   </div>
 </template>

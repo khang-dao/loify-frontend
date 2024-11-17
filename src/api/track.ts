@@ -1,7 +1,6 @@
 import client from '@/api/client'
 import { Genre } from '@/types/genre'
 
-
 // TODO: Create interface for `item` and replace all `item: any` refs
 
 /**

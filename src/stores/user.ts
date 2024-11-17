@@ -17,10 +17,9 @@ export const useUserStore = defineStore('user', () => {
   async function logout() {
     try {
       await client.get('/auth/session/logout')
-      window.open("https://accounts.spotify.com/logout", "_blank", "noopener,noreferrer");
+      window.open('https://accounts.spotify.com/logout', '_blank', 'noopener,noreferrer')
       user.value.isLoggedIn = false
-    }
-    catch (error){
+    } catch (error) {
       console.log(`Error logging out: ${error}`)
     }
   }
@@ -28,6 +27,6 @@ export const useUserStore = defineStore('user', () => {
   return {
     user,
     updateAuthStatus,
-    logout,
+    logout
   }
 })

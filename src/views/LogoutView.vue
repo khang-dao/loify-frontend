@@ -6,7 +6,6 @@ const { user, logout } = useUserStore()
 user.isLoggedIn && logout()
 </script>
 
-
 <template>
   <main class="main">
     <div class="container">
@@ -38,7 +37,7 @@ user.isLoggedIn && logout()
   font-family: 'League Spartan', sans-serif;
   margin: 10rem;
   text-align: center;
-  color: #000000
+  color: #000000;
 }
 
 .heading-container {

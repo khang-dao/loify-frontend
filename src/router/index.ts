@@ -42,9 +42,9 @@ const router = createRouter({
     {
       path: '/logout',
       name: 'logout',
-      component: LogoutView,
+      component: LogoutView
       // TODO: Implement this --> beforeEnter: (to, from, next) => {}
-    },
+    }
   ]
 })
 

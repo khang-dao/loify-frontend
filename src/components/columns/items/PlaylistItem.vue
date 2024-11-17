@@ -1,38 +1,54 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { containsLoify } from '@/utils/string';
-import { reactive } from 'vue';
+import { containsLoify } from '@/utils/string'
+import { reactive } from 'vue'
 
 const props = defineProps<{
-  playlistId: string;
-  playlistName: string;
-  imgSrc?: string;
-  imgAlt?: string;
-  selected: boolean;
-  handleDelete: (id: string) => void; 
-}>();
+  playlistId: string
+  playlistName: string
+  imgSrc?: string
+  imgAlt?: string
+  selected: boolean
+  handleDelete: (id: string) => void
+}>()
 
-const imgAlt = props.imgAlt ?? "Cannot load image";
+const imgAlt = props.imgAlt ?? 'Cannot load image'
 const isLoifyPlaylist = containsLoify(props.playlistName)
-
 
 const deleteButton = reactive({ isSelected: false, isConfirmed: false })
 const handleDelete = async () => {
   if (!deleteButton.isSelected) {
-      deleteButton.isSelected = true;
+    deleteButton.isSelected = true
   } else {
-      deleteButton.isConfirmed = true;
-      props.handleDelete(props.playlistId)
+    deleteButton.isConfirmed = true
+    props.handleDelete(props.playlistId)
   }
 }
-
 </script>
 
 <template>
-  <div :class="['container', { selected: selected }]" :id="playlistId">   <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
-    <img :class="[ { selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>
-    <h3 :id="playlistId">{{ playlistName }}</h3>    
-    <FontAwesomeIcon :icon="['fas', 'circle-minus']" class="icon delete" :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]" v-if="isLoifyPlaylist && !deleteButton.isConfirmed" :onClick="handleDelete"/>
+  <div :class="['container', { selected: selected }]" :id="playlistId">
+    <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
+    <img
+      :class="[{ selected: selected }]"
+      :src="imgSrc"
+      :alt="imgAlt"
+      width="100"
+      height="100"
+      :id="playlistId"
+    />
+    <h3 :id="playlistId">{{ playlistName }}</h3>
+    <FontAwesomeIcon
+      :icon="['fas', 'circle-minus']"
+      class="icon delete"
+      :class="[
+        'icon',
+        'delete',
+        { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }
+      ]"
+      v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
+      :onClick="handleDelete"
+    />
   </div>
 </template>
 
@@ -48,7 +64,7 @@ const handleDelete = async () => {
 h3 {
   flex-grow: 1;
   font-family: 'League Spartan', sans-serif;
-  color: #000000
+  color: #000000;
 }
 
 .selected.container {
@@ -56,7 +72,7 @@ h3 {
 }
 
 div.selected {
-  background-color: #837F94;
+  background-color: #837f94;
   padding: 0.7rem;
   border-radius: 0.3rem;
 }

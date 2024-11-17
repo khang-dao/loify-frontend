@@ -1,10 +1,9 @@
-import axios from 'axios';
+import axios from 'axios'
 import config from '@/config'
 
 const client = axios.create({
   baseURL: config.apiBaseUrl,
-  withCredentials: true,
-});
+  withCredentials: true
+})
 
-
-export default client;
+export default client
