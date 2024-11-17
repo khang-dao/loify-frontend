@@ -2,7 +2,7 @@
 import { inject } from 'vue'
 import { addSpacesBetweenChars } from '@/utils/string'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import PlaylistItem from '@/components/column-items/PlaylistItem.vue'
+import PlaylistItem from '@/components/columns/items/PlaylistItem.vue'
 import Column from '@/components/columns/Column.vue'
 
 const playlistState: any = inject('playlistState')
