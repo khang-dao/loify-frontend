@@ -1,11 +1,15 @@
 <script setup lang="ts">
-
 const {
   title = 'Confirm Delete',
   message = 'Are you sure you want to delete?',
   onConfirmDelete,
   onCancelDelete
-} = defineProps<{ title?: string; message?: string; onConfirmDelete: () => void, onCancelDelete:() => void }>()
+} = defineProps<{
+  title?: string
+  message?: string
+  onConfirmDelete: () => void
+  onCancelDelete: () => void
+}>()
 </script>
 
 <template>

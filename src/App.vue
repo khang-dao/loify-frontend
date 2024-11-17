@@ -11,5 +11,4 @@ import FadeTransition from '@/components/transitions/FadeTransition.vue'
   </RouterView>
 </template>
 
-<style scoped> 
-</style>
+<style scoped></style>

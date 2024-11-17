@@ -2,7 +2,7 @@
   <div class="container">
     <h2 class="playlist-heading">N E W<br />P L A Y L I S T</h2>
     <div class="picture"></div>
-    <h2 class="playlist-name">loading...  </h2>
+    <h2 class="playlist-name">loading...</h2>
   </div>
 </template>
 

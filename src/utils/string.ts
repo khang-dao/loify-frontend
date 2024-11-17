@@ -1,15 +1,24 @@
-export const containsLoify = (str: string) => str.toLowerCase().includes("loify");
-export const addSpacesBetweenChars = (str: string) => str.split('').join(' ');
-const nonAlphaNum = (str: string) => /^[^\w\s]/.test(str);
+export const containsLoify = (str: string) => str.toLowerCase().includes('loify')
+export const addSpacesBetweenChars = (str: string) => str.split('').join(' ')
+const nonAlphaNum = (str: string) => /^[^\w\s]/.test(str)
 
-// Utility function to sort by name, putting emoji-starting items at the end
+// Custom sort : 'loify' items at the start & emoji items at the end
 export const customSort = (arr) => {
   return arr.sort((a, b) => {
-    const aIsEmoji = nonAlphaNum(a.name);
-    const bIsEmoji = nonAlphaNum(b.name);
+    const aIsLoify = a.name.includes('loify')
+    const bIsLoify = b.name.includes('loify')
+    const aIsEmoji = nonAlphaNum(a.name)
+    const bIsEmoji = nonAlphaNum(b.name)
 
-    if (aIsEmoji && !bIsEmoji) return 1;
-    if (bIsEmoji && !aIsEmoji) return -1;
-    return a.name.localeCompare(b.name);
-  });
-};
+    // Prioritize "loify" elements first, in the order they appear
+    if (aIsLoify && !bIsLoify) return -1
+    if (bIsLoify && !aIsLoify) return 1
+
+    // Handle the emoji sorting logic
+    if (aIsEmoji && !bIsEmoji) return 1
+    if (bIsEmoji && !aIsEmoji) return -1
+
+    // Regular alphabetical sorting
+    return a.name.localeCompare(b.name)
+  })
+}

@@ -25,5 +25,6 @@ button {
   justify-content: center;
 
   white-space: nowrap;
+  cursor: pointer;
 }
 </style>

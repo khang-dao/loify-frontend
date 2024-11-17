@@ -4,10 +4,10 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <main class="main">
-    <img src="">
+    <img src="" />
     <div class="container">
       <h1 class="heading">Welcome to</h1>
-      <img src="/images/loify-logo.png">
+      <img src="/images/loify-logo.png" />
       <RouterLink class="subheading" to="/login">click to begin</RouterLink>
     </div>
   </main>
@@ -27,10 +27,10 @@ import { RouterLink } from 'vue-router'
   align-items: center;
   gap: 1rem;
   font-family: 'League Spartan', sans-serif;
-  
+
   img {
     width: 13rem;
-    height: auto
+    height: auto;
   }
 }
 

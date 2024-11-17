@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import TrackItem from '@/components/column-items/TrackItem.vue'
+import TrackItem from '@/components/columns/items/TrackItem.vue'
 import Column from '@/components/columns/Column.vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -14,7 +14,7 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, queries, actions, toggles } = playlistState
 
 const shouldShowTracksBackArrow = computed(
-  () => selectedPlaylist && !toggles.loifyPlaylistToggle.state.value
+  () => selectedPlaylist.value && !toggles.loifyPlaylistToggle.state.value
 )
 </script>
 

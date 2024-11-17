@@ -1,5 +1,4 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <main class="main">
@@ -42,6 +41,6 @@
   text-decoration: none;
   font-size: 1rem;
   color: #000000;
-  cursor: pointer
+  cursor: pointer;
 }
 </style>

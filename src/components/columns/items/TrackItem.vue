@@ -1,5 +1,10 @@
 <script setup lang="ts">
-const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } = defineProps<{
+const {
+  trackName = 'N/A',
+  artistName = 'N/A',
+  imgSrc,
+  imgAlt = 'Cannot load image'
+} = defineProps<{
   trackName: string
   artistName: string
   imgSrc?: string
@@ -9,7 +14,7 @@ const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } 
 
 <template>
   <div class="container">
-    <img :src="imgSrc" :alt="imgAlt" width="100" height="100"/>
+    <img :src="imgSrc" :alt="imgAlt" width="100" height="100" />
 
     <div class="text-container">
       <h3>{{ trackName }}</h3>
@@ -33,12 +38,11 @@ const { trackName="N/A", artistName="N/A", imgSrc, imgAlt="Cannot load image" } 
   gap: 0.4rem;
 
   p {
-    color: #6A6A6A;
+    color: #6a6a6a;
   }
 }
 
 img {
   border-radius: 0.5rem;
 }
-
 </style>

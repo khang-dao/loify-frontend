@@ -11,9 +11,14 @@ import { customSort } from '@/utils/string'
 export function usePlaylist() {
   const toast = useToast()
 
-  const selectedGenre = ref<Genre | undefined>(undefined)
+  const selectedGenre = ref<Genre | undefined>(Genre.LOFI)
   const selectedPlaylist = ref<Playlist | undefined>(undefined)
-  const loifyPlaylist = reactive<Playlist>({ id: undefined, name: undefined, image: undefined, url: undefined })
+  const loifyPlaylist = reactive<Playlist>({
+    id: undefined,
+    name: undefined,
+    image: undefined,
+    url: undefined
+  })
 
   const deleteModalToggle = useToggle(false)
   const loifyTracksToggle = useToggle(false)
@@ -21,12 +26,13 @@ export function usePlaylist() {
 
   const deselectPlaylist = () => (selectedPlaylist.value = undefined)
   const selectPlaylist = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
+    const target = e.target as HTMLElement
     if (target?.id === selectedPlaylist.value?.id) {
-      deselectPlaylist();
+      deselectPlaylist()
     } else {
       loifyTracksToggle.toggleOff()
-      selectedPlaylist.value = playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined;
+      selectedPlaylist.value =
+        playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
     }
   }
 
@@ -38,18 +44,18 @@ export function usePlaylist() {
 
   const tracksQuery = useQuery({
     queryKey: ['tracksData', selectedPlaylist],
-    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id),
+    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id)
   })
   const fetchTracks = () => tracksQuery.refetch()
 
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
-    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value),
+    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value)
   })
   const fetchLoifyTracks = () => {
-    if (selectedGenre.value){
+    if (selectedGenre.value) {
       loifyTracksToggle.toggle()
-      loifyTracksQuery.refetch();
+      loifyTracksQuery.refetch()
     }
   }
 
@@ -63,14 +69,13 @@ export function usePlaylist() {
         url: data.external_urls.spotify
       })
       toast('New playlist created! Just fetching data...')
-      loifyPlaylistImage.refetch()
-        .then(imageUrl => loifyPlaylist.image = imageUrl.data)
+      loifyPlaylistImage.refetch().then((imageUrl) => (loifyPlaylist.image = imageUrl.data))
     },
     onError: (error) => {
       toast(error.message || 'An error occurred while creating the playlist')
     }
   })
-  const createPlaylist = () => loifyPlaylistToggle.toggle() && createPlaylistMutation.mutate();
+  const createPlaylist = () => loifyPlaylistToggle.toggle() && createPlaylistMutation.mutate()
 
   const loifyPlaylistImage = useQuery({
     queryKey: ['playlistImage', loifyPlaylist.id],
@@ -78,14 +83,15 @@ export function usePlaylist() {
     enabled: false
   })
 
-  const deletePlaylistAndRefetch = async (playlistId: string) => await deletePlaylist(playlistId) && playlistsQuery.refetch()
-  const deleteAllPlaylistsAndRefetch = async () => await deleteAllPlaylists() && playlistsQuery.refetch()
+  const deletePlaylistAndRefetch = async (playlistId: string) =>
+    (await deletePlaylist(playlistId)) && playlistsQuery.refetch()
+  const deleteAllPlaylistsAndRefetch = async () =>
+    (await deleteAllPlaylists()) && playlistsQuery.refetch()
 
   const reset = () => {
     deselectPlaylist()
     loifyTracksToggle.toggleOff()
     loifyPlaylistToggle.toggleOff()
-
     loifyPlaylist.id = undefined
     loifyPlaylist.name = undefined
     loifyPlaylist.image = undefined
@@ -118,7 +124,7 @@ export function usePlaylist() {
     queries: {
       playlistsQuery,
       tracksQuery,
-      loifyTracksQuery,
+      loifyTracksQuery
     },
     mutations: {
       createPlaylistMutation
