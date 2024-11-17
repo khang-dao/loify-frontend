@@ -9,16 +9,16 @@ import { Genre } from '@/types/genre'
  * @returns {Object} Created playlist object.
  */
 export async function createLoifyPlaylist(playlistId?: string, genre?: Genre) {
-  if (!playlistId) {
-    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
-  }
   try {
+    if (!playlistId) {
+      throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+    }
     const response = await client.post(
       `/playlists/${playlistId}/loify?genre=${genre || Genre.LOFI}`
     )
     return response.data
   } catch (error) {
-    throw new Error('Failed to create loify playlist.')
+    console.error(`Failed to create loify playlist: ${error}`)
   }
 }
 
@@ -29,12 +29,12 @@ export async function createLoifyPlaylist(playlistId?: string, genre?: Genre) {
  */
 export async function deletePlaylist(playlistId?: string) {
   if (!playlistId) {
-    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+    console.error(`Invalid playlist ID. Playlist ID cannot be null or undefined: ${error}`)
   }
   try {
     return await client.delete(`/me/playlists/${playlistId}`)
   } catch (error) {
-    throw new Error('Failed to delete playlists.')
+    console.error(`Failed to delete playlists: ${error}`)
   }
 }
 
@@ -46,7 +46,7 @@ export async function deleteAllPlaylists() {
   try {
     return await client.delete('/me/playlists/loify')
   } catch (error) {
-    throw new Error('Failed to delete playlists.')
+    console.error(`Failed to delete playlists: ${error}`)
   }
 }
 
@@ -63,7 +63,7 @@ export async function fetchPlaylists() {
       image: item.images?.[0]?.url
     }))
   } catch (error) {
-    throw new Error('Failed to fetch playlists.')
+    console.error(`Failed to fetch playlists: ${error}`)
   }
 }
 
@@ -73,13 +73,13 @@ export async function fetchPlaylists() {
  * @returns {string} URL of the playlist image.
  */
 export async function fetchPlaylistImage(playlistId?: string) {
-  if (!playlistId) {
-    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
-  }
   try {
+    if (!playlistId) {
+      throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+    }
     const response = await client.get(`/playlists/${playlistId}`)
     return response.data.images[0].url
   } catch (error) {
-    throw new Error('Failed to fetch playlist image.')
+    console.error(`Failed to fetch playlist image: ${error}`)
   }
 }

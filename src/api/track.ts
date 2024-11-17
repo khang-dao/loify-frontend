@@ -9,10 +9,10 @@ import { Genre } from '@/types/genre'
  * @returns {Array} List of track objects with id, name, artist, and image.
  */
 export async function fetchTracks(playlistId?: string) {
-  if (!playlistId) {
-    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
-  }
   try {
+    if (!playlistId) {
+      throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+    }
     const response = await client.get(`/playlists/${playlistId}/tracks`)
     return response.data.items.map((item: any) => ({
       id: item.track?.id,
@@ -21,7 +21,7 @@ export async function fetchTracks(playlistId?: string) {
       image: item.track?.album.images?.[0].url
     }))
   } catch (error) {
-    throw new Error('Failed to fetch tracks.')
+    console.error(`Failed to fetch tracks: ${error}`)
   }
 }
 
@@ -31,10 +31,10 @@ export async function fetchTracks(playlistId?: string) {
  * @returns {Array} List of loify track objects.
  */
 export async function fetchLoifyTracks(playlistId?: string, genre?: Genre) {
-  if (!playlistId) {
-    throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
-  }
   try {
+    if (!playlistId) {
+      throw new Error('Invalid playlist ID. Playlist ID cannot be null or undefined.')
+    }
     const response = await client.get(`/playlists/${playlistId}/loify?genre=${genre || Genre.LOFI}`)
     return response.data
       .filter((item: any) => item?.tracks?.items?.[0]?.id)
@@ -45,6 +45,6 @@ export async function fetchLoifyTracks(playlistId?: string, genre?: Genre) {
         image: item.tracks.items[0].album.images[0].url
       }))
   } catch (error) {
-    throw new Error('Failed to fetch loify tracks.')
+    console.error(`Failed to fetch loify tracks: ${error}`)
   }
 }

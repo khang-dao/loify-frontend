@@ -1,14 +1,5 @@
-import './assets/main.css'
-
-import App from './App.vue'
-import router from './router'
-
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query'
-
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 import {
   faPowerOff,
   faCaretLeft,
@@ -17,13 +8,18 @@ import {
   faCircleMinus,
   faTrash
 } from '@fortawesome/free-solid-svg-icons'
-import { faSpotify } from '@fortawesome/free-brands-svg-icons'
-
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query'
 import 'vue-toastification/dist/index.css'
-import Toast from 'vue-toastification'
-
 import FloatingVue from 'floating-vue'
+import { createPinia } from 'pinia'
+import { createApp } from 'vue'
+import Toast from 'vue-toastification'
 import 'floating-vue/dist/style.css'
+
+import App from '@/App.vue'
+import router from '@/router'
+import '@/assets/main.css'
 
 const app = createApp(App)
 const pinia = createPinia()

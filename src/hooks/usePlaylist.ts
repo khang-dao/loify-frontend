@@ -1,11 +1,12 @@
-import { ref, reactive } from 'vue'
 import { useQuery, useMutation } from '@tanstack/vue-query'
+import { ref, reactive } from 'vue'
 import { useToast } from 'vue-toastification'
-import { useToggle } from '@/hooks/useToggle'
+
 import { deletePlaylist, deleteAllPlaylists } from '@/api'
 import * as api from '@/api'
-import type { Playlist } from '@/types/playlist'
+import { useToggle } from '@/hooks/useToggle'
 import { Genre } from '@/types/genre'
+import type { Playlist } from '@/types/playlist'
 import { customSort } from '@/utils/string'
 
 export function usePlaylist() {
@@ -33,6 +34,7 @@ export function usePlaylist() {
       loifyTracksToggle.toggleOff()
       selectedPlaylist.value =
         playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
+      tracksQuery.refetch()
     }
   }
 
@@ -44,13 +46,15 @@ export function usePlaylist() {
 
   const tracksQuery = useQuery({
     queryKey: ['tracksData', selectedPlaylist],
-    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id)
+    queryFn: () => api.fetchTracks(selectedPlaylist.value?.id),
+    enabled: false
   })
   const fetchTracks = () => tracksQuery.refetch()
 
   const loifyTracksQuery = useQuery({
     queryKey: ['loifyTracksData', selectedPlaylist],
-    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value)
+    queryFn: () => api.fetchLoifyTracks(selectedPlaylist.value?.id, selectedGenre.value),
+    enabled: false
   })
   const fetchLoifyTracks = () => {
     if (selectedGenre.value) {

@@ -1,10 +1,12 @@
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { inject } from 'vue'
+
 import PlaylistPreview from '@/components/columns/items/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { openUrlInNewTab } from '@/utils/browser'
+
 import 'vue-multiselect/dist/vue-multiselect.min.css'
-import { inject } from 'vue'
 
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
