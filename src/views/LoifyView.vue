@@ -15,8 +15,47 @@ import { addSpacesBetweenChars } from '@/utils/string'
 import MultiSelect from 'vue-multiselect'
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 import { Genre } from '@/types/genre'
+import { computed } from 'vue'
 
 const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlaylist()
+
+const handleDeleteConfirm = () => {
+  toggles.deleteModalToggle.toggle();
+  actions.deleteAllPlaylistsAndRefetch();
+};
+
+const canGenerateLoifyTracks = computed(
+  () => selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value
+)
+
+const shouldShowTracksBackArrow = computed(
+  () => selectedPlaylist && !toggles.loifyPlaylistToggle.state.value
+)
+const shouldShowLoifyBackArrow = computed(
+  () =>
+    selectedPlaylist &&
+    !toggles.loifyPlaylistToggle.state.value &&
+    toggles.loifyTracksToggle.state.value
+)
+const shouldShowAddToSpotify = computed(
+  () =>
+    selectedPlaylist &&
+    toggles.loifyTracksToggle.state.value &&
+    !queries.loifyTracksQuery.isFetching.value &&
+    !toggles.loifyPlaylistToggle.state.value
+)
+
+const shouldShowLoifyColumnEmpty = computed(() => 
+  !toggles.loifyTracksToggle.state.value && !selectedPlaylist
+);
+
+const shouldShowLoifyColumnSkeleton = computed(() => 
+  queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
+);
+
+const shouldShowLoifyColumnItems = computed(() => 
+  selectedPlaylist && toggles.loifyTracksToggle.state.value
+);
 </script>
 
 <template>
@@ -24,12 +63,7 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
     <DeleteConfirmationModal
       v-show="toggles.deleteModalToggle.state.value"
       message="Are you sure you want to delete all loify playlists?"
-      :onConfirmDelete="
-        () => {
-          toggles.deleteModalToggle.toggle()
-          actions.deleteAllPlaylistsAndRefetch()
-        }
-      "
+      :onConfirmDelete="handleDeleteConfirm"
       :onCancelDelete="toggles.deleteModalToggle.toggle"
     />
 
@@ -112,7 +146,7 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
           :icon="['fas', 'caret-left']"
           class="icon back-arrow"
           @click="actions.deselectPlaylist"
-          v-if="selectedPlaylist && !toggles.loifyPlaylistToggle.state.value"
+          v-if="shouldShowTracksBackArrow"
         />
       </template>
       <template #main-content>
@@ -129,31 +163,21 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
     <!-- Loify Column -->
     <Column
       :colName="`${selectedGenre ? addSpacesBetweenChars('loify') + ` (${selectedGenre})` : addSpacesBetweenChars('loify')}`"
-      :emptyCondition="!toggles.loifyTracksToggle.state.value && !selectedPlaylist"
-      :skeletonCondition="
-        queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
-      "
-      :displayCondition="!!selectedPlaylist && toggles.loifyTracksToggle.state.value"
+      :emptyCondition="shouldShowLoifyColumnEmpty"
+      :skeletonCondition="shouldShowLoifyColumnSkeleton"
+      :displayCondition="shouldShowLoifyColumnItems"
     >
       <template #extra>
         <MultiSelect
           v-model="selectedGenre"
           :options="Object.values(Genre)"
           placeholder="Select an genre"
-          v-if="
-            selectedPlaylist &&
-            queries.tracksQuery.data.value &&
-            !toggles.loifyTracksToggle.state.value
-          "
+          v-if="canGenerateLoifyTracks"
         />
         <ThemeButton
           @click="actions.fetchLoifyTracks"
           class="loify-button"
-          v-if="
-            selectedPlaylist &&
-            queries.tracksQuery.data.value &&
-            !toggles.loifyTracksToggle.state.value
-          "
+          v-if="canGenerateLoifyTracks"
         >
           g e n e r a t e
         </ThemeButton>
@@ -163,11 +187,7 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
           :icon="['fas', 'caret-left']"
           class="icon back-arrow"
           @click="toggles.loifyTracksToggle.toggleOff"
-          v-if="
-            selectedPlaylist &&
-            !toggles.loifyPlaylistToggle.state.value &&
-            toggles.loifyTracksToggle.state.value
-          "
+          v-if="shouldShowLoifyBackArrow"
         />
       </template>
       <template #main-content>
@@ -185,12 +205,7 @@ const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggle
           :icon="['fas', 'plus']"
           class="icon plus"
           @click="actions.createPlaylist"
-          v-if="
-            selectedPlaylist &&
-            toggles.loifyTracksToggle.state.value &&
-            !queries.loifyTracksQuery.isFetching.value &&
-            !toggles.loifyPlaylistToggle.state.value
-          "
+          v-if="shouldShowAddToSpotify"
         />
       </template>
     </Column>
