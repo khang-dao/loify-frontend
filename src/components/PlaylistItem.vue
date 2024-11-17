@@ -29,9 +29,9 @@ const handleDelete = async () => {
 </script>
 
 <template>
-  <div :class="['container', { selected: selected }]" :id="playlistId">    <!-- TODO: Set the `playlistId` in some other way -->
-    <img :class="[ { selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>    <!-- TODO: Set the `playlistId` in some other way -->
-    <h3 :id="playlistId">{{ playlistName }}</h3>    <!-- TODO: Set the `playlistId` in some other way -->
+  <div :class="['container', { selected: selected }]" :id="playlistId">   <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
+    <img :class="[ { selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId"/>
+    <h3 :id="playlistId">{{ playlistName }}</h3>    
     <FontAwesomeIcon :icon="['fas', 'circle-minus']" class="icon delete" :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]" v-if="isLoifyPlaylist && !deleteButton.isConfirmed" :onClick="handleDelete"/>
   </div>
 </template>
