@@ -11,7 +11,7 @@ import { customSort } from '@/utils/string'
 export function usePlaylist() {
   const toast = useToast()
 
-  const selectedGenre = ref<Genre | undefined>(undefined)
+  const selectedGenre = ref<Genre | undefined>(Genre.LOFI)
   const selectedPlaylist = ref<Playlist | undefined>(undefined)
   const loifyPlaylist = reactive<Playlist>({
     id: undefined,
@@ -92,7 +92,6 @@ export function usePlaylist() {
     deselectPlaylist()
     loifyTracksToggle.toggleOff()
     loifyPlaylistToggle.toggleOff()
-
     loifyPlaylist.id = undefined
     loifyPlaylist.name = undefined
     loifyPlaylist.image = undefined

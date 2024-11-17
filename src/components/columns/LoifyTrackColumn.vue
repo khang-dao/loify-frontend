@@ -17,29 +17,32 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, selectedGenre, queries, actions, toggles } = playlistState
 
 const canGenerateLoifyTracks = computed(
-  () => selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value
+  () =>
+    selectedPlaylist.value &&
+    queries.tracksQuery.data.value &&
+    !toggles.loifyTracksToggle.state.value
 )
 const shouldShowLoifyBackArrow = computed(
   () =>
-    selectedPlaylist &&
+    selectedPlaylist.value &&
     !toggles.loifyPlaylistToggle.state.value &&
     toggles.loifyTracksToggle.state.value
 )
 const shouldShowAddToSpotify = computed(
   () =>
-    selectedPlaylist &&
+    selectedPlaylist.value &&
     toggles.loifyTracksToggle.state.value &&
     !queries.loifyTracksQuery.isFetching.value &&
     !toggles.loifyPlaylistToggle.state.value
 )
 const shouldShowLoifyColumnEmpty = computed(
-  () => !toggles.loifyTracksToggle.state.value && !selectedPlaylist
+  () => !toggles.loifyTracksToggle.state.value && !selectedPlaylist.value
 )
 const shouldShowLoifyColumnSkeleton = computed(
   () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
 )
 const shouldShowLoifyColumnItems = computed(
-  () => selectedPlaylist && toggles.loifyTracksToggle.state.value
+  () => selectedPlaylist.value && toggles.loifyTracksToggle.state.value
 )
 </script>
 
@@ -54,7 +57,7 @@ const shouldShowLoifyColumnItems = computed(
       <MultiSelect
         v-model="selectedGenre"
         :options="Object.values(Genre)"
-        placeholder="Select an genre"
+        placeholder="Select a genre"
         v-if="canGenerateLoifyTracks"
       />
       <ThemeButton
