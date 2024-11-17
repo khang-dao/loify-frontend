@@ -19,43 +19,15 @@ import { computed } from 'vue'
 
 const { selectedGenre, selectedPlaylist, loifyPlaylist, actions, queries, toggles } = usePlaylist()
 
-const handleDeleteConfirm = () => {
-  toggles.deleteModalToggle.toggle();
-  actions.deleteAllPlaylistsAndRefetch();
-};
+const handleDeleteConfirm = () => toggles.deleteModalToggle.toggle() && actions.deleteAllPlaylistsAndRefetch();
 
-const canGenerateLoifyTracks = computed(
-  () => selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value
-)
-
-const shouldShowTracksBackArrow = computed(
-  () => selectedPlaylist && !toggles.loifyPlaylistToggle.state.value
-)
-const shouldShowLoifyBackArrow = computed(
-  () =>
-    selectedPlaylist &&
-    !toggles.loifyPlaylistToggle.state.value &&
-    toggles.loifyTracksToggle.state.value
-)
-const shouldShowAddToSpotify = computed(
-  () =>
-    selectedPlaylist &&
-    toggles.loifyTracksToggle.state.value &&
-    !queries.loifyTracksQuery.isFetching.value &&
-    !toggles.loifyPlaylistToggle.state.value
-)
-
-const shouldShowLoifyColumnEmpty = computed(() => 
-  !toggles.loifyTracksToggle.state.value && !selectedPlaylist
-);
-
-const shouldShowLoifyColumnSkeleton = computed(() => 
-  queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
-);
-
-const shouldShowLoifyColumnItems = computed(() => 
-  selectedPlaylist && toggles.loifyTracksToggle.state.value
-);
+const canGenerateLoifyTracks = computed(() => selectedPlaylist && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.state.value)
+const shouldShowTracksBackArrow = computed(() => selectedPlaylist && !toggles.loifyPlaylistToggle.state.value)
+const shouldShowLoifyBackArrow = computed(() => selectedPlaylist && !toggles.loifyPlaylistToggle.state.value && toggles.loifyTracksToggle.state.value)
+const shouldShowAddToSpotify = computed(() => selectedPlaylist && toggles.loifyTracksToggle.state.value && !queries.loifyTracksQuery.isFetching.value && !toggles.loifyPlaylistToggle.state.value)
+const shouldShowLoifyColumnEmpty = computed(() =>  !toggles.loifyTracksToggle.state.value && !selectedPlaylist);
+const shouldShowLoifyColumnSkeleton = computed(() =>  queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value);
+const shouldShowLoifyColumnItems = computed(() =>  selectedPlaylist && toggles.loifyTracksToggle.state.value);
 </script>
 
 <template>
