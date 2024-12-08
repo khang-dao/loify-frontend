@@ -1,16 +1,9 @@
 name: Deploy to GitHub Pages
 
-# on:
-#     pull_request:
-#       branches:
-#         - main
-  
-#     workflow_dispatch:
-
 on:
-  push:
+  pull_request:
     branches:
-      - setup/github-actions-deploy-workflow
+      - main
 
   workflow_dispatch:
 
