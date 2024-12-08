@@ -41,6 +41,11 @@ jobs:
       - name: Build the project
         run: npm run build
 
+      # This is a workaround for the issue:
+      # https://stackoverflow.com/questions/65501787/vue-router-github-pages-and-custom-domain-not-working-with-routed-links
+      - name: Workaround for broken routes
+        run: cp ./dist/index.html .dist/404.html
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
