@@ -30,7 +30,10 @@ jobs:
           cache: npm
 
       - name: Create .env.production file
-        run: echo "${{ secrets.ENV_PRODUCTION }}" > .env.production
+        run: |
+          cat <<EOF > .env.production
+          ${{ secrets.PRODUCTION_ENV }}
+          EOF
 
       - name: Install dependencies
         run: npm install
