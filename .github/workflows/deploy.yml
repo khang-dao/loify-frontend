@@ -32,7 +32,7 @@ jobs:
       - name: Create .env.production file
         run: |
           cat <<EOF > .env.production
-          ${{ secrets.PRODUCTION_ENV }}
+          ${{ secrets.ENV_PRODUCTION }}
           EOF
 
       - name: Install dependencies
