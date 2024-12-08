@@ -18,7 +18,7 @@ export async function fetchTracks(playlistId?: string) {
       id: item.track?.id,
       name: item.track?.name,
       artist: item.track?.artists?.[0].name,
-      image: item.track?.album.images?.[0].url
+      image: item.track?.album.images?.[0]?.url
     }))
   } catch (error) {
     console.error(`Failed to fetch tracks: ${error}`)

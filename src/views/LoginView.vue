@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import config from '@/config'
+</script>
 
 <template>
   <main class="main">
@@ -7,7 +9,7 @@
         Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
         your data and ensure your privacy is protected.
       </h1>
-      <a class="button" href="http://localhost:8080/api/v1/auth/session" rel="noopener noreferrer">
+      <a class="button" :href="`${config.apiBaseUrl}/auth/session`" rel="noopener noreferrer">
         click to login
       </a>
     </div>
