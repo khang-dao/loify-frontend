@@ -8,12 +8,11 @@ export const useUserStore = defineStore('user', () => {
   const user = ref(useLocalStorage('currentUser', { isLoggedIn: false }))
 
   async function updateAuthStatus() {
-    // const response = await client.get('/auth/session/check')
-    // if (response.status === 200) {
-    //   user.value.isLoggedIn = true
-    // }
-    // return user.value.isLoggedIn
-    return true
+    const response = await client.get('/auth/session/check')
+    if (response.status === 200) {
+      user.value.isLoggedIn = true
+    }
+    return user.value.isLoggedIn
   }
 
   async function logout() {
