@@ -57,9 +57,10 @@ export async function deleteAllPlaylists() {
 export async function fetchPlaylists() {
   try {
     const response = await client.get('/me/playlists')
-    return response.data.items.map((item: any) => ({
-      id: item.id,
-      name: item.name,
+    console.log(response)
+    return response.data.items.filter(item => item).map((item: any) => ({
+      id: item?.id,
+      name: item?.name,
       image: item.images?.[0]?.url
     }))
   } catch (error) {
