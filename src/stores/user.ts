@@ -8,16 +8,17 @@ export const useUserStore = defineStore('user', () => {
   const user = ref(useLocalStorage('currentUser', { isLoggedIn: false }))
 
   async function updateAuthStatus() {
-    const response = await client.get('/auth/session/check')
-    if (response.status === 200) {
-      user.value.isLoggedIn = true
-    }
-    return user.value.isLoggedIn
+    // const response = await client.get('/auth/session/check')
+    // if (response.status === 200) {
+    //   user.value.isLoggedIn = true
+    // }
+    // return user.value.isLoggedIn
+    return true
   }
 
   async function logout() {
     try {
-      await client.get('/auth/session/logout')
+      await client.post('/auth/session/logout')
       window.open('https://accounts.spotify.com/logout', '_blank', 'noopener,noreferrer')
       user.value.isLoggedIn = false
     } catch (error) {
