@@ -98,7 +98,6 @@ const shouldShowLoifyColumnItems = computed(
         <FontAwesomeIcon
           :icon="['fas', 'house']"
           class="icon house"
-          @click="actions.createPlaylist"
         />
       </RouterLink>
     </template>
@@ -122,8 +121,8 @@ const shouldShowLoifyColumnItems = computed(
 .icon.house {
   font-size: 1.25rem;
   position: absolute;
-  bottom: 2rem;
-  right: 2rem;
+  bottom: 1.75rem;
+  right: 1.75rem;
 }
 
 .multiselect {

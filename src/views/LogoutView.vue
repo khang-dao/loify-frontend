@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { RouterLink } from 'vue-router'
+
 
 import { useUserStore } from '@/stores/user'
 
@@ -16,9 +18,14 @@ user.isLoggedIn && logout()
       </div>
       <div class="button-container">
         <RouterLink class="button" to="/login">click to log back in </RouterLink>
-        <RouterLink class="button" to="/">click to go home</RouterLink>
       </div>
     </div>
+    <RouterLink to="/">
+      <FontAwesomeIcon
+        :icon="['fas', 'house']"
+        class="icon house"
+      />
+    </RouterLink>
   </main>
 </template>
 
@@ -66,7 +73,19 @@ user.isLoggedIn && logout()
 .button {
   text-decoration: none;
   font-size: 1rem;
-  color: #000000;
+  color: #171717;
   cursor: pointer;
+}
+
+.icon {
+  color: #54198A;
+  cursor: pointer;
+}
+
+.icon.house {
+  font-size: 1.25rem;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
 }
 </style>

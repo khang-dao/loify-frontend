@@ -42,7 +42,7 @@ import { RouterLink } from 'vue-router'
 }
 
 .subheading {
-  color: #000000;
+  color: #171717;
   text-decoration: none;
   font-size: 1rem;
 }
