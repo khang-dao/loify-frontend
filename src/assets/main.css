@@ -51,6 +51,13 @@ body {
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'league-spartan';
+  src: url('/fonts/league-spartan.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .v-popper__popper {
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
 }

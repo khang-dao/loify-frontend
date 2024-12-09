@@ -33,7 +33,7 @@ const {
 .text-container {
   display: flex;
   flex-direction: column;
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
   color: #000000;
   gap: 0.4rem;
 

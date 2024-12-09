@@ -111,6 +111,6 @@ const shouldShowLoifyColumnItems = computed(
 }
 
 .multiselect {
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
 }
 </style>

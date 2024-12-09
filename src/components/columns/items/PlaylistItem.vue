@@ -64,7 +64,7 @@ const handleDelete = async () => {
 
 h3 {
   flex-grow: 1;
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
   color: #000000;
 }
 
