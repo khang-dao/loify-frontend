@@ -8,7 +8,7 @@ import LogoutView from '@/views/LogoutView.vue'
 import LoifyView from '@/views/LoifyView.vue'
 
 const router = createRouter({
-  history: createWebHistory(config.apiBaseUrl),
+  history: createWebHistory(),
   routes: [
     {
       path: '/',
