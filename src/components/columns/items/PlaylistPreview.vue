@@ -34,10 +34,10 @@ const {
 }
 
 .playlist-name {
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: 'league-spartan', sans-serif;
   color: #000000;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 
 img {

@@ -42,7 +42,11 @@ const {
           </template>
         </div>
       </div>
+
     </FadeTransition>
+    <div>
+      <slot name="always"></slot>
+    </div>
   </div>
 </template>
 
@@ -56,6 +60,7 @@ const {
   padding-top: 3rem;
   background-color: #aeaed0;
   border-radius: 0.5rem;
+  position: relative;
 }
 
 .item-container.skeleton {

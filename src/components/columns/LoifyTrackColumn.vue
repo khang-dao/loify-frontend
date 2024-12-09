@@ -93,6 +93,14 @@ const shouldShowLoifyColumnItems = computed(
         v-if="shouldShowAddToSpotify"
       />
     </template>
+    <template #always>
+      <RouterLink to="/">
+        <FontAwesomeIcon
+          :icon="['fas', 'house']"
+          class="icon house"
+        />
+      </RouterLink>
+    </template>
   </Column>
 </template>
 
@@ -108,6 +116,13 @@ const shouldShowLoifyColumnItems = computed(
 
 .icon.plus {
   font-size: 1.75rem;
+}
+
+.icon.house {
+  font-size: 1.25rem;
+  position: absolute;
+  bottom: 1.75rem;
+  right: 1.75rem;
 }
 
 .multiselect {
