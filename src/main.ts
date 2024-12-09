@@ -6,7 +6,8 @@ import {
   faPlus,
   faArrowRotateLeft,
   faCircleMinus,
-  faTrash
+  faTrash,
+  faHouse
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { VueQueryPlugin, QueryClient } from '@tanstack/vue-query'
@@ -34,7 +35,7 @@ const queryClient = new QueryClient({
   }
 })
 
-library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash)
+library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash, faHouse)
 
 const toastOptions = {}
 
