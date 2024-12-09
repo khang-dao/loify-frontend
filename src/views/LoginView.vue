@@ -29,7 +29,7 @@ import config from '@/config'
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
   margin: 10rem;
   text-align: center;
 }

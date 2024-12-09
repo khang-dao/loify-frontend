@@ -35,7 +35,7 @@ user.isLoggedIn && logout()
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
   margin: 10rem;
   text-align: center;
   color: #000000;

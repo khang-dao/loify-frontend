@@ -26,7 +26,7 @@ import { RouterLink } from 'vue-router'
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  font-family: 'League Spartan', sans-serif;
+  font-family: 'league-spartan', sans-serif;
 
   img {
     width: 13rem;
