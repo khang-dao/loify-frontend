@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { ref } from 'vue'
 
+import Spinner from '@/components/misc/Spinner.vue'
 import config from '@/config'
+const loginButtonClicked = ref(false)
+const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonClicked.value
 </script>
 
 <template>
@@ -11,9 +15,10 @@ import config from '@/config'
         Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
         your data and ensure your privacy is protected.
       </h1>
-      <a class="button" :href="`${config.apiBaseUrl}/auth/session`" rel="noopener noreferrer">
+      <a class="button" :href="`${config.apiBaseUrl}/auth/session`" rel="noopener noreferrer" @click="toggleLoginButtonClicked" v-if="!loginButtonClicked">
         click to login
       </a>
+      <Spinner v-else />
     </div>
     <RouterLink to="/">
       <FontAwesomeIcon
