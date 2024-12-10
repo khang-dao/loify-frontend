@@ -25,15 +25,16 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
     </template>
     <template #main-content>
       <PlaylistItem
-        v-for="item in queries.playlistsQuery.data.value"
-        @click="actions.selectPlaylist"
-        :selected="selectedPlaylist?.id === item.id"
-        :playlistId="item.id"
-        :key="item.id"
-        :playlistName="item.name"
-        :imgSrc="item.image"
-        :handleDelete="actions.deletePlaylistAndRefetch"
+      v-for="item in queries.playlistsQuery.data.value"
+      @click="actions.selectPlaylist"
+      :selected="selectedPlaylist?.id === item.id"
+      :playlistId="item.id"
+      :key="item.id"
+      :playlistName="item.name"
+      :imgSrc="item.image"
+      :handleDelete="actions.deletePlaylistAndRefetch"
       />
+
     </template>
     <template #header-icon-2>
       <FontAwesomeIcon
@@ -43,6 +44,15 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         class="icon logout"
         v-if="queries.playlistsQuery.data.value"
       />
+    </template>
+    <template #always>
+      <FontAwesomeIcon
+        v-tooltip.top-end="'refresh playlists'"
+        :icon="['fas', 'arrow-rotate-left']"
+        @click="queries.playlistsQuery.refetch"
+        class="icon back-arrow"
+        v-if="!queries.playlistsQuery.isFetching.value"
+      /> 
     </template>
   </Column>
 </template>
@@ -59,5 +69,12 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
 
 .icon.plus {
   font-size: 1.75rem;
+}
+
+.icon.back-arrow {
+  font-size: 1.25rem;
+  position: absolute;
+  bottom: 1.75rem;
+  right: 2.5rem;
 }
 </style>
