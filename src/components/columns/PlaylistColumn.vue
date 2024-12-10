@@ -42,7 +42,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         :icon="['fas', 'trash']"
         @click="toggles.deleteModalToggle.toggle"
         class="icon logout"
-        v-if="queries.playlistsQuery.data.value"
+        v-if="!queries.playlistsQuery.isFetching.value"
       />
     </template>
     <template #always>
