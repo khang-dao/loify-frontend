@@ -122,7 +122,7 @@ const shouldShowLoifyColumnItems = computed(
   font-size: 1.25rem;
   position: absolute;
   bottom: 1.75rem;
-  right: 1.75rem;
+  right: 2.5rem;
 }
 
 .multiselect {
