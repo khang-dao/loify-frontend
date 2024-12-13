@@ -128,4 +128,10 @@ const shouldShowLoifyColumnItems = computed(
 .multiselect {
   font-family: 'league-spartan', sans-serif;
 }
+
+@media (max-width: 768px) {
+  .icon.house {
+    font-size: 1rem;
+  }
+}
 </style>

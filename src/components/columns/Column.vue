@@ -123,4 +123,10 @@ const {
   border-radius: 1rem;
   background-color: #847f95;
 }
+
+@media (max-width: 768px) {
+  .title{
+    font-size: 1.5rem;
+  }
+}
 </style>
