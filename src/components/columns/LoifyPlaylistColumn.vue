@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { inject } from 'vue'
 
+import BuyMeACoffeButton from '@/components/buttons/BuyMeACoffeeButton.vue'
 import PlaylistPreview from '@/components/columns/items/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import { openUrlInNewTab } from '@/utils/browser'
@@ -44,6 +45,8 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
         ><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon"
       /></router-link>
     </div>
+
+    <BuyMeACoffeButton />
   </div>
 </template>
 
@@ -52,7 +55,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   display: flex;
   flex-direction: column;
   flex: 1;
-  gap: 3rem;
+  gap: 1.8rem;
   padding: 1.5rem;
   padding-top: 3rem;
   background-color: #aeaed0;
