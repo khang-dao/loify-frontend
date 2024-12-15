@@ -5,23 +5,11 @@
       src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
       alt="Buy khangdao a coffee"
     />
-    <span style="margin-left: 5px">Buy me a coffee</span>
+    <p class="button-text">Buy me a coffee</p>
   </a>
 </template>
 
 <style scoped>
-.bmc-button > span {
-  font-family: 'Cookie', cursive;
-}
-
-.bmc-button img {
-  width: 27px;
-  margin-bottom: 1px;
-  box-shadow: none;
-  order: none;
-  vertical-align: middle;
-}
-
 .bmc-button {
   line-height: 36px;
   height: 37px;
@@ -38,5 +26,23 @@
   margin: 0 auto;
   box-sizing: border-box;
   transition: 0.3s all linear;
+}
+
+.bmc-button > img {
+  width: 27px;
+  margin-bottom: 1px;
+  box-shadow: none;
+  order: none;
+  vertical-align: middle;
+}
+
+.button-text {
+  font-family: 'Cookie', cursive;
+}
+
+@media (max-width: 1024px) {
+  .button-text {
+    display: none;
+  }
 }
 </style>
