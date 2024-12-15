@@ -88,13 +88,6 @@ user.isLoggedIn && logout()
   right: 2rem;
 }
 
-/* Media Queries for Responsive Design */
-@media (max-width: 768px) {
-  .container {
-    margin: 5rem;
-    gap: 1rem;
-  }
-}
 
 @media (max-width: 480px) {
   .container {
