@@ -89,7 +89,7 @@ user.isLoggedIn && logout()
 }
 
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .container {
     margin: 2rem;
     gap: 1rem;

@@ -91,7 +91,7 @@ img {
   color: rgb(255, 48, 48);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     flex-direction: column;
     justify-content: center;

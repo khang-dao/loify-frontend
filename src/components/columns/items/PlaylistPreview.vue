@@ -44,7 +44,7 @@ img {
   border-radius: 0.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .container {
     gap: 0.5rem;
   }

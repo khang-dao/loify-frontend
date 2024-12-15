@@ -28,7 +28,7 @@ button {
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   button {
     font-size: 0.6rem;
     padding-left: 1.5rem;

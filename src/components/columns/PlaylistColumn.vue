@@ -75,7 +75,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
   right: 2.5rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .icon.logout,
   .icon.trash {
     font-size: 0.6rem;

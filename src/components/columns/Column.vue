@@ -124,7 +124,7 @@ const {
   background-color: #847f95;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .column {
     min-width: 2rem;
     padding: 1.2rem;

@@ -129,7 +129,7 @@ const shouldShowLoifyColumnItems = computed(
   font-family: 'league-spartan', sans-serif;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .icon.house {
     font-size: 0.6rem;
     bottom: 0.5rem;

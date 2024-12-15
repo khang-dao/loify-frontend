@@ -61,7 +61,7 @@ img {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .text-container {
     display: none;
   }

@@ -72,7 +72,7 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
   right: 2rem;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 1024px) {
   .container {
     margin: 2rem;
   }
