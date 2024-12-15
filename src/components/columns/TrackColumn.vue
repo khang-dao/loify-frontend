@@ -56,7 +56,7 @@ const shouldShowTracksBackArrow = computed(
 
 @media (max-width: 768px) {
   .icon.back-arrow {
-    font-size: 1rem;
+    font-size: 0.6rem;
   }
 }
 </style>

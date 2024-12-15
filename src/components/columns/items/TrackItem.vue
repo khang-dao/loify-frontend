@@ -45,4 +45,42 @@ const {
 img {
   border-radius: 0.5rem;
 }
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 0.25rem;
+    position: relative;
+  }
+  
+  .text-container {
+    font-size: 0.5rem;
+    
+    position: absolute; /* Allows the text-container to be positioned relative to .container */
+    top: 0; /* Place it at the top */
+    left: 0; /* Align with the left edge */
+    width: 100%; /* Match the width of the container */
+    height: 100%; /* Optional, match the height */
+    display: flex; /* Enables centering */
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    color: white; /* Ensure the text is visible over the image */
+    padding: 0.25rem;
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background (optional) */
+    border-radius: 0.4rem;
+  }
+  
+  img {
+    border-radius: 0.4rem;
+    width: 100%
+  }
+
+  p {
+    display:none;
+  }
+
+}
 </style>

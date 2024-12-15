@@ -131,7 +131,27 @@ const shouldShowLoifyColumnItems = computed(
 
 @media (max-width: 768px) {
   .icon.house {
-    font-size: 1rem;
+    font-size: 0.6rem;
+    bottom: 0.5rem;
+  }
+
+  :deep(.multiselect *)  {
+    font-size: 0.6rem;
+    overflow-x: hidden
+  }
+
+  :deep(.multiselect__option::after) {
+    font-size: 0.6rem;
+    transform: translateX(10px);
+  }
+
+  .icon.back-arrow,
+  .icon.plus {
+    font-size: 0.6rem;
+  }
+
+  .icon.house {
+    right: 0.5rem;
   }
 }
 </style>

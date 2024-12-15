@@ -125,8 +125,35 @@ const {
 }
 
 @media (max-width: 768px) {
-  .title{
-    font-size: 1.5rem;
+  .column {
+    min-width: 2rem;
+    padding: 1.2rem;
+  }
+
+  .column-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .header {
+    padding: 0; 
+    max-height: 0.5rem;
+  }
+
+  .title {
+    font-size: 0.5rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .item-container {
+    padding-right: 0;
+    max-height: calc(100vh - 6rem); /* Set a maximum height for the item container */
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
   }
 }
 </style>

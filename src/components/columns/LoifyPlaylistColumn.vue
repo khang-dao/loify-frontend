@@ -15,7 +15,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
 </script>
 
 <template>
-  <div class="column col-1">
+  <div class="column">
     <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image"
       >o r i g i n a l<br />p l a y l i s t</PlaylistPreview
     >
@@ -70,5 +70,27 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   font-size: 2.5rem;
   color: #847f95;
   cursor: pointer;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .column {
+    min-width: 2rem;
+    padding: 1.2rem;
+    gap:1rem;
+  }
+  
+  .icon-container {
+    gap: 0.7rem;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+    color: #847f95;
+    cursor: pointer;
+  }
 }
 </style>

@@ -41,7 +41,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         v-tooltip.top-end="'delete loify playlists'"
         :icon="['fas', 'trash']"
         @click="toggles.deleteModalToggle.toggle"
-        class="icon logout"
+        class="icon trash"
         v-if="!queries.playlistsQuery.isFetching.value"
       />
     </template>
@@ -63,12 +63,9 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
   cursor: pointer;
 }
 
-.icon.logout {
+.icon.logout,
+.icon.trash {
   font-size: 1.5rem;
-}
-
-.icon.plus {
-  font-size: 1.75rem;
 }
 
 .icon.back-arrow {
@@ -79,12 +76,15 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
 }
 
 @media (max-width: 768px) {
-  .icon.logout {
-    font-size: 1rem;
+  .icon.logout,
+  .icon.trash {
+    font-size: 0.6rem;
   }
 
   .icon.back-arrow {
-    font-size: 1rem;
+    font-size: 0.6rem;
+    bottom: 0.5rem;
+    right: 0.5rem;
   }
 }
 </style>
