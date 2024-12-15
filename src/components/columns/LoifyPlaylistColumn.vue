@@ -46,7 +46,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
       /></router-link>
     </div>
 
-    <BuyMeACoffeButton />
+    <BuyMeACoffeButton v-show="loifyPlaylist.image" />
   </div>
 </template>
 

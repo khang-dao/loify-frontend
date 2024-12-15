@@ -1,11 +1,10 @@
 <template>
   <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/khangdao">
-    <link href="https://fonts.googleapis.com/css?family=Cookie" rel="stylesheet" />
     <img
       src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
       alt="Buy khangdao a coffee"
     />
-    <p class="button-text">Buy me a coffee</p>
+    <p class="button-text">buy me a coffee</p>
   </a>
 </template>
 
@@ -34,10 +33,11 @@
   box-shadow: none;
   order: none;
   vertical-align: middle;
+  margin-right: 5px
 }
 
 .button-text {
-  font-family: 'Cookie', cursive;
+  font-family: 'night-pumpkind', cursive;
 }
 
 @media (max-width: 1024px) {
