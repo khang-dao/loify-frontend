@@ -30,8 +30,8 @@
 
 .picture {
   border-radius: 0.5rem;
-  height: 175px;
-  width: 175px;
+  height: 130px;
+  width: 130px;
   animation: pulse-bg 1s infinite;
 }
 
