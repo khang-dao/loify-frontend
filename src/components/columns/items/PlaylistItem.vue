@@ -90,4 +90,42 @@ img {
 .icon.delete.selected {
   color: rgb(255, 48, 48);
 }
+
+@media (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+  }
+ 
+  h3 {
+    font-size: 0.5rem;
+    position: absolute; /* Allows the text-container to be positioned relative to .container */
+    top: 0; /* Place it at the top */
+    left: 0; /* Align with the left edge */
+    width: 100%; /* Match the width of the container */
+    height: 100%; /* Optional, match the height */
+    display: flex; /* Enables centering */
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center; /* Center items vertically */
+    align-items: center; /* Center items horizontally */
+    color: white; /* Ensure the text is visible over the image */
+    padding: 0.25rem;
+  }
+
+  .icon {
+    display: none;
+  }
+
+  img {
+    width:100%;
+    border-radius: 0.4rem;
+  }
+
+  div.selected {
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+  }
+}
 </style>

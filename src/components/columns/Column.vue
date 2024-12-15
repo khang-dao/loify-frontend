@@ -123,4 +123,37 @@ const {
   border-radius: 1rem;
   background-color: #847f95;
 }
+
+@media (max-width: 1024px) {
+  .column {
+    min-width: 2rem;
+    padding: 1.2rem;
+  }
+
+  .column-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .header {
+    padding: 0; 
+    max-height: 0.5rem;
+  }
+
+  .title {
+    font-size: 0.5rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+
+  .item-container {
+    padding-right: 0;
+    max-height: calc(90vh - 6rem); /* Set a maximum height for the item container */
+  }
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
 </style>

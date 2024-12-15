@@ -43,4 +43,18 @@ const {
 img {
   border-radius: 0.5rem;
 }
+
+@media (max-width: 1024px) {
+  .container {
+    gap: 0.5rem;
+  }
+  
+  .playlist-heading {
+    font-size: 0.6rem;
+  }
+
+  .playlist-name {
+    font-size: 0.6rem;
+  }
+}
 </style>

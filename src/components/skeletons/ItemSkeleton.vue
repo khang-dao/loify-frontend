@@ -60,4 +60,10 @@ img {
     background-color: rgb(216, 216, 216);
   }
 }
+
+@media (max-width: 1024px) {
+  .text-container {
+    display: none;
+  }
+}
 </style>

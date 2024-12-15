@@ -27,4 +27,14 @@ button {
   white-space: nowrap;
   cursor: pointer;
 }
+
+@media (max-width: 1024px) {
+  button {
+    font-size: 0.6rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+}
 </style>

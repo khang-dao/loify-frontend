@@ -45,6 +45,7 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
   font-family: 'league-spartan', sans-serif;
   margin: 10rem;
   text-align: center;
+  line-height: 200%;
 }
 
 .heading {
@@ -69,5 +70,11 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
   position: absolute;
   bottom: 2rem;
   right: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .container {
+    margin: 2rem;
+  }
 }
 </style>
