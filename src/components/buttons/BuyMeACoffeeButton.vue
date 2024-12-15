@@ -10,6 +10,8 @@
 
 <style scoped>
 .bmc-button {
+  opacity: 0.7;
+  transition: opacity 0.3s ease; /* Smooth transition */
   line-height: 36px;
   height: 37px;
   text-decoration: none;
@@ -25,6 +27,10 @@
   margin: 0 auto;
   box-sizing: border-box;
   transition: 0.3s all linear;
+}
+
+.bmc-button:hover {
+  opacity: 1; /* Initial opacity */
 }
 
 .bmc-button > img {
