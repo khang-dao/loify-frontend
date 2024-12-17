@@ -2,7 +2,7 @@ export const containsLoify = (str: string) => str.toLowerCase().includes('loify'
 export const addSpacesBetweenChars = (str: string) => str.split('').join(' ')
 const nonAlphaNum = (str: string) => /^[^\w\s]/.test(str)
 
-// Custom sort : 'loify' items at the start & emoji items at the end
+// Custom sort: 'loify' items at the start & emoji items at the end
 export const customSort = (arr) => {
   return arr.sort((a, b) => {
     const aIsLoify = a.name.includes('loify')
