@@ -1,87 +1,108 @@
-import client from '@/api/client'
-import { Genre } from '@/types/genre'
+import { AxiosResponse } from 'axios'
 
-// TODO: Replace all `item: any` references with a proper interface.
+import client from '@/api/client'
+import { DEFAULT_IMG_URL } from '@/constants'
+import { Genre, Playlist, Image } from '@/types'
 
 /**
  * Creates a Loify playlist based on the specified playlist.
  * @param {string} playlistId - The ID of the playlist.
  * @param {Genre} [genre] - The genre for the playlist (defaults to LOFI).
- * @returns {Object} The created playlist object.
+ * @returns {Promise<Playlist | undefined>} The created playlist object or undefined if failed.
  */
-export async function createLoifyPlaylist(playlistId?: string, genre?: Genre) {
+export async function createLoifyPlaylist(
+  playlistId?: string,
+  genre: Genre = Genre.LOFI
+): Promise<Playlist | undefined> {
+  if (!playlistId) {
+    console.error('Playlist ID cannot be null or undefined.')
+    return
+  }
+
   try {
-    if (!playlistId) {
-      throw new Error('Playlist ID cannot be null or undefined.')
-    }
-    const response = await client.post(
-      `/playlists/${playlistId}/loify?genre=${genre || Genre.LOFI}`
+    const response: AxiosResponse<Playlist> = await client.post(
+      `/playlists/${playlistId}/loify?genre=${genre}`
     )
     return response.data
   } catch (error) {
     console.error(`Failed to create Loify playlist: ${error}`)
+    throw error
   }
 }
 
 /**
  * Deletes a playlist by its ID.
  * @param {string} playlistId - The ID of the playlist.
- * @returns {Promise} The Axios delete request promise.
+ * @returns {Promise<string | undefined>} The Axios delete request response or undefined.
  */
-export async function deletePlaylist(playlistId?: string) {
+export async function deletePlaylist(playlistId: string): Promise<string | undefined> {
   if (!playlistId) {
     console.error('Playlist ID cannot be null or undefined.')
     return
   }
   try {
-    return await client.delete(`/me/playlists/${playlistId}`)
+    const response: AxiosResponse<string> = await client.delete(`/me/playlists/${playlistId}`)
+    return response.data
   } catch (error) {
     console.error(`Failed to delete playlist: ${error}`)
+    throw error
   }
 }
 
 /**
  * Deletes all user-associated playlists.
- * @returns {Promise} The Axios delete request promise.
+ * @returns {Promise<string | undefined>} The Axios delete request response or undefined.
  */
-export async function deleteAllPlaylists() {
+export async function deleteAllPlaylists(): Promise<string | undefined> {
   try {
-    return await client.delete('/me/playlists/loify')
+    const response: AxiosResponse<string> = await client.delete('/me/playlists/loify')
+    return response.data
   } catch (error) {
     console.error(`Failed to delete all playlists: ${error}`)
+    throw error
   }
 }
 
 /**
  * Fetches all playlists for the user.
- * @returns {Array} A list of playlist objects with id, name, and image.
+ * @returns {Promise<Playlist[]>} A list of playlist objects with id, name, and image.
  */
-export async function fetchPlaylists() {
+export async function fetchPlaylists(): Promise<Playlist[]> {
   try {
     const response = await client.get('/me/playlists')
-    return response.data.items.filter(item => item).map((item: any) => ({
-      id: item.id,
-      name: item.name,
-      image: item.images?.[0]?.url
-    }))
+    return response.data.items
+      .map((item: Playlist) =>
+        item
+          ? {
+              id: item.id,
+              name: item.name,
+              image: item.images?.[0]?.url ?? DEFAULT_IMG_URL
+            }
+          : null
+      )
+      .filter((item: Playlist) => item !== null)
   } catch (error) {
     console.error(`Failed to fetch playlists: ${error}`)
+    throw error
   }
 }
 
 /**
  * Fetches the image for a specified playlist.
  * @param {string} playlistId - The ID of the playlist.
- * @returns {string} The URL of the playlist image.
+ * @returns {Promise<string | undefined>} The URL of the playlist image or undefined if failed.
  */
-export async function fetchPlaylistImage(playlistId?: string) {
+export async function fetchPlaylistImage(playlistId: string): Promise<string | undefined> {
+  if (!playlistId) {
+    console.error('Playlist ID cannot be null or undefined.')
+    return
+  }
+
   try {
-    if (!playlistId) {
-      throw new Error('Playlist ID cannot be null or undefined.')
-    }
-    const response = await client.get(`/playlists/${playlistId}`)
-    return response.data.images?.[0]?.url
+    const response: AxiosResponse<Playlist> = await client.get(`/playlists/${playlistId}`)
+    return response.data.images?.[0]?.url ?? DEFAULT_IMG_URL
   } catch (error) {
     console.error(`Failed to fetch playlist image: ${error}`)
+    throw error
   }
 }
