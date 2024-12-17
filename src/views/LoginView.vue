@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { ref } from 'vue'
 
-import Spinner from '@/components/misc/Spinner.vue'
+import Spinner from '@/components/misc/LoadingSpinner.vue'
 import config from '@/config'
 const loginButtonClicked = ref(false)
 const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonClicked.value
