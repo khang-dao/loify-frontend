@@ -15,15 +15,12 @@ button {
   padding-right: 4.5rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-
   border: none;
   border-radius: 1rem;
-
   background-color: #837f94;
   display: flex;
   align-items: center;
   justify-content: center;
-
   white-space: nowrap;
   cursor: pointer;
 }

@@ -1,5 +1,10 @@
 <template>
-  <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/khangdao">
+  <a
+    class="bmc-button"
+    target="_blank"
+    href="https://www.buymeacoffee.com/khangdao"
+    rel="noopener noreferrer"
+  >
     <img
       src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
       alt="Buy khangdao a coffee"
@@ -11,7 +16,7 @@
 <style scoped>
 .bmc-button {
   opacity: 0.7;
-  transition: opacity 0.3s ease; /* Smooth transition */
+  transition: opacity 0.3s ease;
   line-height: 36px;
   height: 37px;
   text-decoration: none;
@@ -26,11 +31,10 @@
   box-shadow: 0px 1px 2px rgba(190, 190, 190, 0.5);
   margin: 0 auto;
   box-sizing: border-box;
-  transition: 0.3s all linear;
 }
 
 .bmc-button:hover {
-  opacity: 1; /* Initial opacity */
+  opacity: 1;
 }
 
 .bmc-button > img {
@@ -39,7 +43,7 @@
   box-shadow: none;
   order: none;
   vertical-align: middle;
-  margin-right: 5px
+  margin-right: 5px;
 }
 
 .button-text {
