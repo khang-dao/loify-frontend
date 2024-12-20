@@ -37,7 +37,7 @@ import { RouterLink } from 'vue-router'
 .heading {
   color: #000000;
   font-size: 2rem;
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: var(--font-family-secondary);
   font-weight: 100;
 }
 
