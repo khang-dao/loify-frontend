@@ -60,3 +60,26 @@ body {
 .v-popper__popper {
   font-family: 'league-spartan', sans-serif;
 }
+
+/* CSS Variables */
+/* Colors */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #ffffff;
+  --text-color: #333333;
+}
+
+/* Typography */
+:root {
+  --font-size-base: 16px;
+  --font-size-large: 24px;
+  --font-family-primary: 'league-spartan', sans-serif;
+  --font-family-secondary: 'night-pumpkind', sans-serif;
+}
+
+/* Spacing */
+:root {
+  --spacing-unit: 8px;
+  --border-radius: 4px;
+}
