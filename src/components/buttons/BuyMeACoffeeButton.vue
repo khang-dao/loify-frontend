@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const { text = "buy me a coffee" } = defineProps<{ text?: string }>()
+</script>
+
 <template>
   <a
     class="bmc-button"
@@ -9,7 +13,7 @@
       src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
       alt="Buy khangdao a coffee"
     />
-    <p class="button-text">buy me a coffee</p>
+    <p class="button-text">{{ text }}</p>
   </a>
 </template>
 
