@@ -9,9 +9,10 @@ import { Genre } from '@/types/genre'
 import type { Playlist } from '@/types/playlist'
 import { customSort } from '@/utils/string'
 
-export function usePlaylist() {
-  const toast = useToast()
+const toast = useToast()
 
+export function usePlaylist() {
+  // Reactive State
   const selectedGenre = ref<Genre | undefined>(Genre.LOFI)
   const selectedPlaylist = ref<Playlist | undefined>(undefined)
   const loifyPlaylist = reactive<Playlist>({
@@ -21,10 +22,12 @@ export function usePlaylist() {
     url: undefined
   })
 
+  // Toggles
   const deleteModalToggle = useToggle(false)
   const loifyTracksToggle = useToggle(false)
   const loifyPlaylistToggle = useToggle(false)
 
+  // Actions
   const deselectPlaylist = () => (selectedPlaylist.value = undefined)
   const selectPlaylist = (e: MouseEvent) => {
     const target = e.target as HTMLElement
@@ -38,6 +41,7 @@ export function usePlaylist() {
     }
   }
 
+  // Queries
   const playlistsQuery = useQuery({
     queryKey: ['playlistData'],
     queryFn: () => api.fetchPlaylists().then((playlists) => customSort(playlists))
@@ -63,6 +67,7 @@ export function usePlaylist() {
     }
   }
 
+  // Mutations
   const createPlaylistMutation = useMutation({
     mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id, selectedGenre.value),
     onSuccess: (data) => {
@@ -87,11 +92,13 @@ export function usePlaylist() {
     enabled: false
   })
 
+  // Delete Actions
   const deletePlaylistAndRefetch = async (playlistId: string) =>
     (await deletePlaylist(playlistId)) && playlistsQuery.refetch()
   const deleteAllPlaylistsAndRefetch = async () =>
     (await deleteAllPlaylists()) && playlistsQuery.refetch()
 
+  // Reset State
   const reset = () => {
     deselectPlaylist()
     loifyTracksToggle.toggleOff()
