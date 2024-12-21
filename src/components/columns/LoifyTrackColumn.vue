@@ -19,29 +19,29 @@ const canGenerateLoifyTracks = computed(
   () =>
     selectedPlaylist.value &&
     queries.tracksQuery.data.value &&
-    !toggles.loifyTracksToggle.state.value
+    !toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowLoifyBackArrow = computed(
   () =>
     selectedPlaylist.value &&
-    !toggles.loifyPlaylistToggle.state.value &&
-    toggles.loifyTracksToggle.state.value
+    !toggles.loifyPlaylistToggle.isToggled.value &&
+    toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowAddToSpotify = computed(
   () =>
     selectedPlaylist.value &&
-    toggles.loifyTracksToggle.state.value &&
+    toggles.loifyTracksToggle.isToggled.value &&
     !queries.loifyTracksQuery.isFetching.value &&
-    !toggles.loifyPlaylistToggle.state.value
+    !toggles.loifyPlaylistToggle.isToggled.value
 )
 const shouldShowLoifyColumnEmpty = computed(
-  () => !toggles.loifyTracksToggle.state.value && !selectedPlaylist.value
+  () => !toggles.loifyTracksToggle.isToggled.value && !selectedPlaylist.value
 )
 const shouldShowLoifyColumnSkeleton = computed(
-  () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
+  () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowLoifyColumnItems = computed(
-  () => selectedPlaylist.value && toggles.loifyTracksToggle.state.value
+  () => selectedPlaylist.value && toggles.loifyTracksToggle.isToggled.value
 )
 </script>
 

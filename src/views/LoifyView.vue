@@ -21,13 +21,13 @@ const handleDelete = () => {
 <template>
   <main class="main">
     <DeleteConfirmationModal
-      v-if="playlistState.toggles.deleteModalToggle.state.value"
+      v-if="playlistState.toggles.deleteModalToggle.isToggled.value"
       message="Are you sure you want to delete all loify playlists?"
       :onCancelDelete="playlistState.toggles.deleteModalToggle.toggle"
       :onConfirmDelete="handleDelete"
     />
 
-    <LoifyPlaylistColumn v-if="playlistState.toggles.loifyPlaylistToggle.state.value" />
+    <LoifyPlaylistColumn v-if="playlistState.toggles.loifyPlaylistToggle.isToggled.value" />
     <PlaylistColumn v-else />
     <TrackColumn />
     <LoifyTrackColumn />

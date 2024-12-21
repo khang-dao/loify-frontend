@@ -13,7 +13,7 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, queries, actions, toggles } = playlistState
 
 const shouldShowTracksBackArrow = computed(
-  () => selectedPlaylist.value && !toggles.loifyPlaylistToggle.state.value
+  () => selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value
 )
 </script>
 

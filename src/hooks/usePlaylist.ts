@@ -104,7 +104,6 @@ export function usePlaylist() {
   }
 
   return {
-    // state:
     selectedGenre,
     selectedPlaylist,
     loifyPlaylist,
