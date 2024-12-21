@@ -8,7 +8,7 @@
 
 <style scoped>
 button {
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: var(--font-family-primary);
   color: #000000;
   font-size: 2rem;
   padding-left: 4.5rem;
@@ -27,7 +27,7 @@ button {
 
 @media (max-width: 1024px) {
   button {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
     padding-left: 1.5rem;
     padding-right: 1.5rem;
     padding-top: 0.2rem;

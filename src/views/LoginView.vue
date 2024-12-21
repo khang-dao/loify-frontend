@@ -5,7 +5,7 @@ import { ref } from 'vue'
 import Spinner from '@/components/misc/LoadingSpinner.vue'
 import config from '@/config'
 const loginButtonClicked = ref(false)
-const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonClicked.value
+const toggleLoginButtonClicked = () => (loginButtonClicked.value = !loginButtonClicked.value)
 </script>
 
 <template>
@@ -15,16 +15,19 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
         Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
         your data and ensure your privacy is protected.
       </h1>
-      <a class="button" :href="`${config.apiBaseUrl}/auth/session`" rel="noopener noreferrer" @click="toggleLoginButtonClicked" v-if="!loginButtonClicked">
+      <a
+        class="button"
+        :href="`${config.apiBaseUrl}/auth/session`"
+        rel="noopener noreferrer"
+        @click="toggleLoginButtonClicked"
+        v-if="!loginButtonClicked"
+      >
         click to login
       </a>
       <Spinner v-else />
     </div>
     <RouterLink to="/">
-      <FontAwesomeIcon
-        :icon="['fas', 'house']"
-        class="icon house"
-      />
+      <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
     </RouterLink>
   </main>
 </template>
@@ -42,7 +45,7 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
   flex-direction: column;
   align-items: center;
   gap: 1rem;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   margin: 10rem;
   text-align: center;
   line-height: 200%;
@@ -61,7 +64,7 @@ const toggleLoginButtonClicked = () => loginButtonClicked.value = !loginButtonCl
 }
 
 .icon {
-  color: #54198A;
+  color: #54198a;
   cursor: pointer;
 }
 

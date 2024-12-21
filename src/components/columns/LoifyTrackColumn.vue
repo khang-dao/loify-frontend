@@ -95,10 +95,7 @@ const shouldShowLoifyColumnItems = computed(
     </template>
     <template #always>
       <RouterLink to="/">
-        <FontAwesomeIcon
-          :icon="['fas', 'house']"
-          class="icon house"
-        />
+        <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
       </RouterLink>
     </template>
   </Column>
@@ -126,28 +123,28 @@ const shouldShowLoifyColumnItems = computed(
 }
 
 .multiselect {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
 }
 
 @media (max-width: 1024px) {
   .icon.house {
-    font-size: 0.6rem;
+    font-size: var(--icon-size-base);
     bottom: 0.5rem;
   }
 
-  :deep(.multiselect *)  {
-    font-size: 0.6rem;
-    overflow-x: hidden
+  :deep(.multiselect *) {
+    font-size: var(--font-size-sm);
+    overflow-x: hidden;
   }
 
   :deep(.multiselect__option::after) {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
     transform: translateX(10px);
   }
 
   .icon.back-arrow,
   .icon.plus {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
   }
 
   .icon.house {

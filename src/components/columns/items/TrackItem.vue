@@ -33,7 +33,7 @@ const {
 .text-container {
   display: flex;
   flex-direction: column;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #000000;
   gap: 0.4rem;
 
@@ -54,10 +54,10 @@ img {
     gap: 0.25rem;
     position: relative;
   }
-  
+
   .text-container {
     font-size: 0.5rem;
-    
+
     position: absolute; /* Allows the text-container to be positioned relative to .container */
     top: 0; /* Place it at the top */
     left: 0; /* Align with the left edge */
@@ -72,15 +72,14 @@ img {
     background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background (optional) */
     border-radius: 0.4rem;
   }
-  
+
   img {
     border-radius: 0.4rem;
-    width: 100%
+    width: 100%;
   }
 
   p {
-    display:none;
+    display: none;
   }
-
 }
 </style>

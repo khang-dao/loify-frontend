@@ -51,7 +51,7 @@ const { text = "buy me a coffee" } = defineProps<{ text?: string }>()
 }
 
 .button-text {
-  font-family: 'night-pumpkind', cursive;
+  font-family: var(--font-family-primary);
 }
 
 @media (max-width: 1024px) {

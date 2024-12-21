@@ -20,10 +20,7 @@ user.isLoggedIn && logout()
       </div>
     </div>
     <RouterLink to="/">
-      <FontAwesomeIcon
-        :icon="['fas', 'house']"
-        class="icon house"
-      />
+      <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
     </RouterLink>
   </main>
 </template>
@@ -41,7 +38,7 @@ user.isLoggedIn && logout()
   flex-direction: column;
   align-items: center;
   gap: 2rem;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   margin: 10rem;
   text-align: center;
   color: #000000;
@@ -77,7 +74,7 @@ user.isLoggedIn && logout()
 }
 
 .icon {
-  color: #54198A;
+  color: #54198a;
   cursor: pointer;
 }
 
@@ -87,7 +84,6 @@ user.isLoggedIn && logout()
   bottom: 2rem;
   right: 2rem;
 }
-
 
 @media (max-width: 1024px) {
   .container {

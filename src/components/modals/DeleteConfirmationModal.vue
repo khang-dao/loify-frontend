@@ -41,7 +41,7 @@ const {
 }
 
 .modal {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   background: #fff;
   padding: 20px;
   border-radius: 8px;

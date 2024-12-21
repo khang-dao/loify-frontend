@@ -27,14 +27,14 @@ const {
 }
 
 .playlist-heading {
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: var(--font-family-primary);
   color: #000000;
   text-align: center;
   font-size: 2rem;
 }
 
 .playlist-name {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #000000;
   text-align: center;
   font-size: 1.25rem;
@@ -48,13 +48,13 @@ img {
   .container {
     gap: 0.5rem;
   }
-  
+
   .playlist-heading {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
   }
 
   .playlist-name {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
   }
 }
 </style>

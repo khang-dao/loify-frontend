@@ -64,7 +64,7 @@ const handleDelete = async () => {
 
 h3 {
   flex-grow: 1;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #000000;
 }
 
@@ -98,7 +98,7 @@ img {
     text-align: center;
     position: relative;
   }
- 
+
   h3 {
     font-size: 0.5rem;
     position: absolute; /* Allows the text-container to be positioned relative to .container */
@@ -119,7 +119,7 @@ img {
   }
 
   img {
-    width:100%;
+    width: 100%;
     border-radius: 0.4rem;
   }
 

@@ -42,7 +42,6 @@ const {
           </template>
         </div>
       </div>
-
     </FadeTransition>
     <div>
       <slot name="always"></slot>
@@ -108,7 +107,7 @@ const {
 }
 
 .title {
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: var(--font-family-primary);
   color: #000000;
   font-size: 2rem;
   /* transform: translateX(1.7rem); include this to move the `title` left/right */
@@ -137,7 +136,7 @@ const {
   }
 
   .header {
-    padding: 0; 
+    padding: 0;
     max-height: 0.5rem;
   }
 

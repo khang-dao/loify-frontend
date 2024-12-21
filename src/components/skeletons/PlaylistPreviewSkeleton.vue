@@ -15,14 +15,14 @@
 }
 
 .playlist-heading {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #ffffff;
   text-align: center;
   font-size: 2rem;
 }
 
 .playlist-name {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #ffffff;
   text-align: center;
   font-size: 1rem;

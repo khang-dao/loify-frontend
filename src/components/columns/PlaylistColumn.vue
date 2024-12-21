@@ -25,16 +25,15 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
     </template>
     <template #main-content>
       <PlaylistItem
-      v-for="item in queries.playlistsQuery.data.value"
-      @click="actions.selectPlaylist"
-      :selected="selectedPlaylist?.id === item.id"
-      :playlistId="item.id"
-      :key="item.id"
-      :playlistName="item.name"
-      :imgSrc="item.image"
-      :handleDelete="actions.deletePlaylistAndRefetch"
+        v-for="item in queries.playlistsQuery.data.value"
+        @click="actions.selectPlaylist"
+        :selected="selectedPlaylist?.id === item.id"
+        :playlistId="item.id"
+        :key="item.id"
+        :playlistName="item.name"
+        :imgSrc="item.image"
+        :handleDelete="actions.deletePlaylistAndRefetch"
       />
-
     </template>
     <template #header-icon-2>
       <FontAwesomeIcon
@@ -52,7 +51,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         @click="queries.playlistsQuery.refetch"
         class="icon back-arrow"
         v-if="!queries.playlistsQuery.isFetching.value"
-      /> 
+      />
     </template>
   </Column>
 </template>
@@ -78,11 +77,11 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
 @media (max-width: 1024px) {
   .icon.logout,
   .icon.trash {
-    font-size: 0.6rem;
+    font-size: var(--icon-size-base);
   }
 
   .icon.back-arrow {
-    font-size: 0.6rem;
+    font-size: var(--icon-size-base);
     bottom: 0.5rem;
     right: 0.5rem;
   }
