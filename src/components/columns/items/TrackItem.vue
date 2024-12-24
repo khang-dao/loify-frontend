@@ -28,12 +28,13 @@ const {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  word-break: break-word;
 }
 
 .text-container {
   display: flex;
   flex-direction: column;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #000000;
   gap: 0.4rem;
 
@@ -54,33 +55,32 @@ img {
     gap: 0.25rem;
     position: relative;
   }
-  
+
   .text-container {
     font-size: 0.5rem;
-    
-    position: absolute; /* Allows the text-container to be positioned relative to .container */
-    top: 0; /* Place it at the top */
-    left: 0; /* Align with the left edge */
-    width: 100%; /* Match the width of the container */
-    height: 100%; /* Optional, match the height */
-    display: flex; /* Enables centering */
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    color: white; /* Ensure the text is visible over the image */
+
+    position: absolute;
+    top: 0;
+    left: 0; 
+    width: 100%;
+    height: 100%;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center;
+    color: white; 
     padding: 0.25rem;
-    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent background (optional) */
+    background-color: rgba(0, 0, 0, 0.2); 
     border-radius: 0.4rem;
   }
-  
+
   img {
     border-radius: 0.4rem;
-    width: 100%
+    width: 100%;
   }
 
   p {
-    display:none;
+    display: none;
   }
-
 }
 </style>

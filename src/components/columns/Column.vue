@@ -23,11 +23,11 @@ const {
       <div :class="['column-content', { skeleton: skeletonCondition }]" v-else>
         <header class="header">
           <div>
-            <slot name="header-icon"></slot>
+            <slot name="header-icon" />
           </div>
           <h2 class="title">{{ colName }}</h2>
           <div>
-            <slot name="header-icon-2"></slot>
+            <slot name="header-icon-2" />
           </div>
         </header>
         <slot name="extra" />
@@ -42,10 +42,9 @@ const {
           </template>
         </div>
       </div>
-
     </FadeTransition>
     <div>
-      <slot name="always"></slot>
+      <slot name="always" />
     </div>
   </div>
 </template>
@@ -108,7 +107,7 @@ const {
 }
 
 .title {
-  font-family: 'night-pumpkind', sans-serif;
+  font-family: var(--font-family-primary);
   color: #000000;
   font-size: 2rem;
   /* transform: translateX(1.7rem); include this to move the `title` left/right */
@@ -137,7 +136,7 @@ const {
   }
 
   .header {
-    padding: 0; 
+    padding: 0;
     max-height: 0.5rem;
   }
 
@@ -149,7 +148,7 @@ const {
 
   .item-container {
     padding-right: 0;
-    max-height: calc(90vh - 6rem); /* Set a maximum height for the item container */
+    max-height: calc(90vh - 6rem);
   }
 
   ::-webkit-scrollbar {

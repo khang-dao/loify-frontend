@@ -16,33 +16,24 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, selectedGenre, queries, actions, toggles } = playlistState
 
 const canGenerateLoifyTracks = computed(
-  () =>
-    selectedPlaylist.value &&
-    queries.tracksQuery.data.value &&
-    !toggles.loifyTracksToggle.state.value
+  () => selectedPlaylist.value && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowLoifyBackArrow = computed(
   () =>
-    selectedPlaylist.value &&
-    !toggles.loifyPlaylistToggle.state.value &&
-    toggles.loifyTracksToggle.state.value
+    selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value && toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowAddToSpotify = computed(
   () =>
     selectedPlaylist.value &&
-    toggles.loifyTracksToggle.state.value &&
+    toggles.loifyTracksToggle.isToggled.value &&
     !queries.loifyTracksQuery.isFetching.value &&
-    !toggles.loifyPlaylistToggle.state.value
+    !toggles.loifyPlaylistToggle.isToggled.value
 )
-const shouldShowLoifyColumnEmpty = computed(
-  () => !toggles.loifyTracksToggle.state.value && !selectedPlaylist.value
-)
+const shouldShowLoifyColumnEmpty = computed(() => !toggles.loifyTracksToggle.isToggled.value && !selectedPlaylist.value)
 const shouldShowLoifyColumnSkeleton = computed(
-  () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.state.value
+  () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.isToggled.value
 )
-const shouldShowLoifyColumnItems = computed(
-  () => selectedPlaylist.value && toggles.loifyTracksToggle.state.value
-)
+const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && toggles.loifyTracksToggle.isToggled.value)
 </script>
 
 <template>
@@ -59,11 +50,7 @@ const shouldShowLoifyColumnItems = computed(
         placeholder="Select a genre"
         v-if="canGenerateLoifyTracks"
       />
-      <ThemeButton
-        @click="actions.fetchLoifyTracks"
-        class="loify-button"
-        v-if="canGenerateLoifyTracks"
-      >
+      <ThemeButton @click="actions.fetchLoifyTracks" class="loify-button" v-if="canGenerateLoifyTracks">
         g e n e r a t e
       </ThemeButton>
     </template>
@@ -81,7 +68,7 @@ const shouldShowLoifyColumnItems = computed(
         :key="item.id"
         :trackName="item.name"
         :artistName="item.artist"
-        :imgSrc="item.image"
+        :imgSrc="item.image?.url"
       />
     </template>
     <template #header-icon-2>
@@ -95,10 +82,7 @@ const shouldShowLoifyColumnItems = computed(
     </template>
     <template #always>
       <RouterLink to="/">
-        <FontAwesomeIcon
-          :icon="['fas', 'house']"
-          class="icon house"
-        />
+        <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
       </RouterLink>
     </template>
   </Column>
@@ -126,28 +110,28 @@ const shouldShowLoifyColumnItems = computed(
 }
 
 .multiselect {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
 }
 
 @media (max-width: 1024px) {
   .icon.house {
-    font-size: 0.6rem;
+    font-size: var(--icon-size-base);
     bottom: 0.5rem;
   }
 
-  :deep(.multiselect *)  {
-    font-size: 0.6rem;
-    overflow-x: hidden
+  :deep(.multiselect *) {
+    font-size: var(--font-size-sm);
+    overflow-x: hidden;
   }
 
   :deep(.multiselect__option::after) {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
     transform: translateX(10px);
   }
 
   .icon.back-arrow,
   .icon.plus {
-    font-size: 0.6rem;
+    font-size: var(--font-size-sm);
   }
 
   .icon.house {

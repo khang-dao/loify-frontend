@@ -36,7 +36,6 @@ img {
 }
 
 /* Global Styling */
-
 body {
   background-image: url('/images/main-background.png');
   background-size: cover;
@@ -59,5 +58,31 @@ body {
 }
 
 .v-popper__popper {
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
+}
+
+/* CSS Variables */
+/* TODO: Create/update variables -> references them in respective files */
+/* Colors */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #ffffff;
+  --text-color: #333333;
+}
+
+/* Typography */
+:root {
+  --font-size-sm: 0.6rem;
+  --font-size-md: 16px;
+  --font-size-ls: 24px;
+  --font-family-primary: 'night-pumpkind', sans-serif;
+  --font-family-secondary: 'league-spartan', sans-serif;
+  --icon-size-base: 0.6rem;
+}
+
+/* Spacing */
+:root {
+  --spacing-unit: 8px;
+  --border-radius: 4px;
 }

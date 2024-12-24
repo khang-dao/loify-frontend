@@ -30,23 +30,12 @@ const handleDelete = async () => {
 <template>
   <div :class="['container', { selected: selected }]" :id="playlistId">
     <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
-    <img
-      :class="[{ selected: selected }]"
-      :src="imgSrc"
-      :alt="imgAlt"
-      width="100"
-      height="100"
-      :id="playlistId"
-    />
+    <img :class="[{ selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId" />
     <h3 :id="playlistId">{{ playlistName }}</h3>
     <FontAwesomeIcon
       :icon="['fas', 'circle-minus']"
       class="icon delete"
-      :class="[
-        'icon',
-        'delete',
-        { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }
-      ]"
+      :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
       v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
       :onClick="handleDelete"
     />
@@ -64,7 +53,7 @@ const handleDelete = async () => {
 
 h3 {
   flex-grow: 1;
-  font-family: 'league-spartan', sans-serif;
+  font-family: var(--font-family-secondary);
   color: #000000;
 }
 
@@ -98,19 +87,19 @@ img {
     text-align: center;
     position: relative;
   }
- 
+
   h3 {
     font-size: 0.5rem;
-    position: absolute; /* Allows the text-container to be positioned relative to .container */
-    top: 0; /* Place it at the top */
-    left: 0; /* Align with the left edge */
-    width: 100%; /* Match the width of the container */
-    height: 100%; /* Optional, match the height */
-    display: flex; /* Enables centering */
-    flex-direction: column; /* Stack elements vertically */
-    justify-content: center; /* Center items vertically */
-    align-items: center; /* Center items horizontally */
-    color: white; /* Ensure the text is visible over the image */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
     padding: 0.25rem;
   }
 
@@ -119,7 +108,7 @@ img {
   }
 
   img {
-    width:100%;
+    width: 100%;
     border-radius: 0.4rem;
   }
 

@@ -12,9 +12,7 @@ if (!playlistState) throw new Error('Playlist state not found')
 
 const { selectedPlaylist, queries, actions, toggles } = playlistState
 
-const shouldShowTracksBackArrow = computed(
-  () => selectedPlaylist.value && !toggles.loifyPlaylistToggle.state.value
-)
+const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value)
 </script>
 
 <template>
@@ -38,7 +36,7 @@ const shouldShowTracksBackArrow = computed(
         :key="item.id"
         :trackName="item.name"
         :artistName="item.artist"
-        :imgSrc="item.image"
+        :imgSrc="item.image?.url"
       />
     </template>
   </Column>
@@ -56,7 +54,7 @@ const shouldShowTracksBackArrow = computed(
 
 @media (max-width: 1024px) {
   .icon.back-arrow {
-    font-size: 0.6rem;
+    font-size: var(--icon-size-base);
   }
 }
 </style>

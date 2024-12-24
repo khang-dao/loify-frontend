@@ -17,14 +17,14 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
 
 <template>
   <div class="column">
-    <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image"
+    <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image?.url"
       >o r i g i n a l<br />p l a y l i s t</PlaylistPreview
     >
     <PlaylistPreview
       @click="openUrlInNewTab(loifyPlaylist.url)"
       :playlistName="loifyPlaylist.name"
-      :imgSrc="loifyPlaylist.image"
-      v-if="loifyPlaylist.image"
+      :imgSrc="loifyPlaylist.image?.url"
+      v-if="loifyPlaylist.image?.url"
       >n e w<br />p l a y l i s t</PlaylistPreview
     >
     <PlaylistPreviewSkeleton v-else />
@@ -34,19 +34,13 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
         :icon="['fab', 'spotify']"
         @click="openUrlInNewTab(loifyPlaylist.url)"
         class="icon spotify"
-        v-show="loifyPlaylist.image"
+        v-show="loifyPlaylist.image?.url"
       />
-      <FontAwesomeIcon
-        :icon="['fas', 'arrow-rotate-left']"
-        @click="actions.reset"
-        class="icon restart"
-      />
-      <router-link to="/logout"
-        ><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon"
-      /></router-link>
+      <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="actions.reset" class="icon restart" />
+      <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
     </div>
 
-    <BuyMeACoffeButton v-show="loifyPlaylist.image" />
+    <BuyMeACoffeButton v-show="loifyPlaylist.image?.url" />
   </div>
 </template>
 
@@ -83,9 +77,9 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   .column {
     min-width: 2rem;
     padding: 1.2rem;
-    gap:1rem;
+    gap: 1rem;
   }
-  
+
   .icon-container {
     gap: 0.7rem;
   }
