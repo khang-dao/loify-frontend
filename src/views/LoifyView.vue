@@ -46,7 +46,7 @@ const handleDelete = () => {
 
 @media (max-width: 1024px) {
   .main {
-    height: 90vh;
+    height: 100dvh;
     padding: 1rem;
     gap: 1rem;
   }
