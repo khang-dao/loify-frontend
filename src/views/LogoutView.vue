@@ -5,7 +5,11 @@ import { RouterLink } from 'vue-router'
 import { useUserStore } from '@/stores/user'
 
 const { user, logout } = useUserStore()
-user.isLoggedIn && logout()
+if (user.isLoggedIn) {
+  logout();
+  console.log('User logged out.');
+}
+
 </script>
 
 <template>
