@@ -62,6 +62,7 @@ body {
 }
 
 /* CSS Variables */
+/* TODO: Create/update variables -> references them in respective files */
 /* Colors */
 :root {
   --primary-color: #3498db;
