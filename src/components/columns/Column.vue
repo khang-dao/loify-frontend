@@ -23,11 +23,11 @@ const {
       <div :class="['column-content', { skeleton: skeletonCondition }]" v-else>
         <header class="header">
           <div>
-            <slot name="header-icon"></slot>
+            <slot name="header-icon" />
           </div>
           <h2 class="title">{{ colName }}</h2>
           <div>
-            <slot name="header-icon-2"></slot>
+            <slot name="header-icon-2" />
           </div>
         </header>
         <slot name="extra" />
@@ -44,7 +44,7 @@ const {
       </div>
     </FadeTransition>
     <div>
-      <slot name="always"></slot>
+      <slot name="always" />
     </div>
   </div>
 </template>

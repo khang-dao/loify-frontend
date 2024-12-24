@@ -12,7 +12,7 @@ const {
 
 <template>
   <div class="container">
-    <h2 class="playlist-heading"><slot></slot></h2>
+    <h2 class="playlist-heading"><slot /></h2>
     <img :src="imgSrc" :alt="imgAlt" width="130" height="130" />
     <h2 class="playlist-name">{{ playlistName }}</h2>
   </div>
