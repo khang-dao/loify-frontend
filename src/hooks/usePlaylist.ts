@@ -20,7 +20,7 @@ export function usePlaylist() {
     description: undefined,
     name: undefined,
     image: undefined,
-    url: undefined,
+    url: undefined
   })
 
   // Toggles

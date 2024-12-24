@@ -10,7 +10,6 @@ const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
 const { selectedPlaylist, queries, actions, toggles } = playlistState
-
 </script>
 
 <template>

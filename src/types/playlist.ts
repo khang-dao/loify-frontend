@@ -6,6 +6,6 @@ export interface Playlist {
   name: string | undefined
   image: Image | undefined
   url: string | undefined
-  isPublic?: boolean;
-  isCollaborative?: boolean;
+  isPublic?: boolean
+  isCollaborative?: boolean
 }

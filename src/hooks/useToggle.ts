@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 
-
 /**
  * A composable function to manage a toggleable boolean state.
  * @param {boolean} [initialState=false] - The initial state of the toggle.

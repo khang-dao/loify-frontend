@@ -17,9 +17,7 @@ export async function createLoifyPlaylist(
   }
 
   try {
-    const response = await client.post(
-      `/playlists/${playlistId}/loify?genre=${genre}`
-    )
+    const response = await client.post(`/playlists/${playlistId}/loify?genre=${genre}`)
     return response.data
   } catch (error) {
     console.error(`Failed to create Loify playlist: ${error}`)
@@ -68,13 +66,14 @@ export async function fetchPlaylists(): Promise<Playlist[]> {
   try {
     const response = await client.get('/me/playlists')
     return response.data.items
-      .map((item: Playlist) => item
-        ? {
-          id: item.id,
-          name: item.name,
-          image: item?.image
-        }
-        : null
+      .map((item: Playlist) =>
+        item
+          ? {
+              id: item.id,
+              name: item.name,
+              image: item?.image
+            }
+          : null
       )
       .filter((item: Playlist) => item !== null)
   } catch (error) {

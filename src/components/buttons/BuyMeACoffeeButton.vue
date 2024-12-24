@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { text = "buy me a coffee" } = defineProps<{ text?: string }>()
+const { text = 'buy me a coffee' } = defineProps<{ text?: string }>()
 </script>
 
 <template>

@@ -77,7 +77,7 @@ body {
   --font-size-ls: 24px;
   --font-family-primary: 'night-pumpkind', sans-serif;
   --font-family-secondary: 'league-spartan', sans-serif;
-  --icon-size-base: 0.6rem
+  --icon-size-base: 0.6rem;
 }
 
 /* Spacing */

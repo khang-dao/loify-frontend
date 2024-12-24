@@ -1,8 +1,7 @@
 <template>
   <div class="spinner"></div>
 </template>
-  
-  
+
 <style scoped>
 .spinner {
   width: 40px;
@@ -15,8 +14,7 @@
 
 @keyframes spin {
   to {
-      transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 </style>
-  

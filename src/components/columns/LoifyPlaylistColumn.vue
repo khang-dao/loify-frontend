@@ -7,14 +7,12 @@ import PlaylistPreview from '@/components/columns/items/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import { openUrlInNewTab } from '@/utils/browser'
 
-
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
 const { loifyPlaylist, selectedPlaylist, actions } = playlistState
-
 </script>
 
 <template>
@@ -85,9 +83,9 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   .column {
     min-width: 2rem;
     padding: 1.2rem;
-    gap:1rem;
+    gap: 1rem;
   }
-  
+
   .icon-container {
     gap: 0.7rem;
   }
