@@ -36,7 +36,7 @@ export function usePlaylist() {
       deselectPlaylist()
     } else {
       loifyTracksToggle.toggleOff()
-      selectedPlaylist.value = playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
+      selectedPlaylist.value = playlistsQuery.data.value?.find((p: Playlist) => p.id === target.id) || undefined
       tracksQuery.refetch()
     }
   }
@@ -69,7 +69,13 @@ export function usePlaylist() {
 
   // Mutations
   const createPlaylistMutation = useMutation({
-    mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id, selectedGenre.value),
+    mutationFn: async () => {
+      const playlist = await api.createLoifyPlaylist(selectedPlaylist.value!.id, selectedGenre.value)
+      if (!playlist) {
+        throw new Error('Failed to create playlist')
+      }
+      return playlist
+    },
     onSuccess: (data: Playlist) => {
       Object.assign(loifyPlaylist, {
         id: data.id,
@@ -88,7 +94,7 @@ export function usePlaylist() {
 
   const loifyPlaylistImage = useQuery({
     queryKey: ['playlistImage', loifyPlaylist.id],
-    queryFn: () => api.fetchPlaylistImage(loifyPlaylist.id),
+    queryFn: () => api.fetchPlaylistImage(loifyPlaylist.id!),
     enabled: false
   })
 

@@ -1,5 +1,5 @@
 import client from '@/api/client'
-import { Genre, Playlist } from '@/types'
+import { Genre, Image, Playlist } from '@/types'
 
 /**
  * Creates a Loify playlist based on the specified playlist.
@@ -87,7 +87,7 @@ export async function fetchPlaylists(): Promise<Playlist[]> {
  * @param {string} playlistId - The ID of the playlist.
  * @returns {Promise<string | undefined>} The URL of the playlist image or undefined if failed.
  */
-export async function fetchPlaylistImage(playlistId: string): Promise<string | undefined> {
+export async function fetchPlaylistImage(playlistId: string): Promise<Image | undefined> {
   if (!playlistId) {
     console.error('Playlist ID cannot be null or undefined.')
     return

@@ -6,10 +6,9 @@ import { useUserStore } from '@/stores/user'
 
 const { user, logout } = useUserStore()
 if (user.isLoggedIn) {
-  logout();
-  console.log('User logged out.');
+  logout()
+  console.log('User logged out.')
 }
-
 </script>
 
 <template>

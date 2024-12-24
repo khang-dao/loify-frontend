@@ -148,7 +148,7 @@ const {
 
   .item-container {
     padding-right: 0;
-    max-height: calc(90vh - 6rem); /* Set a maximum height for the item container */
+    max-height: calc(90vh - 6rem);
   }
 
   ::-webkit-scrollbar {

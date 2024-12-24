@@ -26,7 +26,7 @@ export const useUserStore = defineStore('user', () => {
       if (logoutWindow) {
         logoutWindow.focus()
       }
-      
+
       user.value.isLoggedIn = false
     } catch (error) {
       console.error(`Error logging out: ${error}`)
