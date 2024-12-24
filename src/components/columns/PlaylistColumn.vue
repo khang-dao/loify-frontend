@@ -19,9 +19,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
     :displayCondition="queries.playlistsQuery.data.value"
   >
     <template #header-icon>
-      <router-link to="/logout"
-        ><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout"
-      /></router-link>
+      <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon logout" /></router-link>
     </template>
     <template #main-content>
       <PlaylistItem

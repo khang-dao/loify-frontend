@@ -3,16 +3,8 @@ const { text = 'buy me a coffee' } = defineProps<{ text?: string }>()
 </script>
 
 <template>
-  <a
-    class="bmc-button"
-    target="_blank"
-    href="https://www.buymeacoffee.com/khangdao"
-    rel="noopener noreferrer"
-  >
-    <img
-      src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg"
-      alt="Buy khangdao a coffee"
-    />
+  <a class="bmc-button" target="_blank" href="https://www.buymeacoffee.com/khangdao" rel="noopener noreferrer">
+    <img src="https://www.buymeacoffee.com/assets/img/BMC-btn-logo.svg" alt="Buy khangdao a coffee" />
     <p class="button-text">{{ text }}</p>
   </a>
 </template>

@@ -16,16 +16,11 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, selectedGenre, queries, actions, toggles } = playlistState
 
 const canGenerateLoifyTracks = computed(
-  () =>
-    selectedPlaylist.value &&
-    queries.tracksQuery.data.value &&
-    !toggles.loifyTracksToggle.isToggled.value
+  () => selectedPlaylist.value && queries.tracksQuery.data.value && !toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowLoifyBackArrow = computed(
   () =>
-    selectedPlaylist.value &&
-    !toggles.loifyPlaylistToggle.isToggled.value &&
-    toggles.loifyTracksToggle.isToggled.value
+    selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value && toggles.loifyTracksToggle.isToggled.value
 )
 const shouldShowAddToSpotify = computed(
   () =>
@@ -34,15 +29,11 @@ const shouldShowAddToSpotify = computed(
     !queries.loifyTracksQuery.isFetching.value &&
     !toggles.loifyPlaylistToggle.isToggled.value
 )
-const shouldShowLoifyColumnEmpty = computed(
-  () => !toggles.loifyTracksToggle.isToggled.value && !selectedPlaylist.value
-)
+const shouldShowLoifyColumnEmpty = computed(() => !toggles.loifyTracksToggle.isToggled.value && !selectedPlaylist.value)
 const shouldShowLoifyColumnSkeleton = computed(
   () => queries.loifyTracksQuery.isFetching.value && toggles.loifyTracksToggle.isToggled.value
 )
-const shouldShowLoifyColumnItems = computed(
-  () => selectedPlaylist.value && toggles.loifyTracksToggle.isToggled.value
-)
+const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && toggles.loifyTracksToggle.isToggled.value)
 </script>
 
 <template>
@@ -59,11 +50,7 @@ const shouldShowLoifyColumnItems = computed(
         placeholder="Select a genre"
         v-if="canGenerateLoifyTracks"
       />
-      <ThemeButton
-        @click="actions.fetchLoifyTracks"
-        class="loify-button"
-        v-if="canGenerateLoifyTracks"
-      >
+      <ThemeButton @click="actions.fetchLoifyTracks" class="loify-button" v-if="canGenerateLoifyTracks">
         g e n e r a t e
       </ThemeButton>
     </template>

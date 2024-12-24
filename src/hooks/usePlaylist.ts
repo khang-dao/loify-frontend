@@ -36,8 +36,7 @@ export function usePlaylist() {
       deselectPlaylist()
     } else {
       loifyTracksToggle.toggleOff()
-      selectedPlaylist.value =
-        playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
+      selectedPlaylist.value = playlistsQuery.data.value.find((p: Playlist) => p.id === target.id) || undefined
       tracksQuery.refetch()
     }
   }
@@ -96,8 +95,7 @@ export function usePlaylist() {
   // Delete Actions
   const deletePlaylistAndRefetch = async (playlistId: string) =>
     (await deletePlaylist(playlistId)) && playlistsQuery.refetch()
-  const deleteAllPlaylistsAndRefetch = async () =>
-    (await deleteAllPlaylists()) && playlistsQuery.refetch()
+  const deleteAllPlaylistsAndRefetch = async () => (await deleteAllPlaylists()) && playlistsQuery.refetch()
 
   // Reset State
   const reset = () => {

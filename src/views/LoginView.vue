@@ -12,8 +12,8 @@ const toggleLoginButtonClicked = () => (loginButtonClicked.value = !loginButtonC
   <main class="main">
     <div class="container">
       <h1 class="heading">
-        Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard
-        your data and ensure your privacy is protected.
+        Our application uses Spotify's implementation of the secure OAuth 2.0 framework to safeguard your data and
+        ensure your privacy is protected.
       </h1>
       <a
         class="button"

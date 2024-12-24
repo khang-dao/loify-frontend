@@ -36,14 +36,8 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
         class="icon spotify"
         v-show="loifyPlaylist.image?.url"
       />
-      <FontAwesomeIcon
-        :icon="['fas', 'arrow-rotate-left']"
-        @click="actions.reset"
-        class="icon restart"
-      />
-      <router-link to="/logout"
-        ><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon"
-      /></router-link>
+      <FontAwesomeIcon :icon="['fas', 'arrow-rotate-left']" @click="actions.reset" class="icon restart" />
+      <router-link to="/logout"><FontAwesomeIcon :icon="['fas', 'power-off']" class="icon" /></router-link>
     </div>
 
     <BuyMeACoffeButton v-show="loifyPlaylist.image?.url" />

@@ -35,16 +35,7 @@ const queryClient = new QueryClient({
   }
 })
 
-library.add(
-  faPowerOff,
-  faCaretLeft,
-  faPlus,
-  faArrowRotateLeft,
-  faSpotify,
-  faCircleMinus,
-  faTrash,
-  faHouse
-)
+library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash, faHouse)
 
 const toastOptions = {}
 

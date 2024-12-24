@@ -31,10 +31,7 @@ export async function fetchTracks(playlistId?: string): Promise<Track[]> {
  * @param {Genre} [genre] - The genre of loify tracks (defaults to LOFI).
  * @returns {Promise<Track[]>} A list of loify tracks with id, name, artist, and image URL.
  */
-export async function fetchLoifyTracks(
-  playlistId?: string,
-  genre: Genre = Genre.LOFI
-): Promise<Track[]> {
+export async function fetchLoifyTracks(playlistId?: string, genre: Genre = Genre.LOFI): Promise<Track[]> {
   if (!playlistId) {
     throw new Error('Playlist ID is required.')
   }
