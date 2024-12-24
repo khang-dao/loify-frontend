@@ -7,24 +7,26 @@ import PlaylistPreview from '@/components/columns/items/PlaylistPreview.vue'
 import PlaylistPreviewSkeleton from '@/components/skeletons/PlaylistPreviewSkeleton.vue'
 import { openUrlInNewTab } from '@/utils/browser'
 
+
 import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
 const { loifyPlaylist, selectedPlaylist, actions } = playlistState
+
 </script>
 
 <template>
   <div class="column">
-    <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image"
+    <PlaylistPreview :playlistName="selectedPlaylist?.name" :imgSrc="selectedPlaylist?.image?.url"
       >o r i g i n a l<br />p l a y l i s t</PlaylistPreview
     >
     <PlaylistPreview
       @click="openUrlInNewTab(loifyPlaylist.url)"
       :playlistName="loifyPlaylist.name"
-      :imgSrc="loifyPlaylist.image"
-      v-if="loifyPlaylist.image"
+      :imgSrc="loifyPlaylist.image?.url"
+      v-if="loifyPlaylist.image?.url"
       >n e w<br />p l a y l i s t</PlaylistPreview
     >
     <PlaylistPreviewSkeleton v-else />
@@ -34,7 +36,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
         :icon="['fab', 'spotify']"
         @click="openUrlInNewTab(loifyPlaylist.url)"
         class="icon spotify"
-        v-show="loifyPlaylist.image"
+        v-show="loifyPlaylist.image?.url"
       />
       <FontAwesomeIcon
         :icon="['fas', 'arrow-rotate-left']"
@@ -46,7 +48,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
       /></router-link>
     </div>
 
-    <BuyMeACoffeButton v-show="loifyPlaylist.image" />
+    <BuyMeACoffeButton v-show="loifyPlaylist.image?.url" />
   </div>
 </template>
 

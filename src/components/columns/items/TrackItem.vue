@@ -28,6 +28,7 @@ const {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  word-break: break-word;
 }
 
 .text-container {

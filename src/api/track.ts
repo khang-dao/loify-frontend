@@ -1,5 +1,4 @@
 import client from '@/api/client'
-import { DEFAULT_IMG_URL } from '@/constants'
 import { Artist, Genre, Track } from '@/types'
 
 /**
@@ -18,7 +17,7 @@ export async function fetchTracks(playlistId?: string): Promise<Track[]> {
       id: item.track?.id ?? 'unknown',
       name: item.track?.name ?? 'Unknown',
       artist: (item.track?.artists as Artist[] | undefined)?.[0]?.name ?? 'Unknown Artist',
-      image: item.track?.album.images?.[0]?.url ?? DEFAULT_IMG_URL
+      image: item.track?.album?.image
     }))
   } catch (error) {
     console.error(`Failed to fetch tracks: ${error}`)
@@ -48,7 +47,7 @@ export async function fetchLoifyTracks(
         id: item.tracks.items[0].id ?? 'unknown',
         name: item.tracks.items[0].name ?? 'Unknown',
         artist: item.tracks.items[0].artists[0]?.name ?? 'Unknown Artist',
-        image: item.tracks.items[0].album.images[0]?.url ?? DEFAULT_IMG_URL
+        image: item.tracks.items[0].album?.image
       }))
   } catch (error) {
     console.error(`Failed to fetch loify tracks: ${error}`)

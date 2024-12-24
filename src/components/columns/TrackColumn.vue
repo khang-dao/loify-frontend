@@ -38,7 +38,7 @@ const shouldShowTracksBackArrow = computed(
         :key="item.id"
         :trackName="item.name"
         :artistName="item.artist"
-        :imgSrc="item.image"
+        :imgSrc="item.image?.url"
       />
     </template>
   </Column>

@@ -10,6 +10,7 @@ const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
 const { selectedPlaylist, queries, actions, toggles } = playlistState
+
 </script>
 
 <template>
@@ -31,7 +32,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         :playlistId="item.id"
         :key="item.id"
         :playlistName="item.name"
-        :imgSrc="item.image"
+        :imgSrc="item.image?.url"
         :handleDelete="actions.deletePlaylistAndRefetch"
       />
     </template>

@@ -17,9 +17,10 @@ export function usePlaylist() {
   const selectedPlaylist = ref<Playlist | undefined>(undefined)
   const loifyPlaylist = reactive<Playlist>({
     id: undefined,
+    description: undefined,
     name: undefined,
     image: undefined,
-    url: undefined
+    url: undefined,
   })
 
   // Toggles
@@ -70,12 +71,12 @@ export function usePlaylist() {
   // Mutations
   const createPlaylistMutation = useMutation({
     mutationFn: () => api.createLoifyPlaylist(selectedPlaylist.value!.id, selectedGenre.value),
-    onSuccess: (data) => {
+    onSuccess: (data: Playlist) => {
       Object.assign(loifyPlaylist, {
         id: data.id,
         name: data.name,
-        image: data.images?.[0]?.url || '',
-        url: data.external_urls.spotify
+        image: data.image,
+        url: data.url
       })
       toast('New playlist created! Just fetching data...')
       loifyPlaylistImage.refetch().then((imageUrl) => (loifyPlaylist.image = imageUrl.data))

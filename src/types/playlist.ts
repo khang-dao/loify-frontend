@@ -1,11 +1,11 @@
 import { Image } from './image'
 
 export interface Playlist {
-  id: string
-  description: string
-  name: string
-  images: Image[]
-  externalUrls?: Record<string, any>
+  id: string | undefined
+  description: string | undefined
+  name: string | undefined
+  image: Image | undefined
+  url: string | undefined
   isPublic?: boolean;
-  collaborative?: boolean;
+  isCollaborative?: boolean;
 }

@@ -1,8 +1,5 @@
-import { AxiosResponse } from 'axios'
-
 import client from '@/api/client'
-import { DEFAULT_IMG_URL } from '@/constants'
-import { Genre, Playlist, Image } from '@/types'
+import { Genre, Playlist } from '@/types'
 
 /**
  * Creates a Loify playlist based on the specified playlist.
@@ -20,7 +17,7 @@ export async function createLoifyPlaylist(
   }
 
   try {
-    const response: AxiosResponse<Playlist> = await client.post(
+    const response = await client.post(
       `/playlists/${playlistId}/loify?genre=${genre}`
     )
     return response.data
@@ -41,7 +38,7 @@ export async function deletePlaylist(playlistId: string): Promise<string | undef
     return
   }
   try {
-    const response: AxiosResponse<string> = await client.delete(`/me/playlists/${playlistId}`)
+    const response = await client.delete(`/me/playlists/${playlistId}`)
     return response.data
   } catch (error) {
     console.error(`Failed to delete playlist: ${error}`)
@@ -55,7 +52,7 @@ export async function deletePlaylist(playlistId: string): Promise<string | undef
  */
 export async function deleteAllPlaylists(): Promise<string | undefined> {
   try {
-    const response: AxiosResponse<string> = await client.delete('/me/playlists/loify')
+    const response = await client.delete('/me/playlists/loify')
     return response.data
   } catch (error) {
     console.error(`Failed to delete all playlists: ${error}`)
@@ -71,14 +68,13 @@ export async function fetchPlaylists(): Promise<Playlist[]> {
   try {
     const response = await client.get('/me/playlists')
     return response.data.items
-      .map((item: Playlist) =>
-        item
-          ? {
-              id: item.id,
-              name: item.name,
-              image: item.images?.[0]?.url ?? DEFAULT_IMG_URL
-            }
-          : null
+      .map((item: Playlist) => item
+        ? {
+          id: item.id,
+          name: item.name,
+          image: item?.image
+        }
+        : null
       )
       .filter((item: Playlist) => item !== null)
   } catch (error) {
@@ -99,8 +95,8 @@ export async function fetchPlaylistImage(playlistId: string): Promise<string | u
   }
 
   try {
-    const response: AxiosResponse<Playlist> = await client.get(`/playlists/${playlistId}`)
-    return response.data.images?.[0]?.url ?? DEFAULT_IMG_URL
+    const response = await client.get(`/playlists/${playlistId}`)
+    return response.data.image
   } catch (error) {
     console.error(`Failed to fetch playlist image: ${error}`)
     throw error
