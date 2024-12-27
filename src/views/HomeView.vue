@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
     <img src="" />
     <div class="container">
       <h1 class="heading">Welcome to</h1>
-      <img src="/images/loify-logo.png" />
+      <h1 class="logo">Loify</h1>
       <RouterLink class="subheading" to="/login">click to begin</RouterLink>
     </div>
   </main>
@@ -37,6 +37,13 @@ import { RouterLink } from 'vue-router'
 .heading {
   color: #000000;
   font-size: 2rem;
+  font-family: var(--font-family-primary);
+  font-weight: 100;
+}
+
+.logo {
+  color: #000000;
+  font-size: 7rem;
   font-family: var(--font-family-primary);
   font-weight: 100;
 }
