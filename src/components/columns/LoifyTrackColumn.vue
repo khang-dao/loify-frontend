@@ -74,8 +74,8 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
     <template #header-icon-2>
       <FontAwesomeIcon
         v-tooltip.top-end="'add playlist to spotify!'"
-        :icon="['fas', 'plus']"
-        class="icon plus"
+        :icon="['fas', 'download']"
+        class="icon download"
         @click="actions.createPlaylist"
         v-if="shouldShowAddToSpotify"
       />
@@ -98,8 +98,8 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   font-size: 1.75rem;
 }
 
-.icon.plus {
-  font-size: 1.75rem;
+.icon.download {
+  font-size: 1.5rem;
 }
 
 .icon.house {
@@ -130,7 +130,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   }
 
   .icon.back-arrow,
-  .icon.plus {
+  .icon.download {
     font-size: var(--font-size-sm);
   }
 
