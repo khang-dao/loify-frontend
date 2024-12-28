@@ -44,7 +44,7 @@ const {
 }
 
 img {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-lg);
 }
 
 @media (max-width: 1024px) {
@@ -75,7 +75,7 @@ img {
   }
 
   img {
-    border-radius: 0.4rem;
+    border-radius: var(--border-radius-sm);
     width: 100%;
   }
 

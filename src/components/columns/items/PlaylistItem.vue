@@ -68,7 +68,7 @@ div.selected {
 }
 
 img {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-lg);
 }
 
 .icon.delete {
@@ -109,7 +109,7 @@ img {
 
   img {
     width: 100%;
-    border-radius: 0.4rem;
+    border-radius: var(--border-radius-sm);
   }
 
   div.selected {

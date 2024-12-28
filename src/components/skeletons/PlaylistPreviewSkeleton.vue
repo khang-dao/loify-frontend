@@ -29,7 +29,7 @@
 }
 
 .picture {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-lg);
   height: 130px;
   width: 130px;
   animation: pulse-bg 1s infinite;
@@ -44,6 +44,12 @@
   }
   100% {
     background-color: rgb(216, 216, 216);
+  }
+}
+
+@media (max-width: 1024px) {
+  .picture {
+    border-radius: var(--border-radius-sm);
   }
 }
 </style>
