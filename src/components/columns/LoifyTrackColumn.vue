@@ -10,6 +10,8 @@ import TrackItem from '@/components/columns/items/TrackItem.vue'
 import { Genre } from '@/types/genre'
 import { addSpacesBetweenChars } from '@/utils/string'
 
+import SpotifyLogo from '../../../public/images/spotify-logo-official.svg'
+
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
@@ -82,6 +84,11 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
       />
     </template>
     <template #always>
+      <div class="spotify-attribution">
+        <h1 class="loify-logo">loify</h1>
+        <p class="spotify-attribution-text">a playlist creator for</p>
+        <SpotifyLogo class="spotify-logo" />
+      </div>
       <RouterLink to="/">
         <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
       </RouterLink>
@@ -114,6 +121,33 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   font-family: var(--font-family-secondary);
 }
 
+.spotify-attribution {
+  margin-top: auto;
+  font-family: var(--font-family-primary);
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  flex-direction: column;
+  color: #615D59;
+  transform: translateY(3rem);
+}
+
+.spotify-attribution-text {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.spotify-logo {
+  height: 3rem;
+  width: auto;
+}
+
+:deep(.item-container) {
+  max-height: calc(100vh - 29rem);
+}
+
 @media (max-width: 1024px) {
   .icon.house {
     font-size: var(--icon-size-base);
@@ -137,6 +171,21 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
 
   .icon.house {
     right: 0.5rem;
+  }
+
+  .spotify-attribution {
+    font-size: 0.8rem;
+    gap: 0.5rem;
+  }
+
+  .spotify-attribution-text {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .spotify-logo {
+    height: 2rem;
+    width: auto;
   }
 }
 </style>

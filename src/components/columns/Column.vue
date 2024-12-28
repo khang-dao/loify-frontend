@@ -43,9 +43,7 @@ const {
         </div>
       </div>
     </FadeTransition>
-    <div>
-      <slot name="always" />
-    </div>
+    <slot name="always" />
   </div>
 </template>
 
