@@ -14,9 +14,9 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
 
 const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value)
 
-function clearPlaylistSelection(){
-  actions.deselectPlaylist(); 
-  toggles.loifyTracksToggle.toggleOff();
+function clearPlaylistSelection() {
+  actions.deselectPlaylist()
+  toggles.loifyTracksToggle.toggleOff()
 }
 </script>
 
@@ -43,6 +43,7 @@ function clearPlaylistSelection(){
         :artistName="item.artist"
         :imgSrc="item.image?.url"
         :explicit="item.explicit"
+        :url="item.url"
       />
     </template>
   </Column>

@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { reactive } from 'vue'
 
+import { openUrlInNewTab } from '@/utils/browser'
 import { containsLoify } from '@/utils/string'
 
 const props = defineProps<{
@@ -10,6 +11,7 @@ const props = defineProps<{
   imgSrc?: string
   imgAlt?: string
   selected: boolean
+  url?: string
   handleDelete: (id: string) => void
 }>()
 
@@ -34,11 +36,11 @@ const handleDelete = async () => {
     <h3 :id="playlistId">{{ playlistName }}</h3>
     <FontAwesomeIcon
       :icon="['fas', 'circle-minus']"
-      class="icon delete"
       :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
       v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
-      :onClick="handleDelete"
+      @click="handleDelete"
     />
+    <FontAwesomeIcon :icon="['fab', 'spotify']" class="icon spotify" @click="openUrlInNewTab(props.url)" />
   </div>
 </template>
 
@@ -73,11 +75,16 @@ img {
 
 .icon.delete {
   color: rgb(149, 149, 149);
-  font-size: 1.2rem;
+  font-size: 22px;
 }
 
 .icon.delete.selected {
   color: rgb(255, 48, 48);
+}
+
+.icon.spotify {
+  color: #615d59;
+  font-size: 22px;
 }
 
 @media (max-width: 1024px) {

@@ -71,7 +71,8 @@ export async function fetchPlaylists(): Promise<Playlist[]> {
           ? {
               id: item.id,
               name: item.name,
-              image: item?.image
+              image: item?.image,
+              url: item.url
             }
           : null
       )

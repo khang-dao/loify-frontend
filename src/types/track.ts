@@ -8,4 +8,5 @@ export interface Track {
   album: Album
   artists: Artist[] | Artist
   explicit: boolean
+  url: string
 }

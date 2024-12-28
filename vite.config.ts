@@ -1,5 +1,5 @@
 import vue from '@vitejs/plugin-vue'
-import ViteSvgLoader from 'vite-svg-loader';
+import ViteSvgLoader from 'vite-svg-loader'
 import { URL, fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 

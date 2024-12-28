@@ -30,6 +30,7 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
         :key="item.id"
         :playlistName="item.name"
         :imgSrc="item.image?.url"
+        :url="item?.url"
         :handleDelete="actions.deletePlaylistAndRefetch"
       />
     </template>
@@ -68,8 +69,8 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
 .icon.back-arrow {
   font-size: 1.25rem;
   position: absolute;
-  bottom: 1.75rem;
-  right: 2.5rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
 }
 
 @media (max-width: 1024px) {

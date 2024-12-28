@@ -72,6 +72,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
         :artistName="item.artist"
         :imgSrc="item.image?.url"
         :explicit="item.explicit"
+        :url="item.url"
       />
     </template>
     <template #header-icon-2>
@@ -113,8 +114,8 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
 .icon.house {
   font-size: 1.25rem;
   position: absolute;
-  bottom: 1.75rem;
-  right: 2.5rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
 }
 
 .multiselect {
@@ -130,7 +131,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   align-items: center;
   gap: 0.8rem;
   flex-direction: column;
-  color: #615D59;
+  color: #615d59;
   transform: translateY(3rem);
 }
 
