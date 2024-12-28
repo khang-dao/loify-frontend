@@ -3,12 +3,14 @@ const {
   trackName = 'N/A',
   artistName = 'N/A',
   imgSrc,
-  imgAlt = 'Cannot load image'
+  imgAlt = 'Cannot load image',
+  explicit
 } = defineProps<{
   trackName: string
   artistName: string
   imgSrc?: string
   imgAlt?: string
+  explicit: boolean
 }>()
 </script>
 
@@ -20,6 +22,7 @@ const {
       <h3>{{ trackName }}</h3>
       <p>{{ artistName }}</p>
     </div>
+    <p class="explicit" v-if="explicit">E</p>
   </div>
 </template>
 
@@ -29,15 +32,15 @@ const {
   gap: 1.5rem;
   align-items: center;
   word-break: break-word;
+  font-family: var(--font-family-secondary);
 }
 
 .text-container {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-family-secondary);
   color: #000000;
   gap: 0.4rem;
-
+  
   p {
     color: #6a6a6a;
   }
@@ -45,6 +48,11 @@ const {
 
 img {
   border-radius: var(--border-radius-lg);
+}
+
+.explicit {
+  margin-left: auto;
+  color: rgb(255, 69, 69)
 }
 
 @media (max-width: 1024px) {

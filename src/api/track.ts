@@ -13,11 +13,13 @@ export async function fetchTracks(playlistId?: string): Promise<Track[]> {
 
   try {
     const response = await client.get(`/playlists/${playlistId}/tracks`)
+    console.log("OOP", response.data.items[0])
     return response.data.items.map((item: any) => ({
       id: item.track?.id ?? 'unknown',
       name: item.track?.name ?? 'Unknown',
       artist: (item.track?.artists as Artist[] | undefined)?.[0]?.name ?? 'Unknown Artist',
-      image: item.track?.album?.image
+      image: item.track?.album?.image,
+      explicit: item.track.explicit
     }))
   } catch (error) {
     console.error(`Failed to fetch tracks: ${error}`)

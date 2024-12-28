@@ -69,6 +69,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
         :trackName="item.name"
         :artistName="item.artist"
         :imgSrc="item.image?.url"
+        :explicit="item.explicit"
       />
     </template>
     <template #header-icon-2>

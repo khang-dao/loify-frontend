@@ -7,4 +7,5 @@ export interface Track {
   previewUrl: string
   album: Album
   artists: Artist[] | Artist
+  explicit: boolean
 }

@@ -37,6 +37,7 @@ const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !togg
         :trackName="item.name"
         :artistName="item.artist"
         :imgSrc="item.image?.url"
+        :explicit="item.explicit"
       />
     </template>
   </Column>

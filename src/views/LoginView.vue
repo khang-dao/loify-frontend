@@ -22,7 +22,7 @@ const toggleLoginButtonClicked = () => (loginButtonClicked.value = !loginButtonC
         @click="toggleLoginButtonClicked"
         v-if="!loginButtonClicked"
       >
-        click to login
+        log in with spotify
       </a>
       <Spinner v-else />
     </div>
