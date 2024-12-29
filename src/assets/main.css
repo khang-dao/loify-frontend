@@ -74,11 +74,13 @@ body {
 /* Typography */
 :root {
   --font-size-sm: 0.6rem;
-  --font-size-md: 16px;
-  --font-size-ls: 24px;
+  --font-size-md: 1.5rem;
+  --font-size-lg: 24px;
   --font-family-primary: 'night-pumpkind', sans-serif;
   --font-family-secondary: 'league-spartan', sans-serif;
-  --icon-size-base: 0.6rem;
+  /* --icon-size-sm: 0.6rem;
+  --icon-size-md: 0.6rem; */
+  --icon-size-lg: 0.6rem;
 }
 
 /* Spacing */

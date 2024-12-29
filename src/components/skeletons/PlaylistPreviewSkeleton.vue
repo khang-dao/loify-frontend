@@ -47,7 +47,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .picture {
     border-radius: var(--border-radius-sm);
   }

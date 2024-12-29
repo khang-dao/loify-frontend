@@ -73,16 +73,27 @@ const { selectedPlaylist, queries, actions, toggles } = playlistState
   right: 1.5rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .icon.logout,
   .icon.trash {
-    font-size: var(--icon-size-base);
+    font-size: 1rem;
   }
 
   .icon.back-arrow {
-    font-size: var(--icon-size-base);
+    font-size: 1rem;
     bottom: 0.5rem;
     right: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .icon.logout,
+  .icon.trash {
+    font-size: 0.7rem;
+  }
+
+  .icon.back-arrow {
+    font-size: 0.7rem;
   }
 }
 </style>

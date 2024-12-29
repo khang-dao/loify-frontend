@@ -73,7 +73,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .column {
     min-width: 2rem;
     padding: 1.2rem;
@@ -85,9 +85,15 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   }
 
   .icon {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #847f95;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  .icon {
+    font-size: 1.5rem;
   }
 }
 </style>

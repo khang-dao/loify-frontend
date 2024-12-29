@@ -85,7 +85,7 @@ const {
   flex-direction: column;
   gap: 1rem;
   overflow-y: auto; /* Allow scrolling inside the item container */
-  max-height: calc(100vh - 14.5rem); /* Set a maximum height for the item container */
+  max-height: calc(100dvh - 14.5rem); /* Set a maximum height for the item container */
   padding-right: 1.5rem; /* Optional: Add padding for aesthetics */
 }
 
@@ -108,7 +108,6 @@ const {
   font-family: var(--font-family-primary);
   color: #000000;
   font-size: 2rem;
-  /* transform: translateX(1.7rem); include this to move the `title` left/right */
   white-space: nowrap;
 }
 
@@ -121,7 +120,7 @@ const {
   background-color: #847f95;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .column {
     min-width: 2rem;
     padding: 1.2rem;
@@ -130,7 +129,8 @@ const {
   .column-content {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 2rem;
+    margin: 1rem;
   }
 
   .header {
@@ -139,18 +139,29 @@ const {
   }
 
   .title {
-    font-size: 0.5rem;
+    font-size: var(--font-size-md);
     margin-left: 0.2rem;
     margin-right: 0.2rem;
   }
 
   .item-container {
     padding-right: 0;
-    max-height: calc(90vh - 6rem);
+    max-height: calc(100dvh - 6rem);
   }
 
   ::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 0.5rem;
+  }
+
+  .column-content {
+    margin: 0.5rem;
+    gap: 1rem;
   }
 }
 </style>

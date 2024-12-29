@@ -146,12 +146,12 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
 }
 
 :deep(.item-container) {
-  max-height: calc(100vh - 29rem);
+  max-height: calc(100dvh - 29rem);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .icon.house {
-    font-size: var(--icon-size-base);
+    font-size: var(--icon-size-lg);
     bottom: 0.5rem;
   }
 
@@ -187,6 +187,10 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   .spotify-logo {
     height: 2rem;
     width: auto;
+  }
+
+  :deep(.item-container) {
+    max-height: calc(100dvh - 18.5rem);
   }
 }
 </style>

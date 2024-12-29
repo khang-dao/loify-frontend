@@ -44,7 +44,13 @@ img {
   border-radius: var(--border-radius-lg);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
+  .playlist-heading {
+    font-size: var(--font-size-md);
+  }
+}
+
+@media (max-width: 768px) {
   .container {
     gap: 0.5rem;
   }

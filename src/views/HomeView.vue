@@ -15,7 +15,7 @@ import { RouterLink } from 'vue-router'
 
 <style scoped>
 .main {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;

@@ -30,7 +30,7 @@ if (user.isLoggedIn) {
 
 <style scoped>
 .main {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -88,7 +88,7 @@ if (user.isLoggedIn) {
   right: 2rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .container {
     margin: 2rem;
     gap: 1rem;

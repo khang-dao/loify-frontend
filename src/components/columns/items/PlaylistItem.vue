@@ -33,14 +33,19 @@ const handleDelete = async () => {
   <div :class="['container', { selected: selected }]" :id="playlistId">
     <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
     <img :class="[{ selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId" />
-    <h3 :id="playlistId">{{ playlistName }}</h3>
-    <FontAwesomeIcon
-      :icon="['fas', 'circle-minus']"
-      :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
-      v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
-      @click="handleDelete"
-    />
-    <FontAwesomeIcon :icon="['fab', 'spotify']" class="icon spotify" @click="openUrlInNewTab(props.url)" />
+
+    <div class="metadata-container">
+      <h3 class="text" :id="playlistId">{{ playlistName }}</h3>
+      <div class="icon-container">
+        <FontAwesomeIcon
+          :icon="['fas', 'circle-minus']"
+          :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
+          v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
+          @click="handleDelete"
+        />
+        <FontAwesomeIcon :icon="['fab', 'spotify']" class="icon spotify" @click="openUrlInNewTab(props.url!)" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,10 +58,25 @@ const handleDelete = async () => {
   opacity: 0.5;
 }
 
-h3 {
+.metadata-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  gap: 1rem;
+  width: 100%;
+}
+
+.text {
   flex-grow: 1;
   font-family: var(--font-family-secondary);
   color: #000000;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .selected.container {
@@ -87,31 +107,17 @@ img {
   font-size: 22px;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .container {
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    gap: 0.5rem;
     position: relative;
   }
 
-  h3 {
-    font-size: 0.5rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 0.25rem;
-  }
-
-  .icon {
-    display: none;
+  .icon-container {
+    flex-direction: row;
+    gap: 0.5rem;
   }
 
   img {
@@ -123,5 +129,24 @@ img {
     padding: 0.3rem;
     border-radius: 0.2rem;
   }
+}
+
+@media (max-width: 768px) {
+  .text {
+    font-size: 0.5rem;
+  }
+
+  .metadata-container {
+    align-items: center;
+  }
+
+  .icon-container {
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .icon.delete {
+    font-size: 10px;
+  } 
 }
 </style>

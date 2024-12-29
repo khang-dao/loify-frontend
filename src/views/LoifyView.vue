@@ -37,14 +37,14 @@ const handleDelete = () => {
 <style scoped>
 .main {
   display: flex;
-  height: 100vh;
+  height: 100dvh;
   overflow: auto;
   flex: 1;
   padding: 2rem;
   gap: 2rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .main {
     height: 100dvh;
     padding: 1rem;

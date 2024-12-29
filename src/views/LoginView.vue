@@ -34,7 +34,7 @@ const toggleLoginButtonClicked = () => (loginButtonClicked.value = !loginButtonC
 
 <style scoped>
 .main {
-  height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -75,7 +75,7 @@ const toggleLoginButtonClicked = () => (loginButtonClicked.value = !loginButtonC
   right: 2rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .container {
     margin: 2rem;
   }

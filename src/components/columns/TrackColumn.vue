@@ -59,9 +59,9 @@ function clearPlaylistSelection() {
   font-size: 1.75rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .icon.back-arrow {
-    font-size: var(--icon-size-base);
+    font-size: var(--icon-size-lg);
   }
 }
 </style>
