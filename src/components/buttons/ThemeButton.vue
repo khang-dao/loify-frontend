@@ -27,6 +27,16 @@ button {
 
 @media (max-width: 1200px) {
   button {
+    font-size: var(--font-size-md);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  button {
     font-size: var(--font-size-sm);
     padding-left: 1.5rem;
     padding-right: 1.5rem;

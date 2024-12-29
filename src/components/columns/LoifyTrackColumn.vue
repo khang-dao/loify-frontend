@@ -156,12 +156,12 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   }
 
   :deep(.multiselect *) {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
     overflow-x: hidden;
   }
 
   :deep(.multiselect__option::after) {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
     transform: translateX(10px);
   }
 
@@ -191,6 +191,20 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
 
   :deep(.item-container) {
     max-height: calc(100dvh - 20.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    gap: 0.5rem;
+  }
+
+  .playlist-heading {
+    font-size: var(--font-size-sm);
+  }
+
+  .playlist-name {
+    font-size: var(--font-size-sm);
   }
 }
 </style>
