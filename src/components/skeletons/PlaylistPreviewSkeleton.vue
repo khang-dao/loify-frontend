@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="playlist-heading">N E W<br />P L A Y L I S T</h2>
+    <h2 class="playlist-heading">n e w<br />p l a y l i s t</h2>
     <div class="picture"></div>
     <h2 class="playlist-name">loading...</h2>
   </div>
@@ -15,15 +15,15 @@
 }
 
 .playlist-heading {
-  font-family: var(--font-family-secondary);
-  color: #ffffff;
+  font-family: var(--font-family-primary);
+  /* color: #ffffff; */
   text-align: center;
   font-size: 2rem;
 }
 
 .playlist-name {
   font-family: var(--font-family-secondary);
-  color: #ffffff;
+  /* color: #ffffff; */
   text-align: center;
   font-size: 1rem;
 }
