@@ -141,8 +141,9 @@ img {
   }
 
   .icon-container {
-    gap: 0.1rem;
+    gap: 0.2rem;
     align-items: center;
+    flex-direction: column;
   }
 
   .icon.delete,
