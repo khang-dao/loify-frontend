@@ -12,18 +12,17 @@
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+  width: 70%;
 }
 
 .playlist-heading {
   font-family: var(--font-family-primary);
-  /* color: #ffffff; */
   text-align: center;
   font-size: 2rem;
 }
 
 .playlist-name {
   font-family: var(--font-family-secondary);
-  /* color: #ffffff; */
   text-align: center;
   font-size: 1rem;
 }
@@ -49,7 +48,28 @@
 
 @media (max-width: 1200px) {
   .picture {
+    height: 70px;
+    width: 70px;
     border-radius: var(--border-radius-sm);
+  }
+
+  .playlist-heading {
+    font-size: var(--font-size-md);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .container {
+    gap: 0.5rem;
+  }
+
+  .playlist-heading {
+    font-size: var(--font-size-sm);
+  }
+
+  .playlist-name {
+    font-size: var(--font-size-sm);
   }
 }
 </style>
