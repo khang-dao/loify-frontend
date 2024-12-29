@@ -141,11 +141,12 @@ img {
   }
 
   .icon-container {
-    gap: 0.5rem;
+    gap: 0.1rem;
     align-items: center;
   }
 
-  .icon.delete {
+  .icon.delete,
+  .icon.spotify {
     font-size: 10px;
   } 
 }

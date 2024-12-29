@@ -121,5 +121,9 @@ img {
     font-size: 0.75rem;
     gap: 0.3rem;
   }
+
+  .icon.spotify {
+    font-size: 10px;
+  } 
 }
 </style>
