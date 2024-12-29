@@ -24,6 +24,7 @@ const {
   flex-direction: column;
   gap: 1.5rem;
   align-items: center;
+  width: 70%;
 }
 
 .playlist-heading {

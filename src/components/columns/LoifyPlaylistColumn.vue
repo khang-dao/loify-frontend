@@ -55,7 +55,9 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   background-color: #aeaed0;
   border-radius: 0.5rem;
   overflow: auto;
+  align-items: center;
 }
+
 .icon-container {
   display: flex;
   gap: 2.5rem;
