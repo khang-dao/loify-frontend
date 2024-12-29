@@ -3,7 +3,7 @@ import { faSpotify } from '@fortawesome/free-brands-svg-icons'
 import {
   faPowerOff,
   faCaretLeft,
-  faPlus,
+  faDownload,
   faArrowRotateLeft,
   faCircleMinus,
   faTrash,
@@ -35,7 +35,7 @@ const queryClient = new QueryClient({
   }
 })
 
-library.add(faPowerOff, faCaretLeft, faPlus, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash, faHouse)
+library.add(faPowerOff, faCaretLeft, faDownload, faArrowRotateLeft, faSpotify, faCircleMinus, faTrash, faHouse)
 
 const toastOptions = {}
 

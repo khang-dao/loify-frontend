@@ -46,7 +46,7 @@ const { text = 'buy me a coffee' } = defineProps<{ text?: string }>()
   font-family: var(--font-family-primary);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
   .button-text {
     display: none;
   }

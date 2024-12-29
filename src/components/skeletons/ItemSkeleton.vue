@@ -46,7 +46,7 @@
 }
 
 img {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-lg);
 }
 
 @keyframes pulse-bg {
@@ -61,9 +61,13 @@ img {
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .text-container {
     display: none;
+  }
+
+  img {
+    border-radius: var(--border-radius-sm);
   }
 }
 </style>

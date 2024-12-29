@@ -13,11 +13,14 @@ export async function fetchTracks(playlistId?: string): Promise<Track[]> {
 
   try {
     const response = await client.get(`/playlists/${playlistId}/tracks`)
+    console.log("x", response.data)
     return response.data.items.map((item: any) => ({
       id: item.track?.id ?? 'unknown',
       name: item.track?.name ?? 'Unknown',
       artist: (item.track?.artists as Artist[] | undefined)?.[0]?.name ?? 'Unknown Artist',
-      image: item.track?.album?.image
+      image: item.track?.album?.image,
+      explicit: item.track.explicit,
+      url: item.track.url,
     }))
   } catch (error) {
     console.error(`Failed to fetch tracks: ${error}`)
@@ -44,7 +47,9 @@ export async function fetchLoifyTracks(playlistId?: string, genre: Genre = Genre
         id: item.tracks.items[0].id ?? 'unknown',
         name: item.tracks.items[0].name ?? 'Unknown',
         artist: item.tracks.items[0].artists[0]?.name ?? 'Unknown Artist',
-        image: item.tracks.items[0].album?.image
+        image: item.tracks.items[0].album?.image,
+        explicit: item.tracks.items[0].explicit,
+        url: item.tracks.items[0].url,
       }))
   } catch (error) {
     console.error(`Failed to fetch loify tracks: ${error}`)

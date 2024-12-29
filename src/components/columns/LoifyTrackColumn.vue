@@ -10,6 +10,8 @@ import TrackItem from '@/components/columns/items/TrackItem.vue'
 import { Genre } from '@/types/genre'
 import { addSpacesBetweenChars } from '@/utils/string'
 
+import SpotifyLogo from '../../../public/images/spotify-logo-official.svg'
+
 const playlistState: any = inject('playlistState')
 if (!playlistState) throw new Error('Playlist state not found')
 
@@ -69,18 +71,25 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
         :trackName="item.name"
         :artistName="item.artist"
         :imgSrc="item.image?.url"
+        :explicit="item.explicit"
+        :url="item.url"
       />
     </template>
     <template #header-icon-2>
       <FontAwesomeIcon
         v-tooltip.top-end="'add playlist to spotify!'"
-        :icon="['fas', 'plus']"
-        class="icon plus"
+        :icon="['fas', 'download']"
+        class="icon download"
         @click="actions.createPlaylist"
         v-if="shouldShowAddToSpotify"
       />
     </template>
     <template #always>
+      <div class="spotify-attribution">
+        <h1 class="loify-logo">loify</h1>
+        <p class="spotify-attribution-text">a playlist creator for</p>
+        <SpotifyLogo class="spotify-logo" />
+      </div>
       <RouterLink to="/">
         <FontAwesomeIcon :icon="['fas', 'house']" class="icon house" />
       </RouterLink>
@@ -98,44 +107,104 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   font-size: 1.75rem;
 }
 
-.icon.plus {
-  font-size: 1.75rem;
+.icon.download {
+  font-size: 1.5rem;
 }
 
 .icon.house {
   font-size: 1.25rem;
   position: absolute;
-  bottom: 1.75rem;
-  right: 2.5rem;
+  bottom: 1.5rem;
+  right: 1.5rem;
 }
 
 .multiselect {
   font-family: var(--font-family-secondary);
 }
 
-@media (max-width: 1024px) {
+.spotify-attribution {
+  margin-top: auto;
+  font-family: var(--font-family-primary);
+  font-size: 1.3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8rem;
+  flex-direction: column;
+  color: #615d59;
+  transform: translateY(3rem);
+}
+
+.spotify-attribution-text {
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.spotify-logo {
+  height: 3rem;
+  width: auto;
+}
+
+:deep(.item-container) {
+  max-height: calc(100dvh - 29rem);
+}
+
+@media (max-width: 1200px) {
   .icon.house {
-    font-size: var(--icon-size-base);
+    font-size: var(--icon-size-lg);
     bottom: 0.5rem;
   }
 
   :deep(.multiselect *) {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
     overflow-x: hidden;
   }
 
   :deep(.multiselect__option::after) {
-    font-size: var(--font-size-sm);
+    font-size: 0.9rem;
     transform: translateX(10px);
   }
 
   .icon.back-arrow,
-  .icon.plus {
-    font-size: var(--font-size-sm);
+  .icon.download {
+    font-size: 1rem;
   }
 
   .icon.house {
     right: 0.5rem;
+  }
+
+  .spotify-attribution {
+    font-size: 0.8rem;
+    gap: 0.5rem;
+  }
+
+  .spotify-attribution-text {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .spotify-logo {
+    height: 2rem;
+    width: auto;
+  }
+
+  :deep(.item-container) {
+    max-height: calc(100dvh - 20.5rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    gap: 0.5rem;
+  }
+
+  .playlist-heading {
+    font-size: var(--font-size-sm);
+  }
+
+  .playlist-name {
+    font-size: var(--font-size-sm);
   }
 }
 </style>

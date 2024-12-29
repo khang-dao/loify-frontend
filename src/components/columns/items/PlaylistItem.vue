@@ -2,6 +2,7 @@
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { reactive } from 'vue'
 
+import { openUrlInNewTab } from '@/utils/browser'
 import { containsLoify } from '@/utils/string'
 
 const props = defineProps<{
@@ -10,6 +11,7 @@ const props = defineProps<{
   imgSrc?: string
   imgAlt?: string
   selected: boolean
+  url?: string
   handleDelete: (id: string) => void
 }>()
 
@@ -31,14 +33,19 @@ const handleDelete = async () => {
   <div :class="['container', { selected: selected }]" :id="playlistId">
     <!-- TODO: Trigger the @click on this `div` elem to avoid duplication with `:id="playlistId"` in child elems -->
     <img :class="[{ selected: selected }]" :src="imgSrc" :alt="imgAlt" width="100" height="100" :id="playlistId" />
-    <h3 :id="playlistId">{{ playlistName }}</h3>
-    <FontAwesomeIcon
-      :icon="['fas', 'circle-minus']"
-      class="icon delete"
-      :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
-      v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
-      :onClick="handleDelete"
-    />
+
+    <div class="metadata-container">
+      <h3 class="text" :id="playlistId">{{ playlistName }}</h3>
+      <div class="icon-container">
+        <FontAwesomeIcon
+          :icon="['fas', 'circle-minus']"
+          :class="['icon', 'delete', { selected: deleteButton.isSelected, confirmed: deleteButton.isConfirmed }]"
+          v-if="isLoifyPlaylist && !deleteButton.isConfirmed"
+          @click="handleDelete"
+        />
+        <FontAwesomeIcon :icon="['fab', 'spotify']" class="icon spotify" @click="openUrlInNewTab(props.url!)" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -51,10 +58,25 @@ const handleDelete = async () => {
   opacity: 0.5;
 }
 
-h3 {
+.metadata-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  gap: 1rem;
+  width: 100%;
+}
+
+.text {
   flex-grow: 1;
   font-family: var(--font-family-secondary);
   color: #000000;
+}
+
+.icon-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
 .selected.container {
@@ -68,53 +90,65 @@ div.selected {
 }
 
 img {
-  border-radius: 0.5rem;
+  border-radius: var(--border-radius-lg);
 }
 
 .icon.delete {
   color: rgb(149, 149, 149);
-  font-size: 1.2rem;
+  font-size: 22px;
 }
 
 .icon.delete.selected {
   color: rgb(255, 48, 48);
 }
 
-@media (max-width: 1024px) {
+.icon.spotify {
+  color: #615d59;
+  font-size: 22px;
+}
+
+@media (max-width: 1200px) {
   .container {
     flex-direction: column;
     justify-content: center;
-    text-align: center;
+    gap: 0.5rem;
     position: relative;
   }
 
-  h3 {
-    font-size: 0.5rem;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    padding: 0.25rem;
-  }
-
-  .icon {
-    display: none;
+  .icon-container {
+    flex-direction: row;
+    gap: 0.5rem;
   }
 
   img {
     width: 100%;
-    border-radius: 0.4rem;
+    border-radius: var(--border-radius-sm);
   }
 
   div.selected {
     padding: 0.3rem;
     border-radius: 0.2rem;
   }
+}
+
+@media (max-width: 768px) {
+  .text {
+    font-size: 0.5rem;
+  }
+
+  .metadata-container {
+    align-items: center;
+  }
+
+  .icon-container {
+    gap: 0.2rem;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .icon.delete,
+  .icon.spotify {
+    font-size: 10px;
+  } 
 }
 </style>

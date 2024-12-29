@@ -55,7 +55,9 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   background-color: #aeaed0;
   border-radius: 0.5rem;
   overflow: auto;
+  align-items: center;
 }
+
 .icon-container {
   display: flex;
   gap: 2.5rem;
@@ -73,7 +75,7 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   display: none;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .column {
     min-width: 2rem;
     padding: 1.2rem;
@@ -85,9 +87,15 @@ const { loifyPlaylist, selectedPlaylist, actions } = playlistState
   }
 
   .icon {
-    font-size: 1.5rem;
+    font-size: 2rem;
     color: #847f95;
     cursor: pointer;
+  }
+}
+
+@media (max-width: 768px) {
+  .icon {
+    font-size: 1.5rem;
   }
 }
 </style>

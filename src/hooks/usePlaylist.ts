@@ -83,7 +83,7 @@ export function usePlaylist() {
         image: data.image,
         url: data.url
       })
-      toast('New playlist created! Just fetching data...')
+      toast('New playlist created!')
       loifyPlaylistImage.refetch().then((imageUrl) => (loifyPlaylist.image = imageUrl.data))
     },
     onError: (error) => {

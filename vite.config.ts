@@ -1,10 +1,11 @@
 import vue from '@vitejs/plugin-vue'
+import ViteSvgLoader from 'vite-svg-loader'
 import { URL, fileURLToPath } from 'node:url'
 import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [vue(), ViteSvgLoader()],
   server: {
     port: 3000
   },

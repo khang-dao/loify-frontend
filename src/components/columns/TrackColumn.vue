@@ -13,6 +13,11 @@ if (!playlistState) throw new Error('Playlist state not found')
 const { selectedPlaylist, queries, actions, toggles } = playlistState
 
 const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !toggles.loifyPlaylistToggle.isToggled.value)
+
+function clearPlaylistSelection() {
+  actions.deselectPlaylist()
+  toggles.loifyTracksToggle.toggleOff()
+}
 </script>
 
 <template>
@@ -26,7 +31,7 @@ const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !togg
       <FontAwesomeIcon
         :icon="['fas', 'caret-left']"
         class="icon back-arrow"
-        @click="actions.deselectPlaylist"
+        @click="clearPlaylistSelection"
         v-if="shouldShowTracksBackArrow"
       />
     </template>
@@ -37,6 +42,8 @@ const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !togg
         :trackName="item.name"
         :artistName="item.artist"
         :imgSrc="item.image?.url"
+        :explicit="item.explicit"
+        :url="item.url"
       />
     </template>
   </Column>
@@ -52,9 +59,9 @@ const shouldShowTracksBackArrow = computed(() => selectedPlaylist.value && !togg
   font-size: 1.75rem;
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1200px) {
   .icon.back-arrow {
-    font-size: var(--icon-size-base);
+    font-size: 1rem;
   }
 }
 </style>
