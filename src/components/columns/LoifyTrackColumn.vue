@@ -190,7 +190,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
   }
 
   :deep(.item-container) {
-    max-height: calc(100dvh - 18.5rem);
+    max-height: calc(100dvh - 20.5rem);
   }
 }
 </style>
