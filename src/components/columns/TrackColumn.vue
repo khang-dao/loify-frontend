@@ -61,7 +61,7 @@ function clearPlaylistSelection() {
 
 @media (max-width: 1200px) {
   .icon.back-arrow {
-    font-size: var(--icon-size-lg);
+    font-size: 1rem;
   }
 }
 </style>

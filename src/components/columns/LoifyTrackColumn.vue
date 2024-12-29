@@ -167,7 +167,7 @@ const shouldShowLoifyColumnItems = computed(() => selectedPlaylist.value && togg
 
   .icon.back-arrow,
   .icon.download {
-    font-size: var(--font-size-sm);
+    font-size: 1rem;
   }
 
   .icon.house {
