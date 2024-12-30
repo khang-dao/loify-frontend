@@ -1,3 +1,5 @@
+![loify-demo-vid](loify-demo-vid.gif)
+
 ![1-home](desktop/screenshots/1-home.png)
 ![2-login](desktop/screenshots/2-login.png)
 ![3-login-loading](desktop/screenshots/3-login-loading.png)

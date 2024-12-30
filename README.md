@@ -2,6 +2,8 @@
 
 ### Currently Live At: [loify.me](https://loify.me)
 
+![loify-demo-vid](demo/loify-demo-vid.gif)
+
 ## 📖 Overview
 
 **Loify** is a web application that lets users access their Spotify playlists and create customized versions of the tracks in various genres like **lofi**, **jazz**, **hardstyle**, and **piano**. Users can then add these unique versions back to their existing playlists on Spotify. 🎧🎶
