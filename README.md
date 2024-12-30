@@ -2,7 +2,7 @@
 
 ### Currently Live At: [loify.me](https://loify.me)
 
-![loif- demo-vid](demo/loify-demo-vid.gif)
+![loify-demo-vid](demo/loify-demo-vid.gif)
 
 ## 📖 Overview
 
